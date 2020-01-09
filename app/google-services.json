@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "559216959106",
+    "firebase_url": "https://varanus-ded44.firebaseio.com",
+    "project_id": "varanus-ded44",
+    "storage_bucket": "varanus-ded44.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559216959106:android:3d77fc4410ba75bc51de9b",
+        "android_client_info": {
+          "package_name": "com.pragyakallanagoudar.varanus"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559216959106-gdfsf16m88qc1qm418494mjj8pd27hdr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.pragyakallanagoudar.varanus",
+            "certificate_hash": "059e01075ed1ec0ecbc56524ed97c8338255db65"
+          }
+        },
+        {
+          "client_id": "559216959106-b0hkguiab8a34d2hupi2jnleb8teab78.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD59iHpd9_ajeOnQWKaSineGPOs_iHWiNw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559216959106-b0hkguiab8a34d2hupi2jnleb8teab78.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

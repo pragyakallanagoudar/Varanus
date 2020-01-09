@@ -1,0 +1,14 @@
+Name: Michael
+Species: Fish
+Diet:
+Tue Dec 24 2019: PELLETS 4  PEAS 7
+Thu Dec 26 2019: PEAS 8
+Mon Dec 30 2019: CUCUMBERS 79
+Outside Log:
+Tue Dec 24 2019: 34
+Mon Dec 30 2019: 89
+Behavior Log:
+Mon Dec 30 2019: "Michael seemed a little upset about not having a date to the Fish Gala."
+Tue Dec 31 2019: "Michael has found a date! He's on top of the world."
+
+

@@ -1,0 +1,62 @@
+        /*
+        species.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Animal value = dataSnapshot.getValue(Animal.class);
+                Log.d(LOG_TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(LOG_TAG, "Failed to read value.", error.toException());
+            }
+        });
+
+         */
+
+
+        /**
+        AnimalLogConverter alc = new AnimalLogConverter();
+        List<Animal> animals = alc.getAnimals();
+        DatabaseReference animalList = database.getReference("animals");
+        animalList.setValue(animals);
+
+
+        animalList.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                // This method is called once with the initial value and again
+                // whenever data at this location is updated.
+                Animal value = dataSnapshot.getValue(Animal.class);
+                Log.d(LOG_TAG, "Value is: " + value);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w(LOG_TAG, "Failed to read value.", error.toException());
+            }
+        });
+         */
+
+            /**
+                  * WRITE TO THE VARANUS DATABASE.
+                  */
+                 FirebaseDatabase database = FirebaseDatabase.getInstance();
+                 DatabaseReference myRef = database.getReference("message");
+
+                 DatabaseReference species = database.getReference("species");
+                 List<Species> speciesList = new ArrayList<Species>();
+                 species.setValue(speciesList);
+
+                 DatabaseReference tasks = database.getReference("tasks");
+                 List<Task> tasksList = new ArrayList<Task>();
+
+                 List<String> fish = new ArrayList<String>();
+                 fish.add("Phil");
+                 List<Task> fish_tasks = new ArrayList<Task>();
+                 fish_tasks.add(new Task("Feed fish.", TaskType.FEED, true));
+                 speciesList.add(new Species("fish", fish, fish_tasks));
