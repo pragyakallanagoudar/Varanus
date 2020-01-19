@@ -1,4 +1,4 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.model;
 
 import java.util.ArrayList;
 import java.util.List;

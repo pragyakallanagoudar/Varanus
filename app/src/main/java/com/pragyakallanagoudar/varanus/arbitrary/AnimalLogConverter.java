@@ -5,7 +5,7 @@ package com.pragyakallanagoudar.varanus.arbitrary;
 // COME BACK TO THIS LATER THOUGH LOL
 import android.util.Log;
 
-import com.pragyakallanagoudar.varanus.Animal;
+import com.pragyakallanagoudar.varanus.model.Animal;
 
 import java.io.File;
 import java.io.FileNotFoundException;

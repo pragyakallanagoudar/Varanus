@@ -43,6 +43,7 @@
          */
 
             /**
+                    IMPORTANT!! COME HERE.
                   * WRITE TO THE VARANUS DATABASE.
                   */
                  FirebaseDatabase database = FirebaseDatabase.getInstance();
@@ -60,3 +61,49 @@
                  List<Task> fish_tasks = new ArrayList<Task>();
                  fish_tasks.add(new Task("Feed fish.", TaskType.FEED, true));
                  speciesList.add(new Species("fish", fish, fish_tasks));
+
+
+
+          // firebase auth
+
+              /*
+              private void showSignIn()
+              {
+                  startActivityForResult(
+                          AuthUI.getInstance().createSignInIntentBuilder()
+                          .setAvailableProviders(providers)
+                          .setTheme(R.style.MyTheme)
+                          .build(), MY_REQUEST_CODE
+                  );
+              }
+
+
+              @Override
+              public boolean onCreateOptionsMenu(Menu menu) {
+                  // Inflate the menu; this adds items to the action bar if it is present.
+                  getMenuInflater().inflate(R.menu.menu_main, menu);
+                  return true;
+              }
+
+              @Override
+              public boolean onOptionsItemSelected(MenuItem item) {
+                  // Handle action bar item clicks here. The action bar will
+                  // automatically handle clicks on the Home/Up button, so long
+                  // as you specify a parent activity in AndroidManifest.xml.
+                  int id = item.getItemId();
+
+                  //noinspection SimplifiableIfStatement
+                  if (id == R.id.action_settings) {
+                      return true;
+                  }
+
+                  return super.onOptionsItemSelected(item);
+              }
+
+
+              public void enterApp(View view)
+              {
+                  Intent intent = new Intent(this, Dashboard.class);
+                  startActivity(intent);
+              }
+              */

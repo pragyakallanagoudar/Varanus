@@ -1,6 +1,6 @@
 package com.pragyakallanagoudar.varanus.arbitrary;
 
-import com.pragyakallanagoudar.varanus.Meal;
+import com.pragyakallanagoudar.varanus.model.Meal;
 
 import java.util.Calendar;
 import java.util.HashMap;

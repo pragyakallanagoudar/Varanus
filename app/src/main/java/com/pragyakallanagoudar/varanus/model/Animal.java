@@ -1,6 +1,4 @@
-package com.pragyakallanagoudar.varanus;
-
-import android.util.Log;
+package com.pragyakallanagoudar.varanus.model;
 
 import java.util.Calendar;
 import java.util.HashMap;

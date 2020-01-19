@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 public class AnimalProfile extends AppCompatActivity {
 
-    public Animal animal;
+    //public Animal animal;
     public TextView animal_name;
+    /*
     public AnimalProfile(Animal animalIn)
     {
         animal = animalIn;
     }
+
 
     //methods that display visualizations of the animal's data
 
@@ -33,4 +35,5 @@ public class AnimalProfile extends AppCompatActivity {
         String displayName = animal.name + "(" + animal.species + ")";
         animal_name.setText(displayName);
     }
+    */
 }

@@ -1,10 +1,14 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.arbitrary;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+
+import com.pragyakallanagoudar.varanus.AnimalsPage;
+import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.Tasks;
 
 public class Dashboard extends AppCompatActivity {
 

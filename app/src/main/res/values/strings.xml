@@ -8,4 +8,6 @@
     <string name="tasks_button">Tasks</string>
     <string name="animals_button">Animals</string>
     <string name="dashboard_text">Dashboard</string>
+    <string name="tasks">Tasks</string>
+    <string name="check_me">check_me</string>
 </resources>

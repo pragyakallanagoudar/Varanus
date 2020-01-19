@@ -1,4 +1,6 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.model;
+
+import com.pragyakallanagoudar.varanus.Food;
 
 import java.util.HashMap;
 
