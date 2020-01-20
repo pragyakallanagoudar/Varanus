@@ -1,45 +1,44 @@
-
 package com.pragyakallanagoudar.varanus.adapter;
 
 import android.content.res.Resources;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
+import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.model.Task;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-//import com.bumptech.glide.Glide;
-import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.Task;
-//import com.google.firebase.example.fireeats.util.TasksUtil;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.Query;
-
-
-
- //* RecyclerView adapter for a list of Tasks.
+ /* RecyclerView adapter for a list of Tasks.
+  */
 
 public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
-    public interface OnTasksSelectedListener {
-
-        void onTasksSelected(DocumentSnapshot tasks);
-
+    public interface OnTasksSelectedListener
+    {
+        void onTasksSelected(DocumentSnapshot tasks); // implement in subclasses
     }
 
-    private OnTasksSelectedListener mListener;
+    private OnTasksSelectedListener mListener;  // instance of above interface
 
-    public TasksAdapter(Query query, OnTasksSelectedListener listener) {
+    // constructor
+    public TasksAdapter(Query query, OnTasksSelectedListener listener)
+    {
         super(query);
         mListener = listener;
     }
 
     @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType)
+    {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
         return new ViewHolder(inflater.inflate(R.layout.item_task, parent, false));
     }
@@ -75,6 +74,10 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
             Task Tasks = snapshot.toObject(Task.class);
             Resources resources = itemView.getResources();
+
+            // TODO: fix the bug here. The code only retrieves the first 3 Task entries
+
+            Log.e(TasksAdapter.class.getSimpleName(), Tasks.getMessage()); // DEBUGGING: only prints first three entries to logcat
 
             // Load image
             /*Glide.with(imageView.getContext())

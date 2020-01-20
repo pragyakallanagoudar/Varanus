@@ -6,18 +6,22 @@ import java.lang.String;
 public class Task
 {
     public String species;
-    public String activityType;
+    public TaskType activityType;
     public String message;
     public Date date;
+    public boolean optional;
+    public String enclosure;
 
     public Task() {}
 
-    public Task(String species, String activityType, String message, Date date )
+    public Task(String species, String activityType, String message, Date date, boolean optional, String enclosure)
     {
         this.species = species;
-        this.activityType = activityType;
+        this.activityType = TaskType.valueOf(activityType); // convert the String to enum in code
         this.message = message;
         this.date = date;
+        this.optional = optional;
+        this.enclosure = enclosure;
     }
 
     public String getSpecies() {
@@ -28,12 +32,13 @@ public class Task
         this.species = species;
     }
 
-    public String getActivityType() {
+    public TaskType getActivityType() {
         return activityType;
     }
 
-    public void setActivityType(String activityType) {
-        this.activityType = activityType;
+    public void setActivityType(String activityType)
+    {
+        this.activityType = TaskType.valueOf(activityType);
     }
 
     public String getMessage() {
