@@ -16,6 +16,8 @@
         android:padding="10dp"
         android:text="@string/tasks"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
+        android:textSize="20dp"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

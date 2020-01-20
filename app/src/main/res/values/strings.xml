@@ -8,6 +8,9 @@
     <string name="tasks_button">Tasks</string>
     <string name="animals_button">Animals</string>
     <string name="dashboard_text">Dashboard</string>
-    <string name="tasks">Tasks</string>
+    <string name="tasks">Today\'s Tasks</string>
     <string name="check_me">check_me</string>
+    <string name="species">Species</string>
+    <string name="task">Task</string>
+    <string name="completed">Completed</string>
 </resources>

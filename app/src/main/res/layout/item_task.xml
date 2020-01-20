@@ -13,7 +13,7 @@
         android:layout_height="wrap_content"
         android:width="80dp"
         android:height="30dp"
-        android:text="TextView" />
+        android:text="@string/species" />
 
     <TextView
         android:id="@+id/textView7"
@@ -22,12 +22,14 @@
         android:layout_marginLeft="80dp"
         android:width="150dp"
         android:height="30dp"
-        android:text="TextView" />
+        android:text="@string/task"
+        android:layout_marginStart="80dp" />
 
     <Switch
         android:id="@+id/switch1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="250dp"
-        android:text="Completed" />
+        android:text="@string/completed"
+        android:layout_marginStart="250dp" />
 </RelativeLayout>
