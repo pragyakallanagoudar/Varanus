@@ -43,9 +43,14 @@ public class Tasks extends AppCompatActivity implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQuery = mFirestore.collection("Tasks")
-                .limit(3);
+                .limit(50);
     }
 
+    public void onCheck(View view)
+    {
+        Intent intent = new Intent(this, Feed.class);
+        startActivity(intent);
+    }
     /*public void openTask(View view)
     {
         Intent intent = new Intent(this, AnimalsPage.class);

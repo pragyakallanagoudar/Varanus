@@ -12,7 +12,9 @@
         <activity android:name=".SpeciesPage"></activity>
         <activity android:name=".AnimalProfile" />
         <activity android:name=".Tasks" />
+        <activity android:name=".TasksView" />
         <activity android:name=".AnimalsPage" />
+        <activity android:name=".Feed" />
         <activity android:name=".arbitrary.Dashboard" />
         <activity
             android:name=".MainActivity"

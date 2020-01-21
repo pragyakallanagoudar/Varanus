@@ -13,4 +13,71 @@
     <string name="species">Species</string>
     <string name="task">Task</string>
     <string name="completed">Completed</string>
+    <string name="choose_a_task">Choose an activity</string>
+
+    <!-- turtle activity -->
+    <string-array name="turtleActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+        <item>Exercise</item>
+        <item>Treat</item>
+    </string-array>
+
+    <!-- toad activity -->
+    <string-array name="toadActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+        <item>Exercise</item>
+        <item>Water and Mist</item>
+    </string-array>
+
+    <!-- snake activity -->
+    <string-array name="snakeActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+        <item>Exercise</item>
+        <item>Water and Mist</item>
+        <item>Remove Feces</item>
+        <item>Enclosure Enrichment</item>
+        <item>Bring Outside</item>
+    </string-array>
+
+    <!-- toad activity -->
+    <string-array name="fishActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+    </string-array>
+
+    <string-array name="crayfishActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+        <item>Clean Enclosure</item>
+    </string-array>
+
+    <!-- snake activity -->
+    <string-array name="ratsActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Training</item>
+        <item>Exercise</item>
+        <item>Water</item>
+        <item>Tidy Enclosure and/or Floor</item>
+        <item>Food and/or veg/fruit</item>
+        <item>Clean Enclosure</item>
+        <item>Enclosure Enrichment</item>
+        <item>Bring Outside</item>
+    </string-array>
+
+    <string-array name="catsActivity">
+        <item>@string/choose_a_task</item>
+
+        <item>Feed</item>
+        <item>Clean Enclosure</item>
+    </string-array>
+
 </resources>

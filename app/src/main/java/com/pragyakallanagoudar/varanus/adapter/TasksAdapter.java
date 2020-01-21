@@ -5,7 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -53,7 +53,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
         /*ImageView imageView;
         TextView nameView;
         TextView numRatingsView;*/
-        Switch switchView;
+        Button buttonView;
         TextView speciesView;
         TextView messageView;
 
@@ -66,7 +66,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             priceView = itemView.findViewById(R.id.tasks_item_price);*/
             speciesView = itemView.findViewById(R.id.textView5);
             messageView = itemView.findViewById(R.id.textView7);
-            switchView = itemView.findViewById(R.id.switch1);
+            buttonView = itemView.findViewById(R.id.button);
         }
 
         public void bind(final DocumentSnapshot snapshot,

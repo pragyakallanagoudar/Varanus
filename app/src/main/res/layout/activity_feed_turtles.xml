@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:text="Turtles: Feeding Form"
+        android:textStyle="bold"
+        android:textSize="30sp"
+        android:background="#3252a8"/>
+
+    <TextView
+        android:id="@+id/textView9"
+        android:layout_width="match_parent"
+        android:layout_height="84dp"
+        android:textStyle="normal"
+        android:textSize="18dp"
+        android:text="Thanks for feeding the Turtles! Please fill in the information below so we can record their diets." />
+
+    <TextView
+        android:id="@+id/textView10"
+        android:layout_width="match_parent"
+        android:layout_height="27dp"
+        android:text="How much food in total did you put in the tank?"
+        android:textSize="10dp"
+        android:textStyle="normal" />
+
+    <Spinner
+        android:id="@+id/spinner3"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView11"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:textStyle="normal"
+        android:textSize="18dp"
+        android:text="If you were able to record the individual consumption of each Turtle" />
+
+    <TextView
+        android:id="@+id/textView12"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="What did Jackson eat?" />
+
+    <Spinner
+        android:id="@+id/spinner5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/textView13"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="10dp"
+        android:text="What did Madison eat?" />
+
+    <Spinner
+        android:id="@+id/spinner6"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="match_parent"
+        android:layout_height="201dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Add any other comments/concerns about their diet here" />
+</LinearLayout>

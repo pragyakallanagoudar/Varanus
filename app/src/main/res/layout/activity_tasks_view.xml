@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:gravity="center"
+        android:text="Today's Tasks"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp"/>
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/turtles"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Turtles"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/turtlespinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/turtles"
+            android:entries="@array/turtleActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/toad"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Toads"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/toadspinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/toad"
+            android:entries="@array/toadActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/snakes"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Snakes"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/snakespinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/snakes"
+            android:entries="@array/snakeActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/fish"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Fish"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/fishpinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/fish"
+            android:entries="@array/fishActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/crayfish"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Crayfish"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/crayfishpinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/crayfish"
+            android:entries="@array/crayfishActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/rats"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Rats"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/ratspinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/rats"
+            android:entries="@array/ratsActivity" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="10dp">
+        <TextView
+            android:id="@+id/cats"
+            android:layout_width="126dp"
+            android:layout_height="wrap_content"
+            android:background="#808080"
+            android:gravity="center"
+            android:text="Cats"
+            android:textSize="30dp"
+            android:textStyle="bold" />
+        <Spinner
+            android:id="@+id/catspinner"
+            style="@style/AppTheme.FilterSpinner"
+            android:layout_width="220dp"
+            android:layout_height="47dp"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_toRightOf="@+id/cats"
+            android:entries="@array/catsActivity" />
+    </RelativeLayout>
+
+
+</LinearLayout>
