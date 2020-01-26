@@ -51,11 +51,6 @@ public class Tasks extends AppCompatActivity implements
         Intent intent = new Intent(this, Feed.class);
         startActivity(intent);
     }
-    /*public void openTask(View view)
-    {
-        Intent intent = new Intent(this, AnimalsPage.class);
-        startActivity(intent);
-    }*/
 
     private void initRecyclerView() {
         if (mQuery == null) {
@@ -87,17 +82,6 @@ public class Tasks extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
-        /*// Start sign in if necessary
-        if (shouldStartSignIn()) {
-            startSignIn();
-            return;
-        }
-
-        // Apply filters
-        onFilter(mViewModel.getFilters());*/
-
-        // Start listening for Firestore updates
         if (mAdapter != null) {
             mAdapter.startListening();
         }

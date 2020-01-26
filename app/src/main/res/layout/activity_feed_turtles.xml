@@ -7,7 +7,7 @@
         android:id="@+id/textView8"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:text="Turtles: Feeding Form"
+        android:text="Animals: Feeding Form"
         android:textStyle="bold"
         android:textSize="30sp"
         android:background="#3252a8"/>
@@ -15,10 +15,10 @@
     <TextView
         android:id="@+id/textView9"
         android:layout_width="match_parent"
-        android:layout_height="84dp"
-        android:textStyle="normal"
+        android:layout_height="64dp"
+        android:text="Thanks for feeding the Turtles! Please fill in the information below so we can record their diets."
         android:textSize="18dp"
-        android:text="Thanks for feeding the Turtles! Please fill in the information below so we can record their diets." />
+        android:textStyle="normal" />
 
     <TextView
         android:id="@+id/textView10"
@@ -71,5 +71,6 @@
         android:layout_height="201dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:maxLines="2"
         android:text="Add any other comments/concerns about their diet here" />
 </LinearLayout>

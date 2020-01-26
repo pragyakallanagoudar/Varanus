@@ -1,7 +1,6 @@
 package com.pragyakallanagoudar.varanus.adapter;
 
 import android.content.res.Resources;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,23 +48,14 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-
-        /*ImageView imageView;
-        TextView nameView;
-        TextView numRatingsView;*/
         Button buttonView;
         TextView speciesView;
-        TextView messageView;
+        TextView descriptionView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            /*imageView = itemView.findViewById(R.id.tasks_item_image);
-            nameView = itemView.findViewById(R.id.tasks_item_name);
-            ratingBar = itemView.findViewById(R.id.tasks_item_rating);
-            numRatingsView = itemView.findViewById(R.id.tasks_item_num_ratings);
-            priceView = itemView.findViewById(R.id.tasks_item_price);*/
             speciesView = itemView.findViewById(R.id.textView5);
-            messageView = itemView.findViewById(R.id.textView7);
+            descriptionView = itemView.findViewById(R.id.textView7);
             buttonView = itemView.findViewById(R.id.button);
         }
 
@@ -75,24 +65,8 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             Task Tasks = snapshot.toObject(Task.class);
             Resources resources = itemView.getResources();
 
-            // TODO: fix the bug here. The code only retrieves the first 3 Task entries
-
-            Log.e(TasksAdapter.class.getSimpleName(), Tasks.getMessage()); // DEBUGGING: only prints first three entries to logcat
-
-            // Load image
-            /*Glide.with(imageView.getContext())
-                    .load(Tasks.getPhoto())
-                    .into(imageView);*/
-
-
             speciesView.setText(Tasks.getSpecies());
-            messageView.setText(Tasks.getMessage());
-            /*ratingBar.setRating((float) Tasks.getAvgRating());
-            cityView.setText(Tasks.getCity());
-            categoryView.setText(Tasks.getCategory());
-            numRatingsView.setText(resources.getString(R.string.fmt_num_ratings,
-                    Tasks.getNumRatings()));
-            priceView.setText(TasksUtil.getPriceString(Tasks));*/
+            descriptionView.setText(Tasks.getDescription());
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
