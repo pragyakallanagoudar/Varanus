@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,7 +48,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        Button buttonView;
+        CheckBox checkBoxView;
         TextView speciesView;
         TextView descriptionView;
 
@@ -56,7 +56,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             super(itemView);
             speciesView = itemView.findViewById(R.id.textView5);
             descriptionView = itemView.findViewById(R.id.textView7);
-            buttonView = itemView.findViewById(R.id.button);
+            checkBoxView = itemView.findViewById(R.id.checkBox);
         }
 
         public void bind(final DocumentSnapshot snapshot,
