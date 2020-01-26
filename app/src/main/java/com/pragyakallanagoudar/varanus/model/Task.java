@@ -45,7 +45,7 @@ public class Task
         return description;
     }
 
-    public void setDescription(String message) { this.description = description; }
+    public void setDescription(String description) { this.description = description; }
 
     public Date getLastCompleted() {
         return lastCompleted;
