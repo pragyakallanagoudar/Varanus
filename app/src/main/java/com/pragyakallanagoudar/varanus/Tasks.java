@@ -25,7 +25,7 @@ public class Tasks extends AppCompatActivity implements
 
     private static final String TAG = "MainActivity";
     private FirebaseFirestore mFirestore;
-    private Query mQuery;
+    private Query mQueryTasks, mQueryEnclosureLog;
     private RecyclerView mTasksRecycler;
     private TasksAdapter mAdapter;
 
@@ -42,8 +42,9 @@ public class Tasks extends AppCompatActivity implements
     }
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
-        mQuery = mFirestore.collection("Tasks")
+        mQueryTasks = mFirestore.collection("Tasks")
                 .limit(50);
+        mQueryEnclosureLog = mFirestore.collection("EnclosureLog");
     }
 
     public void onCheck(View view)
@@ -53,11 +54,11 @@ public class Tasks extends AppCompatActivity implements
     }
 
     private void initRecyclerView() {
-        if (mQuery == null) {
+        if (mQueryTasks == null) {
             Log.w(TAG, "No query, not initializing RecyclerView");
         }
 
-        mAdapter = new TasksAdapter(mQuery, this) {
+        mAdapter = new TasksAdapter(mQueryTasks, this) {
 
             @Override
             protected void onDataChanged() {

@@ -2,5 +2,5 @@ package com.pragyakallanagoudar.varanus.model;
 
 public enum TaskType
 {
-    FEED, EXERCISE, SPECIAL, CLEAN, TREAT, OTHER
+    FEED, EXERCISE, SPECIAL, CLEAN, TREAT, OTHER, BEHAVIOUR
 }

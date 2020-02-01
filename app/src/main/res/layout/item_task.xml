@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_toRightOf="@+id/textView5"
         android:text="@string/task"
-        android:paddingRight="20dp"
+        android:paddingRight="10dp"
         android:textSize="15dp" />
 
     <CheckBox
