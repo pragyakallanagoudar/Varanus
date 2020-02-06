@@ -7,6 +7,13 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp">
 
+    <CheckBox
+        android:id="@+id/checkBox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingRight="20dp"
+        android:layout_gravity="right" />
+
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
@@ -16,25 +23,23 @@
         android:maxWidth="120dp"
         android:layout_alignParentLeft="true"
         android:textSize="20dp"
-        android:textStyle="bold"
-        android:paddingRight="20dp"
+        android:layout_marginLeft="90dp"
+        android:paddingRight="30dp"
         android:text="@string/species"
+        android:layout_toRightOf="@+id/checkBox"
         />
 
     <TextView
         android:id="@+id/textView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="80dp"
         android:layout_toRightOf="@+id/textView5"
         android:text="@string/task"
-        android:paddingRight="10dp"
-        android:textSize="15dp" />
+        android:maxWidth="120dp"
+        android:paddingRight="30dp"
+        android:textSize="20dp" />
 
-    <CheckBox
-        android:id="@+id/checkBox"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="right"
-        android:layout_toRightOf="@+id/textView7" />
+
 
 </RelativeLayout>

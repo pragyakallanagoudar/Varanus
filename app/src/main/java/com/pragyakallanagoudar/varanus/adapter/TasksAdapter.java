@@ -20,15 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
-    public interface OnTasksSelectedListener
+    public interface OnCheckBoxSelectedListener
     {
-        void onTasksSelected(DocumentSnapshot tasks); // implement in subclasses
+        void onCheckBoxSelected(DocumentSnapshot tasks); // implement in subclasses
     }
 
-    private OnTasksSelectedListener mListener;  // instance of above interface
+    private OnCheckBoxSelectedListener mListener;  // instance of above interface
 
     // constructor
-    public TasksAdapter(Query query, OnTasksSelectedListener listener)
+    public TasksAdapter(Query query, OnCheckBoxSelectedListener listener)
     {
         super(query);
         mListener = listener;
@@ -60,7 +60,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
         }
 
         public void bind(final DocumentSnapshot snapshot,
-                         final OnTasksSelectedListener listener) {
+                         final OnCheckBoxSelectedListener listener) {
 
             Task Tasks = snapshot.toObject(Task.class);
             Resources resources = itemView.getResources();
@@ -73,7 +73,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
-                        listener.onTasksSelected(snapshot);
+                        listener.onCheckBoxSelected(snapshot);
                     }
                 }
             });

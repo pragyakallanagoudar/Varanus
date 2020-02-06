@@ -3,7 +3,7 @@ package com.pragyakallanagoudar.varanus.model;
 import java.util.Date;
 import java.lang.String;
 
-public class Task
+public class TaskLog
 {
     public String species;
     public String activityType;
@@ -11,10 +11,11 @@ public class Task
     public Date lastCompleted;
     public String enclosure;
     public String frequency;
+    public String comment;
 
-    public Task() {}
+    public TaskLog() {}
 
-    public Task(String species, String activityType, String description, Date lastCompleted, String enclosure, String frequency)
+    public TaskLog(String species, String activityType, String description, Date lastCompleted, String enclosure, String frequency, String comment)
     {
         this.species = species;
         this.activityType = activityType; // convert the String to enum in code
@@ -22,6 +23,7 @@ public class Task
         this.lastCompleted = lastCompleted;
         this.enclosure = enclosure;
         this.frequency = frequency;
+        this.comment = comment;
     }
 
     public String getSpecies() {
@@ -59,9 +61,9 @@ public class Task
 
     public void setFrequency(String frequency) { this.frequency = frequency; }
 
-    public String getEnclosure() {
-        return enclosure;
+    public String getComment() {
+        return comment;
     }
 
-    public void setEnclosure(String enclosure) { this.enclosure = enclosure; }
+    public void setComment(String comment) { this.comment = comment; }
 }

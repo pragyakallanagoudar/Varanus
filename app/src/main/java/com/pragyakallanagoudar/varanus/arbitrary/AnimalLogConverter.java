@@ -52,11 +52,11 @@ public class AnimalLogConverter
             {
 
             }
-            else if (line.equals("Outside Log:"))
+            else if (line.equals("Outside TaskLog:"))
             {
 
             }
-            else if(line.equals("Behavior Log:"))
+            else if(line.equals("Behavior TaskLog:"))
             {
 
             }

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#E0E0E0"
+    android:id="@+id/task_top_card">
+
+    <ImageView
+        android:id="@+id/task_image"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:alpha="1.0"
+        android:contentDescription="@string/sample_varanus"
+        android:scaleType="centerCrop"
+        tools:src="@drawable/varanus" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="200dp" />
+
+        <!-- Back button -->
+    <ImageView
+        android:id="@+id/task_button_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/task_activityType"
+        android:layout_marginTop="16dp"
+        android:background="?attr/selectableItemBackground"
+        android:contentDescription="@string/sample_varanus"
+        android:layout_alignStart="@+id/task_activityType" />
+
+        <TextView
+            android:id="@+id/task_activityType"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_image"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            tools:text="Sample Task"
+            android:layout_marginStart="8dp" />
+
+        <TextView
+            android:id="@+id/task_species"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            tools:text="Sample Species"
+            android:layout_below="@+id/task_activityType" />
+
+        <TextView
+            android:id="@+id/task_enclosure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Sample Enclosure"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/task_species" />
+
+        <TextView
+            android:id="@+id/task_description"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Sample Description"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/task_enclosure" />
+
+        <TextClock
+            android:id="@+id/task_lastCompleted"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Sample Time"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/task_description" />
+
+        <TextView
+            android:id="@+id/task_frequency"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textStyle="bold"
+            tools:text="Sample Time"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:layout_below="@+id/task_lastCompleted" />
+
+        <EditText
+            android:id="@+id/task_comments"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="Please enter your comments"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="20dp"
+            android:textStyle="bold"
+            android:layout_below="@+id/task_frequency" />
+
+    <Button
+        android:id="@+id/cancel_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_comments"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
+        android:text="Cancel" />
+
+    <Button
+        android:id="@+id/submit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/task_comments"
+        android:layout_marginLeft="150dp"
+        android:layout_marginTop="45dp"
+        android:textStyle="bold"
+        android:text="Submit" />
+
+</RelativeLayout>

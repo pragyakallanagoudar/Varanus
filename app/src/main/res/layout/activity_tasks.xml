@@ -13,7 +13,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="16dp"
-        android:gravity="left"
+        android:gravity="start"
         android:padding="20dp"
         android:text="@string/tasks"
         android:textAppearance="@android:style/TextAppearance.DeviceDefault.Medium"
@@ -22,20 +22,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/button"
-        android:layout_width="160dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content"
-        android:textStyle="bold"
-        android:padding="20dp"
-        android:layout_toRightOf="@+id/tasks_text_view"
-        android:gravity="center"
-        android:text="@string/Submit"
-        android:textSize="20sp" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_tasks"
         android:layout_width="395dp"
@@ -43,7 +29,4 @@
         android:layout_below="@+id/tasks_text_view"
         android:layout_marginTop="-7dp"
         tools:listitem="@layout/item_task" />
-
-
-
 </RelativeLayout>
