@@ -11,11 +11,12 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import com.bumptech.glide.Glide;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-//import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.pragyakallanagoudar.varanus.model.Task;
 import com.pragyakallanagoudar.varanus.model.TaskLog;
@@ -30,7 +31,7 @@ import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.google.firebase.firestore.Query;
 
 import java.util.Calendar;
-//import com.pragyakallanagoudar.varanus.model.Task;
+
 
 public class TaskDetailActivity extends AppCompatActivity implements
         View.OnClickListener,
@@ -63,7 +64,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     private TaskLogListener mTaskLogListener;
 
-
+    @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -99,6 +100,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 .collection("tasklog");
         mTaskLogAdapter = new TaskLogAdapter(taskLogQuery);
     }
+
+
 
     @Override
     public void onStart() {
@@ -141,14 +144,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 mEnclosureView.getText().toString(),
                 mFrequencyView.getText().toString(),
                 mCommentText.getText().toString());
-
-        if (mTaskLogListener != null) {
-            System.out.println("I am here HAPPY on task log");
-            onTaskLog(tasklog);
+                onTaskLog(tasklog);
         }
-
-        //dismiss();
-    }
 
     public void onCancelClicked(View view) {
         //dismiss();
@@ -214,9 +211,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mEnclosureView.setText(task.getEnclosure());
 
         // Background image
-        /*Glide.with(mImageView.getContext())
+        Glide.with(mImageView.getContext())
                 .load(task.getPhoto())
-                .into(mImageView);*/
+                .into(mImageView);
     }
 
     //@Override

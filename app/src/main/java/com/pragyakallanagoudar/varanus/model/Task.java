@@ -11,10 +11,11 @@ public class Task
     public Date lastCompleted;
     public String enclosure;
     public String frequency;
+    public String photo;
 
     public Task() {}
 
-    public Task(String species, String activityType, String description, Date lastCompleted, String enclosure, String frequency)
+    public Task(String species, String activityType, String description, Date lastCompleted, String enclosure, String frequency, String photo)
     {
         this.species = species;
         this.activityType = activityType; // convert the String to enum in code
@@ -22,6 +23,7 @@ public class Task
         this.lastCompleted = lastCompleted;
         this.enclosure = enclosure;
         this.frequency = frequency;
+        this.photo = photo;
     }
 
     public String getSpecies() {
@@ -64,4 +66,8 @@ public class Task
     }
 
     public void setEnclosure(String enclosure) { this.enclosure = enclosure; }
+
+    public String getPhoto() {
+        return photo;
+    }
 }
