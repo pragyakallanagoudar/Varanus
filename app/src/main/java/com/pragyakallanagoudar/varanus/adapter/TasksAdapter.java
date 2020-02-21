@@ -48,7 +48,6 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        CheckBox checkBoxView;
         TextView speciesView;
         TextView descriptionView;
 
@@ -56,14 +55,12 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             super(itemView);
             speciesView = itemView.findViewById(R.id.textView5);
             descriptionView = itemView.findViewById(R.id.textView7);
-            checkBoxView = itemView.findViewById(R.id.checkBox);
         }
 
         public void bind(final DocumentSnapshot snapshot,
                          final OnCheckBoxSelectedListener listener) {
 
             Task Tasks = snapshot.toObject(Task.class);
-            Resources resources = itemView.getResources();
 
             speciesView.setText(Tasks.getSpecies());
             descriptionView.setText(Tasks.getDescription());

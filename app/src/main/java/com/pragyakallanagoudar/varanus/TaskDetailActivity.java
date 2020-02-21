@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextClock;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,7 +47,6 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TextView mDescriptionView;
     private TextView mEnclosureView;
     private EditText mCommentText;
-    private TextClock mlastCompletedView;
 
     private FirebaseFirestore mFirestore;
     private DocumentReference mTaskRef;
@@ -77,7 +75,6 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mDescriptionView = findViewById(R.id.task_description);
         mEnclosureView = findViewById(R.id.task_enclosure);
         mCommentText = findViewById(R.id.task_comments);
-        mlastCompletedView = findViewById(R.id.task_lastCompleted);
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
@@ -165,18 +162,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 Task task = transaction.get(taskRef)
                         .toObject(Task.class);
 
-                /* Compute new number of ratings
-                int newNumRatings = task.getNumRatings() + 1;
-
-                // Compute new average rating
-                double oldRatingTotal = restaurant.getAvgRating() *
-                        restaurant.getNumRatings();
-                double newAvgRating = (oldRatingTotal + rating.getRating()) /
-                        newNumRatings;*/
-
-                // Set new restaurant info
+                // Set new timestamp
                 task.setLastCompleted(Calendar.getInstance().getTime());
-                //restaurant.setAvgRating(newAvgRating);
 
                 // Commit to Firestore
                 transaction.set(taskRef, task);
@@ -207,7 +194,6 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mSpeciesView.setText(task.getSpecies());
         mFrequencyView.setText(task.getFrequency());
         mDescriptionView.setText(task.getDescription());
-        //mlastCompletedView.setText(task.getLastCompleted());
         mEnclosureView.setText(task.getEnclosure());
 
         // Background image

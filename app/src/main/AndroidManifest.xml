@@ -11,8 +11,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".AnimalProfile" />
         <activity android:name=".Tasks" />
+        <activity android:name=".TabbedTasks" />
         <activity android:name=".TaskDetailActivity" />
-        <activity android:name=".TasksView" />
         <activity android:name=".AnimalsPage" />
         <activity android:name=".Feed" />
         <activity

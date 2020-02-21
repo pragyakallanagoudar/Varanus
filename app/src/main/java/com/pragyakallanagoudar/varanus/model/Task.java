@@ -49,11 +49,9 @@ public class Task
 
     public void setDescription(String description) { this.description = description; }
 
-    public Date getLastCompleted() {
-        return lastCompleted;
-    }
+    public Date getLastCompleted() { return lastCompleted; }
 
-    public void setLastCompleted(Date date) { this.lastCompleted = lastCompleted; }
+    public void setLastCompleted(Date date) { this.lastCompleted = date; }
 
     public String getFrequency() {
         return frequency;

@@ -17,7 +17,7 @@ import com.google.firebase.firestore.Query;
 
 import android.util.Log;
 import android.view.View;
-import android.widget.CheckBox;
+
 
 
 public class Tasks extends AppCompatActivity implements
@@ -29,7 +29,6 @@ public class Tasks extends AppCompatActivity implements
     private Query mQueryTasks, mQueryEnclosureLog;
     private RecyclerView mTasksRecycler;
     private TasksAdapter mAdapter;
-    private CheckBox mCheckBox;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -38,7 +37,6 @@ public class Tasks extends AppCompatActivity implements
         setContentView(R.layout.activity_tasks);
 
         mTasksRecycler = findViewById(R.id.recycler_tasks);
-        mCheckBox = findViewById(R.id.checkBox);
 
        // findViewById(R.id.checkBox).setOnClickListener(this);
 
@@ -51,14 +49,9 @@ public class Tasks extends AppCompatActivity implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryTasks = mFirestore.collection("Tasks")
-                .limit(50);
+                .limit(50)
+                .orderBy("species");
         mQueryEnclosureLog = mFirestore.collection("EnclosureLog");
-    }
-
-    public void onCheck(View view)
-    {
-        Intent intent = new Intent(this, Feed.class);
-        startActivity(intent);
     }
 
     private void initRecyclerView() {
@@ -110,9 +103,5 @@ public class Tasks extends AppCompatActivity implements
         startActivity(intent);
 
     }
-
-
-
-    //public void onCheckBoxA
 
 }

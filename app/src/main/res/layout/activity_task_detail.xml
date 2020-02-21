@@ -72,16 +72,6 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/task_enclosure" />
 
-        <TextClock
-            android:id="@+id/task_lastCompleted"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            tools:text="Sample Time"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
-            android:layout_below="@+id/task_description" />
-
         <TextView
             android:id="@+id/task_frequency"
             android:layout_width="wrap_content"
@@ -90,7 +80,7 @@
             tools:text="Sample Time"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/task_lastCompleted" />
+            android:layout_below="@+id/task_enclosure" />
 
         <EditText
             android:id="@+id/task_comments"

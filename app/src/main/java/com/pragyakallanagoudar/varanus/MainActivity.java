@@ -19,7 +19,7 @@ public class MainActivity extends AppCompatActivity {
     }
     public void onTasks(View view)
     {
-        Intent intent = new Intent(this, Tasks.class);
+        Intent intent = new Intent(this, TabbedTasks.class);
         startActivity(intent);
     }
 }

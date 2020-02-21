@@ -53,7 +53,7 @@ public class TaskLog
         return lastCompleted;
     }
 
-    public void setLastCompleted(Date date) { this.lastCompleted = lastCompleted; }
+    public void setLastCompleted(Date date) { this.lastCompleted = date; }
 
     public String getFrequency() {
         return frequency;
