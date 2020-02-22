@@ -1,37 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#E0E0E0"
     android:id="@+id/task_top_card">
 
     <ImageView
         android:id="@+id/task_image"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:alpha="1.0"
+        android:layout_width="149dp"
+        android:layout_height="136dp"
         android:contentDescription="@string/sample_varanus"
-        android:scaleType="centerCrop"
         tools:src="@drawable/varanus" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="200dp" />
-
-        <!-- Back button -->
-    <ImageView
-        android:id="@+id/task_button_back"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/task_activityType"
-        android:layout_marginTop="16dp"
-        android:background="?attr/selectableItemBackground"
-        android:contentDescription="@string/sample_varanus"
-        android:layout_alignStart="@+id/task_activityType" />
-
-        <TextView
+    <TextView
             android:id="@+id/task_activityType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -39,11 +20,11 @@
             android:layout_marginLeft="8dp"
             android:layout_marginTop="20dp"
             android:textStyle="bold"
+            android:textSize="20dp"
+            android:background="@color/colorPrimary"
             tools:text="Sample Task"
             android:layout_marginStart="8dp" />
-
-
-        <TextView
+    <TextView
             android:id="@+id/task_species"
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
@@ -53,7 +34,7 @@
             tools:text="Sample Species"
             android:layout_below="@+id/task_activityType" />
 
-        <TextView
+    <TextView
             android:id="@+id/task_enclosure"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -63,7 +44,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/task_species" />
 
-        <TextView
+    <TextView
             android:id="@+id/task_description"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -73,7 +54,7 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/task_enclosure" />
 
-        <TextView
+    <TextView
             android:id="@+id/task_frequency"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -83,11 +64,11 @@
             android:layout_marginTop="20dp"
             android:layout_below="@+id/task_description" />
 
-        <EditText
+    <EditText
             android:id="@+id/task_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Please enter your comments"
+            android:hint="Please enter any comments for this activity"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="20dp"
             android:textStyle="bold"

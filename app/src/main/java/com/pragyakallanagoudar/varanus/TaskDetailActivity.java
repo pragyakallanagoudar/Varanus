@@ -52,16 +52,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private FirebaseFirestore mFirestore;
     private DocumentReference mTaskRef;
     private ListenerRegistration mTaskRegistration;
+    private TaskLog tasklog;
 
     private TaskLogAdapter mTaskLogAdapter;
 
-    interface TaskLogListener {
-
-        void onTaskLog(TaskLog tasklog);
-
-    }
-
-    private TaskLogListener mTaskLogListener;
 
     @Nullable
     @Override
@@ -81,7 +75,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         findViewById(R.id.submit_button).setOnClickListener(this);
 
 
-        // Get restaurant ID from extras
+        // Get task id from extras
         String taskId = getIntent().getExtras().getString(KEY_TASK_ID);
         if (taskId == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
@@ -90,7 +84,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();
 
-        // Get reference to the restaurant
+        // Get reference to the log
         mTaskRef = mFirestore.collection("Tasks").document(taskId);
 
         // Get taskLogs
@@ -134,17 +128,12 @@ public class TaskDetailActivity extends AppCompatActivity implements
     }
 
     public void onSubmitClicked(View v) {
-        TaskLog tasklog = new TaskLog (
-                mSpeciesView.getText().toString(),
-                mActivityTypeView.getText().toString(),
-                mDescriptionView.getText().toString(),
-                new Date().getTime(),
-                mEnclosureView.getText().toString(),
-                mFrequencyView.getText().toString(),
-                mCommentText.getText().toString());
-                onTaskLog(tasklog);
-                finish();
-        }
+
+        tasklog.setComment(mCommentText.getText().toString());
+        tasklog.setLastCompleted(new Date().getTime());
+        onTaskLog(tasklog);
+        finish();
+    }
 
     public void onCancelClicked(View view) {
         finish();
@@ -170,34 +159,25 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 // Commit to Firestore
                 transaction.set(taskRef, task);
                 transaction.set(tasklogRef, tasklog);
-
                 return null;
             }
         });
     }
 
-
-    /**
-     * }).
-     */
     @Override
     public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-        if (e != null) {
-            Log.w(TAG, "restaurant:onEvent", e);
-            return;
-        }
 
         onTaskLoaded(snapshot.toObject(Task.class));
     }
 
     private void onTaskLoaded(Task task) {
 
-        mActivityTypeView.setText("Activity Type: "+ task.getActivityType());
-        mSpeciesView.setText(task.getSpecies());
-        mFrequencyView.setText(task.getFrequency());
-        mDescriptionView.setText(task.getDescription());
-        mEnclosureView.setText(task.getEnclosure());
-
+        mActivityTypeView.setText("Activity Type: " + task.getActivityType());
+        mSpeciesView.setText("Species: " + task.getSpecies());
+        mFrequencyView.setText("Task Frequency: " + task.getFrequency());
+        mDescriptionView.setText("Task Description: " + task.getDescription());
+        mEnclosureView.setText("Enclosure Name: " + task.getEnclosure());
+        tasklog = new TaskLog(task.getSpecies(), task.getActivityType(), task.getDescription(),0,task.getEnclosure(),task.getFrequency(),"");
         // Background image
         Glide.with(mImageView.getContext())
                 .load(task.getPhoto())
@@ -211,7 +191,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "Rating added");
+                        Log.d(TAG, "TaskLog added");
 
                         // Hide keyboard and scroll to top
                         hideKeyboard();

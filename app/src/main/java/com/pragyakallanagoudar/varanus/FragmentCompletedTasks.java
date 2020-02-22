@@ -57,7 +57,7 @@ public class FragmentCompletedTasks extends Fragment implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryCompletedTasks = mFirestore.collection("Tasks")
-                .whereGreaterThan("lastCompleted", new Date().getTime() - 1000*12*60);
+                .whereGreaterThan("lastCompleted", new Date().getTime() - 1000*12*60*60);
     }
 
     private void initRecyclerView() {

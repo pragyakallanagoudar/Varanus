@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:text="Today's Tasks"
         android:textColor="#FFFFFF"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:textStyle="bold"
         android:textSize="25dp"
         android:layout_gravity="center"
