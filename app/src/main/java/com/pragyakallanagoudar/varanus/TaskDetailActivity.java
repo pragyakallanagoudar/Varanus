@@ -142,10 +142,11 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 mFrequencyView.getText().toString(),
                 mCommentText.getText().toString());
                 onTaskLog(tasklog);
+                finish();
         }
 
     public void onCancelClicked(View view) {
-        //dismiss();
+        finish();
     }
 
     private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef, final TaskLog tasklog) {

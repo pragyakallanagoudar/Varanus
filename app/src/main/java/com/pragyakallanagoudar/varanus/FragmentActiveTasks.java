@@ -58,9 +58,9 @@ public class FragmentActiveTasks extends Fragment implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryActiveTasks = mFirestore.collection("Tasks")
-                .limit(50)
-                .whereLessThan("lastCompleted", new Date());
-                //.orderBy("species");
+                .whereLessThan("lastCompleted", new Date())
+                //.orderBy("species")
+                .limit(50);
     }
 
     private void initRecyclerView() {
