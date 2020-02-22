@@ -42,6 +42,7 @@
             tools:text="Sample Task"
             android:layout_marginStart="8dp" />
 
+
         <TextView
             android:id="@+id/task_species"
             android:layout_height="wrap_content"
@@ -80,7 +81,7 @@
             tools:text="Sample Time"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="20dp"
-            android:layout_below="@+id/task_enclosure" />
+            android:layout_below="@+id/task_description" />
 
         <EditText
             android:id="@+id/task_comments"
@@ -98,9 +99,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/task_comments"
         android:layout_marginLeft="20dp"
-        android:layout_marginTop="45dp"
-        android:textStyle="bold"
-        android:text="Cancel" />
+        android:layout_marginTop="109dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Cancel"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/submit_button"
@@ -108,8 +110,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/task_comments"
         android:layout_marginLeft="150dp"
-        android:layout_marginTop="45dp"
-        android:textStyle="bold"
-        android:text="Submit" />
+        android:layout_marginTop="109dp"
+        android:background="@color/colorPrimaryDark"
+        android:text="Submit"
+        android:textStyle="bold" />
 
 </RelativeLayout>

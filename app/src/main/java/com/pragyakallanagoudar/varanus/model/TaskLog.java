@@ -1,6 +1,5 @@
 package com.pragyakallanagoudar.varanus.model;
 
-import java.util.Date;
 import java.lang.String;
 
 public class TaskLog
@@ -8,14 +7,14 @@ public class TaskLog
     public String species;
     public String activityType;
     public String description;
-    public Date lastCompleted;
+    public long lastCompleted;
     public String enclosure;
     public String frequency;
     public String comment;
 
     public TaskLog() {}
 
-    public TaskLog(String species, String activityType, String description, Date lastCompleted, String enclosure, String frequency, String comment)
+    public TaskLog(String species, String activityType, String description, long lastCompleted, String enclosure, String frequency, String comment)
     {
         this.species = species;
         this.activityType = activityType; // convert the String to enum in code
@@ -49,11 +48,11 @@ public class TaskLog
 
     public void setDescription(String description) { this.description = description; }
 
-    public Date getLastCompleted() {
+    public long getLastCompleted() {
         return lastCompleted;
     }
 
-    public void setLastCompleted(Date date) { this.lastCompleted = date; }
+    public void setLastCompleted(long date) { this.lastCompleted = date; }
 
     public String getFrequency() {
         return frequency;

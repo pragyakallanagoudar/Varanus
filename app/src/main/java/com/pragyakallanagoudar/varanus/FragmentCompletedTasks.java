@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -56,9 +57,7 @@ public class FragmentCompletedTasks extends Fragment implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryCompletedTasks = mFirestore.collection("Tasks")
-                .limit(50)
-                .whereEqualTo("lastCompleted", new Date());
-        //.orderBy("species");
+                .whereGreaterThan("lastCompleted", new Date().getTime() - 1000*12*60);
     }
 
     private void initRecyclerView() {

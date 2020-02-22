@@ -43,7 +43,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryDark"
         android:gravity="center"
         android:padding="10dp"
         android:text="Welcome to Guadalupe Animal Care Tracker"

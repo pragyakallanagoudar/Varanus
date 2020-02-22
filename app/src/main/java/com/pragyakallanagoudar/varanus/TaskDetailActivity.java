@@ -30,6 +30,7 @@ import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.google.firebase.firestore.Query;
 
 import java.util.Calendar;
+import java.util.Date;
 
 
 public class TaskDetailActivity extends AppCompatActivity implements
@@ -137,7 +138,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 mSpeciesView.getText().toString(),
                 mActivityTypeView.getText().toString(),
                 mDescriptionView.getText().toString(),
-                Calendar.getInstance().getTime(),
+                new Date().getTime(),
                 mEnclosureView.getText().toString(),
                 mFrequencyView.getText().toString(),
                 mCommentText.getText().toString());
@@ -164,7 +165,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                         .toObject(Task.class);
 
                 // Set new timestamp
-                task.setLastCompleted(Calendar.getInstance().getTime());
+                task.setLastCompleted(new Date().getTime());
 
                 // Commit to Firestore
                 transaction.set(taskRef, task);
@@ -191,7 +192,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     private void onTaskLoaded(Task task) {
 
-        mActivityTypeView.setText(task.getActivityType());
+        mActivityTypeView.setText("Activity Type: "+ task.getActivityType());
         mSpeciesView.setText(task.getSpecies());
         mFrequencyView.setText(task.getFrequency());
         mDescriptionView.setText(task.getDescription());
