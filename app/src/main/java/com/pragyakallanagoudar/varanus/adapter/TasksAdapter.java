@@ -48,12 +48,12 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView speciesView;
+        TextView enclosureView;
         TextView descriptionView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            speciesView = itemView.findViewById(R.id.textView5);
+            enclosureView = itemView.findViewById(R.id.textView5);
             descriptionView = itemView.findViewById(R.id.textView7);
         }
 
@@ -62,7 +62,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
             Task Tasks = snapshot.toObject(Task.class);
 
-            speciesView.setText(Tasks.getSpecies());
+            enclosureView.setText(Tasks.getEnclosure());
             descriptionView.setText(Tasks.getDescription());
 
             // Click listener

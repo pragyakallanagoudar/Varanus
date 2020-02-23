@@ -11,9 +11,10 @@
         android:textColor="#020101"
         android:layout_marginLeft="10dp"
         android:text="@string/species"
-        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textSize="18dp"
         android:padding="5dp"
-        android:width="90dp"
+        android:width="200dp"
     />
 
     <TextView
@@ -23,7 +24,8 @@
         android:textColor="#020101"
         android:layout_toRightOf="@+id/textView5"
         android:text="@string/task"
-        android:textSize="20dp"
+        android:textStyle="bold"
+        android:textSize="18dp"
         android:padding="5dp"/>
 
 

@@ -35,15 +35,9 @@ public class Tasks extends AppCompatActivity implements
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tasks);
-
         mTasksRecycler = findViewById(R.id.recycler_tasks);
-
-       // findViewById(R.id.checkBox).setOnClickListener(this);
-
         initFirestore();
         initRecyclerView();
-
-        //findViewById(R.id.checkBox).setOnClickListener(this);
 
     }
     private void initFirestore() {
@@ -99,7 +93,6 @@ public class Tasks extends AppCompatActivity implements
     {
         Intent intent = new Intent(this, TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
-
         startActivity(intent);
 
     }

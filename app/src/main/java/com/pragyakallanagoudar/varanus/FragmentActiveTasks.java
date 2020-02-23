@@ -14,7 +14,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
 
-import java.time.LocalDate;
 import java.util.Date;
 
 
@@ -86,7 +85,6 @@ public class FragmentActiveTasks extends Fragment implements
     {
         Intent intent = new Intent(v.getContext(),TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
-
         startActivity(intent);
 
     }
