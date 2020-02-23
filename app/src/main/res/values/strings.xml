@@ -14,72 +14,32 @@
     <string name="species">Species</string>
     <string name="task">Task</string>
     <string name="completed">Completed</string>
-    <string name="choose_a_task">Choose an activity</string>
+    <string name="choose_a_food_type">Food Type</string>
+    <string name="choose_food_count">Food Count</string>
     <string name="sample_varanus">sample varanus</string>
 
-    <!-- turtle activity -->
-    <string-array name="turtleActivity">
-        <item>@string/choose_a_task</item>
+    <!-- Food Type activity -->
+    <string-array name="foodType">
+        <item>@string/choose_a_food_type</item>
 
-        <item>Feed</item>
-        <item>Exercise</item>
-        <item>Treat</item>
+        <item>Crickets</item>
+        <item>Rats</item>
     </string-array>
 
-    <!-- toad activity -->
-    <string-array name="toadActivity">
-        <item>@string/choose_a_task</item>
+    <!-- Food Type activity -->
+    <string-array name="foodCount">
+        <item>@string/choose_food_count</item>
 
-        <item>Feed</item>
-        <item>Exercise</item>
-        <item>Water and Mist</item>
-    </string-array>
-
-    <!-- snake activity -->
-    <string-array name="snakeActivity">
-        <item>@string/choose_a_task</item>
-
-        <item>Feed</item>
-        <item>Exercise</item>
-        <item>Water and Mist</item>
-        <item>Remove Feces</item>
-        <item>Enclosure Enrichment</item>
-        <item>Bring Outside</item>
-    </string-array>
-
-    <!-- toad activity -->
-    <string-array name="fishActivity">
-        <item>@string/choose_a_task</item>
-
-        <item>Feed</item>
-    </string-array>
-
-    <string-array name="crayfishActivity">
-        <item>@string/choose_a_task</item>
-
-        <item>Feed</item>
-        <item>Clean Enclosure</item>
-    </string-array>
-
-    <!-- snake activity -->
-    <string-array name="ratsActivity">
-        <item>@string/choose_a_task</item>
-
-        <item>Training</item>
-        <item>Exercise</item>
-        <item>Water</item>
-        <item>Tidy Enclosure and/or Floor</item>
-        <item>Food and/or veg/fruit</item>
-        <item>Clean Enclosure</item>
-        <item>Enclosure Enrichment</item>
-        <item>Bring Outside</item>
-    </string-array>
-
-    <string-array name="catsActivity">
-        <item>@string/choose_a_task</item>
-
-        <item>Feed</item>
-        <item>Clean Enclosure</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
     </string-array>
 
 </resources>

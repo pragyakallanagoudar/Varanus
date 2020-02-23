@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -48,6 +49,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TextView mDescriptionView;
     private TextView mEnclosureView;
     private EditText mCommentText;
+    private Spinner mFoodType;
+    private Spinner mFoodCount;
 
     private FirebaseFirestore mFirestore;
     private DocumentReference mTaskRef;
@@ -70,6 +73,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mDescriptionView = findViewById(R.id.task_description);
         mEnclosureView = findViewById(R.id.task_enclosure);
         mCommentText = findViewById(R.id.task_comments);
+        mFoodType = findViewById(R.id.food_type_spinner);
+        mFoodCount = findViewById(R.id.food_count_spinner);
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
@@ -131,6 +136,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         tasklog.setComment(mCommentText.getText().toString());
         tasklog.setLastCompleted(new Date().getTime());
+        tasklog.setFoodName(mFoodType.getSelectedItem().toString());
+        tasklog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
         onTaskLog(tasklog);
         finish();
     }
@@ -177,7 +184,19 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mFrequencyView.setText("Task Frequency: " + task.getFrequency());
         mDescriptionView.setText("Task Description: " + task.getDescription());
         mEnclosureView.setText("Enclosure Name: " + task.getEnclosure());
-        tasklog = new TaskLog(task.getSpecies(), task.getActivityType(), task.getDescription(),0,task.getEnclosure(),task.getFrequency(),"");
+
+        if(task.getActivityType().equals("FEED"))
+        {
+            mFoodType.setVisibility(View.VISIBLE);
+            mFoodCount.setVisibility(View.VISIBLE);
+        }
+        else
+        {
+            mFoodType.setVisibility(View.GONE);
+            mFoodCount.setVisibility(View.GONE);
+        }
+
+        tasklog = new TaskLog(task.getSpecies(), task.getActivityType(), task.getDescription(),0,task.getEnclosure(),task.getFrequency(),"","",0);
         // Background image
         Glide.with(mImageView.getContext())
                 .load(task.getPhoto())

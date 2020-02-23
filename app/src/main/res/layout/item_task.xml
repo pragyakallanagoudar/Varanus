@@ -27,6 +27,4 @@
         android:textStyle="bold"
         android:textSize="18dp"
         android:padding="5dp"/>
-
-
 </LinearLayout>

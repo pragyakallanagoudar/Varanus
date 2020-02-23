@@ -11,10 +11,12 @@ public class TaskLog
     public String enclosure;
     public String frequency;
     public String comment;
+    public String foodName;
+    public int  foodCount;
 
     public TaskLog() {}
 
-    public TaskLog(String species, String activityType, String description, long lastCompleted, String enclosure, String frequency, String comment)
+    public TaskLog(String species, String activityType, String description, long lastCompleted, String enclosure, String frequency, String comment, String foodName, int foodCount)
     {
         this.species = species;
         this.activityType = activityType; // convert the String to enum in code
@@ -23,6 +25,8 @@ public class TaskLog
         this.enclosure = enclosure;
         this.frequency = frequency;
         this.comment = comment;
+        this.foodName = foodName;
+        this.foodCount = foodCount;
     }
 
     public String getSpecies() {
@@ -65,4 +69,28 @@ public class TaskLog
     }
 
     public void setComment(String comment) { this.comment = comment; }
+
+    public String getEnclosure() {
+        return enclosure;
+    }
+
+    public void setEnclosure(String enclosure) {
+        this.enclosure = enclosure;
+    }
+
+    public int getFoodCount() {
+        return foodCount;
+    }
+
+    public void setFoodCount(int foodCount) {
+        this.foodCount = foodCount;
+    }
+
+    public String getFoodName() {
+        return foodName;
+    }
+
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
+    }
 }

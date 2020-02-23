@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/task_image"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="10dp"
             android:textStyle="bold"
             android:textSize="20dp"
             android:background="@color/colorPrimary"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:textStyle="bold"
             tools:text="Sample Species"
             android:layout_below="@+id/task_activityType" />
@@ -41,7 +41,7 @@
             android:textStyle="bold"
             tools:text="Sample Enclosure"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/task_species" />
 
     <TextView
@@ -51,7 +51,7 @@
             android:textStyle="bold"
             tools:text="Sample Description"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/task_enclosure" />
 
     <TextView
@@ -61,18 +61,36 @@
             android:textStyle="bold"
             tools:text="Sample Time"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="20dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@+id/task_description" />
+
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/task_frequency"
+            android:id="@+id/food_type_spinner"
+            android:entries="@array/foodType"
+            android:textStyle="bold"
+            tools:text="Select Food" />
+    <Spinner
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/food_type_spinner"
+            android:id="@+id/food_count_spinner"
+            android:textStyle="bold"
+            android:entries="@array/foodCount"
+            tools:text="Select Food" />
+
 
     <EditText
             android:id="@+id/task_comments"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:hint="Please enter any comments for this activity"
+            android:hint="Is the Animal behaving strangely? Describe"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="20dp"
             android:textStyle="bold"
-            android:layout_below="@+id/task_frequency" />
+            android:layout_below="@+id/food_count_spinner" />
 
     <Button
         android:id="@+id/cancel_button"
