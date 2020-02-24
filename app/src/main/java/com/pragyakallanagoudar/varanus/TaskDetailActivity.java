@@ -30,7 +30,7 @@ import com.google.firebase.firestore.Transaction;
 import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.google.firebase.firestore.Query;
 
-import java.util.Calendar;
+
 import java.util.Date;
 
 

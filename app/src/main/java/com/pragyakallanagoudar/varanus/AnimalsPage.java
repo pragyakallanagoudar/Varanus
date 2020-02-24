@@ -87,7 +87,7 @@ public class AnimalsPage extends AppCompatActivity implements
     @Override
     public void onCheckBoxSelected(DocumentSnapshot tasks)
     {
-        Intent intent = new Intent(this, TaskDetailActivity.class);
+        Intent intent = new Intent(this, AnimalDetailGraph.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
         startActivity(intent);
 

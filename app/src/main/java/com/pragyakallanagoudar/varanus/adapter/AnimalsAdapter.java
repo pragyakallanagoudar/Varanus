@@ -71,7 +71,7 @@ public class AnimalsAdapter extends FirestoreAdapter<AnimalsAdapter.ViewHolder> 
                     .into(animalImageView);
             enclosureView.setText(Tasks.getEnclosure());
             animalView.setText(Tasks.getSpecies());
-            animalStatusView.setBackgroundResource(R.drawable.ic_check);
+            animalStatusView.setBackgroundResource(R.drawable.ic_warning);
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
