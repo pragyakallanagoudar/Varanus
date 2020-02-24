@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <ImageView
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:scaleType="centerCrop"
+        android:id="@+id/animal_image"
+        tools:src="@drawable/varanus" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/animal_name"
+        android:layout_alignTop="@id/animal_image"
+        android:layout_toRightOf="@+id/animal_image"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="-2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="Varanus" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/enclosure_name"
+        android:layout_alignLeft="@+id/animal_name"
+        android:layout_below="@+id/animal_name"
+        android:layout_marginBottom="4dp"
+        tools:text="Enclosure" />
+
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:id="@+id/animal_status"
+        tools:src="@drawable/ic_check"
+        android:layout_alignLeft="@+id/enclosure_name"
+        android:layout_below="@+id/enclosure_name" />
+</RelativeLayout>
