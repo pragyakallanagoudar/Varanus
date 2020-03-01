@@ -1,11 +1,16 @@
 package com.pragyakallanagoudar.varanus;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.viewpager.widget.ViewPager;
+import android.os.Bundle;
 
 import com.google.android.material.tabs.TabLayout;
-import android.os.Bundle;
 import com.pragyakallanagoudar.varanus.adapter.ViewPagerAdapter;
+
+import org.conscrypt.Conscrypt;
+
+import java.security.Security;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
 
 public class TabbedTasks extends AppCompatActivity {
@@ -17,6 +22,8 @@ public class TabbedTasks extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Security.insertProviderAt(Conscrypt.newProvider(), 1);
+
         setContentView(R.layout.activity_tasks_tabbed);
 
         tabLayout =  findViewById(R.id.tablayout_id);

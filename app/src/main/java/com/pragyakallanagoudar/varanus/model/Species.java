@@ -1,35 +1,43 @@
 package com.pragyakallanagoudar.varanus.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Species
 {
     public String name; // the name of the species
     public List<String> animals; // the list of animals that are part of this species
-    public List<Task> default_tasks; // the default tasks for the species
+    public List<String> enclosures; // the list of enclosures
 
-    public Species(String name, List<String> animals, List<Task> default_tasks)
+    public Species(String name, List<String> animals, List<String> enclosures)
     {
         this.name = name;
         this.animals = animals;
-        this.default_tasks = default_tasks;
+        this.enclosures = enclosures;
     }
 
-    public Species (String name)
-    {
+    public Species() {}
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
         this.name = name;
-        animals = new ArrayList<String>();
-        default_tasks = new ArrayList<Task>();
     }
 
-    public void addAnimal(String name_animal)
-    {
-        animals.add(name_animal);
+    public List<String> getEnclosures() {
+        return enclosures;
     }
 
-    public void addDefaultTask (Task task)
-    {
-        default_tasks.add(task);
+    public void setEnclosures(List<String> enclosures) {
+        this.enclosures = enclosures;
+    }
+
+    public List<String> getAnimals() {
+        return animals;
+    }
+
+    public void setAnimals(List<String> animals) {
+        this.animals = animals;
     }
 }
