@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import com.bumptech.glide.Glide;
 
+import com.github.mikephil.charting.charts.LineChart;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -39,10 +40,32 @@ public class AnimalDetailGraph extends AppCompatActivity implements
         EventListener<DocumentSnapshot> {
 
 
+    public static final String KEY_TASK_ID = "key_task_id";
+    private LineChart mChartView;
+
+    private FirebaseFirestore mFirestore;
+    private DocumentReference mTaskRef;
+    private ListenerRegistration mTaskRegistration;
+    private TaskLog tasklog;
+
     @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_animal_graph);
+        mChartView = (LineChart) findViewById(R.id.feed_line_chart);
+
+        String taskId = getIntent().getExtras().getString(KEY_TASK_ID);
+
+        // Initialize Firestore
+        mFirestore = FirebaseFirestore.getInstance();
+
+        // Get reference to the log
+        mTaskRef = mFirestore.collection("Tasks").document(taskId);
+
+        Query taskLogQuery = mTaskRef
+                .collection("tasklog").whereEqualTo("activityType", "FEED");
+        //taskLogQuery.
 
     }
 
