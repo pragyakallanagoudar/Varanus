@@ -25,15 +25,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class FragmentActiveTasks extends Fragment implements
         View.OnClickListener,
-        TasksAdapter.OnCheckBoxSelectedListener {
+        TasksAdapter.OnTasksSelectedListener {
 
     View v;
     private FirebaseFirestore mFirestore;
     private Query mQueryActiveTasks;
     private RecyclerView mActiveTasksRecycler;
     private TasksAdapter mAdapter;
+    private String resident;
 
-    public FragmentActiveTasks() {
+    public FragmentActiveTasks(String residentId) {
+        this.resident = residentId;
     }
 
     @Nullable
@@ -41,7 +43,7 @@ public class FragmentActiveTasks extends Fragment implements
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         v = inflater.inflate(R.layout.active_tasks_fragment,container,false);
         mActiveTasksRecycler = v.findViewById(R.id.active_tasks_recyclerview);
-        mAdapter = new TasksAdapter(mQueryActiveTasks, this);
+        mAdapter = new TasksAdapter(mQueryActiveTasks, (TasksAdapter.OnTasksSelectedListener) this);
         mActiveTasksRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mActiveTasksRecycler.setAdapter(mAdapter);
         return v;
@@ -56,7 +58,7 @@ public class FragmentActiveTasks extends Fragment implements
 
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
-        mQueryActiveTasks = mFirestore.collection("Tasks")
+        mQueryActiveTasks = mFirestore.collection("Guadalupe Residents").document(resident).collection("Tasks")
                 .whereLessThan("lastCompleted", new Date().getTime() - 1000*12*60);
     }
 
@@ -81,11 +83,11 @@ public class FragmentActiveTasks extends Fragment implements
     }
 
     @Override
-    public void onCheckBoxSelected(DocumentSnapshot tasks)
+    public void onTasksSelected(DocumentSnapshot tasks)
     {
         Intent intent = new Intent(v.getContext(),TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
+        intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, resident);
         startActivity(intent);
-
     }
 }

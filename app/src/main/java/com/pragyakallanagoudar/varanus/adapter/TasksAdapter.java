@@ -20,15 +20,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
-    public interface OnCheckBoxSelectedListener
+    public interface OnTasksSelectedListener
     {
-        void onCheckBoxSelected(DocumentSnapshot tasks); // implement in subclasses
+        void onTasksSelected(DocumentSnapshot tasks); // implement in subclasses
     }
 
-    private OnCheckBoxSelectedListener mListener;  // instance of above interface
+    private OnTasksSelectedListener mListener;  // instance of above interface
 
     // constructor
-    public TasksAdapter(Query query, OnCheckBoxSelectedListener listener)
+    public TasksAdapter(Query query, OnTasksSelectedListener listener)
     {
         super(query);
         mListener = listener;
@@ -48,29 +48,32 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView enclosureView;
-        TextView descriptionView;
+        TextView activityTypeView;
+        TextView taskTypeView;
+        TextView frequencyView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            enclosureView = itemView.findViewById(R.id.textView5);
-            descriptionView = itemView.findViewById(R.id.textView7);
+            activityTypeView = itemView.findViewById(R.id.text_activity_type);
+            taskTypeView = itemView.findViewById(R.id.text_task_type);
+            frequencyView = itemView.findViewById(R.id.text_task_frequency);
         }
 
         public void bind(final DocumentSnapshot snapshot,
-                         final OnCheckBoxSelectedListener listener) {
+                         final OnTasksSelectedListener listener) {
 
             Task Tasks = snapshot.toObject(Task.class);
 
-            enclosureView.setText(Tasks.getEnclosure());
-            descriptionView.setText(Tasks.getDescription());
+            activityTypeView.setText(Tasks.getActivityType());
+            taskTypeView.setText(Tasks.getTaskType());
+            frequencyView.setText(Tasks.getFrequency());
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
-                        listener.onCheckBoxSelected(snapshot);
+                        listener.onTasksSelected(snapshot);
                     }
                 }
             });

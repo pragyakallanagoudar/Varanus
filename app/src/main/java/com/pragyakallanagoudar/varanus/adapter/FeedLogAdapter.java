@@ -3,9 +3,7 @@ package com.pragyakallanagoudar.varanus.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
 import androidx.annotation.NonNull;
@@ -13,16 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.pragyakallanagoudar.varanus.model.TaskLog;
-import com.google.firebase.firestore.Query;
-
 
 
 /**
  * RecyclerView adapter for a bunch of Ratings.
  */
-public class TaskLogAdapter extends FirestoreAdapter<TaskLogAdapter.ViewHolder> {
+public class FeedLogAdapter extends FirestoreAdapter<FeedLogAdapter.ViewHolder> {
 
-    public TaskLogAdapter(Query query) {
+    public FeedLogAdapter(Query query) {
         super(query);
     }
 

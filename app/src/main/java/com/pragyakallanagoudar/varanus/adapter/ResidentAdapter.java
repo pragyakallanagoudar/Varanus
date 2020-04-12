@@ -1,6 +1,5 @@
 package com.pragyakallanagoudar.varanus.adapter;
 
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +10,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.Resident;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,17 +18,17 @@ import androidx.recyclerview.widget.RecyclerView;
 /* RecyclerView adapter for a list of Tasks.
  */
 
-public class AnimalsAdapter extends FirestoreAdapter<AnimalsAdapter.ViewHolder> {
+public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder> {
 
-    public interface OnCheckBoxSelectedListener
-    {
-        void onCheckBoxSelected(DocumentSnapshot tasks); // implement in subclasses
+    public interface OnResidentSelectedListener {
+
+        void OnResidentSelected(DocumentSnapshot snapshot);
     }
 
-    private OnCheckBoxSelectedListener mListener;  // instance of above interface
+    private OnResidentSelectedListener mListener;  // instance of above interface
 
     // constructor
-    public AnimalsAdapter(Query query, OnCheckBoxSelectedListener listener)
+    public ResidentAdapter(Query query, OnResidentSelectedListener listener)
     {
         super(query);
         mListener = listener;
@@ -49,28 +48,27 @@ public class AnimalsAdapter extends FirestoreAdapter<AnimalsAdapter.ViewHolder> 
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView enclosureView;
+        TextView taskCountView;
         TextView animalView;
         ImageView animalImageView;
         ImageView animalStatusView;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            enclosureView = itemView.findViewById(R.id.enclosure_name);
+            taskCountView = itemView.findViewById(R.id.task_count);
             animalView = itemView.findViewById(R.id.animal_name);
             animalImageView = itemView.findViewById(R.id.animal_image);
             animalStatusView = itemView.findViewById(R.id.animal_status);
         }
 
         public void bind(final DocumentSnapshot snapshot,
-                         final OnCheckBoxSelectedListener listener) {
+                         final OnResidentSelectedListener listener) {
 
-            Task Tasks = snapshot.toObject(Task.class);
+            Resident Residents = snapshot.toObject(Resident.class);
             Glide.with(animalImageView.getContext())
-                    .load(Tasks.getPhoto())
+                    .load(Residents.getPhoto())
                     .into(animalImageView);
-            enclosureView.setText(Tasks.getEnclosure());
-            animalView.setText(Tasks.getSpecies());
+            animalView.setText(Residents.getName());
             animalStatusView.setBackgroundResource(R.drawable.ic_warning);
 
             // Click listener
@@ -78,7 +76,7 @@ public class AnimalsAdapter extends FirestoreAdapter<AnimalsAdapter.ViewHolder> 
                 @Override
                 public void onClick(View view) {
                     if (listener != null) {
-                        listener.onCheckBoxSelected(snapshot);
+                        listener.OnResidentSelected(snapshot);
                     }
                 }
             });

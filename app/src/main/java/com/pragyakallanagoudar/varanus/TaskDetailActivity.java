@@ -13,8 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import com.bumptech.glide.Glide;
 
+import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
@@ -27,7 +27,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Transaction;
-import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
+import com.pragyakallanagoudar.varanus.adapter.FeedLogAdapter;
+import com.pragyakallanagoudar.varanus.adapter.BehaviourLogAdapter;
 import com.google.firebase.firestore.Query;
 
 
@@ -41,6 +42,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private static final String TAG = "TaskDetail";
 
     public static final String KEY_TASK_ID = "key_task_id";
+    public static final String KEY_RESIDENT_ID = "key_resident_id";
 
     private ImageView mImageView;
     private TextView mActivityTypeView;
@@ -53,11 +55,11 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private Spinner mFoodCount;
 
     private FirebaseFirestore mFirestore;
-    private DocumentReference mTaskRef;
+    private DocumentReference mTaskRef, mResidentRef;
     private ListenerRegistration mTaskRegistration;
     private TaskLog tasklog;
-
-    private TaskLogAdapter mTaskLogAdapter;
+    private BehaviourLogAdapter mBehaviourLogAdapter;
+    private FeedLogAdapter mFeedLogAdapter;
 
 
     @Nullable
@@ -68,10 +70,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         mImageView = findViewById(R.id.task_image);
         mActivityTypeView = findViewById(R.id.task_activityType);
-        mSpeciesView = findViewById(R.id.task_species);
+        //mSpeciesView = findViewById(R.id.task_species);
         mFrequencyView = findViewById(R.id.task_frequency);
-        mDescriptionView = findViewById(R.id.task_description);
-        mEnclosureView = findViewById(R.id.task_enclosure);
+        //mDescriptionView = findViewById(R.id.task_description);
+        //mEnclosureView = findViewById(R.id.task_enclosure);
         mCommentText = findViewById(R.id.task_comments);
         mFoodType = findViewById(R.id.food_type_spinner);
         mFoodCount = findViewById(R.id.food_count_spinner);
@@ -82,6 +84,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         // Get task id from extras
         String taskId = getIntent().getExtras().getString(KEY_TASK_ID);
+        String residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         if (taskId == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
         }
@@ -90,12 +93,18 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mFirestore = FirebaseFirestore.getInstance();
 
         // Get reference to the log
-        mTaskRef = mFirestore.collection("Tasks").document(taskId);
+        mResidentRef = mFirestore.collection("Guadalupe Residents").document(residentId);
+        mTaskRef = mFirestore.collection("Guadalupe Residents").document(residentId).collection("Tasks").document(taskId);
 
         // Get taskLogs
-        Query taskLogQuery = mTaskRef
-                .collection("tasklog");
-        mTaskLogAdapter = new TaskLogAdapter(taskLogQuery);
+        Query feedLogQuery = mTaskRef
+                .collection("Feedlog");
+
+        Query behaviourLogQuery = mTaskRef
+                .collection("Behaviourlog");
+
+        mFeedLogAdapter = new FeedLogAdapter(feedLogQuery);
+        BehaviourLogAdapter mBehaviourLogAdapter = new BehaviourLogAdapter(behaviourLogQuery);
     }
 
 
@@ -103,8 +112,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
-        mTaskLogAdapter.startListening();
+        mFeedLogAdapter.startListening();
         mTaskRegistration = mTaskRef.addSnapshotListener(this);
     }
 
@@ -112,7 +120,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public void onStop() {
         super.onStop();
 
-        mTaskLogAdapter.stopListening();
+        mFeedLogAdapter.stopListening();
 
         if (mTaskRegistration != null) {
             mTaskRegistration.remove();
@@ -147,7 +155,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     }
 
     private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef, final TaskLog tasklog) {
-        // Create reference for new rating, for use inside the transaction
+        // Create reference for new feedLog, for use inside the transaction
         final DocumentReference tasklogRef = taskRef.collection("tasklog")
                 .document();
 
@@ -180,12 +188,12 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private void onTaskLoaded(Task task) {
 
         mActivityTypeView.setText("Activity Type: " + task.getActivityType());
-        mSpeciesView.setText("Species: " + task.getSpecies());
+        //mSpeciesView.setText("Species: " + task.getSpecies());
         mFrequencyView.setText("Task Frequency: " + task.getFrequency());
-        mDescriptionView.setText("Task Description: " + task.getDescription());
-        mEnclosureView.setText("Enclosure Name: " + task.getEnclosure());
+        //mDescriptionView.setText("Task Description: " + task.getDescription());
+        //mEnclosureView.setText("Enclosure Name: " + task.getEnclosure());
 
-        if(task.getActivityType().equals("FEED"))
+        if(task.getTaskType().equals("Feed"))
         {
             mFoodType.setVisibility(View.VISIBLE);
             mFoodCount.setVisibility(View.VISIBLE);
@@ -196,11 +204,11 @@ public class TaskDetailActivity extends AppCompatActivity implements
             mFoodCount.setVisibility(View.GONE);
         }
 
-        tasklog = new TaskLog(task.getSpecies(), task.getActivityType(), task.getDescription(),0,task.getEnclosure(),task.getFrequency(),"","",0);
+        tasklog = new TaskLog("sample", task.getActivityType(), task.getDescription(),0,"sample enclosure",task.getFrequency(),"","",0);
         // Background image
-        Glide.with(mImageView.getContext())
-                .load(task.getPhoto())
-                .into(mImageView);
+        //Glide.with(mImageView.getContext())
+              //  .load(task.getPhoto())
+               // .into(mImageView);
     }
 
     //@Override

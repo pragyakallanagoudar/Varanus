@@ -4,33 +4,22 @@ import java.lang.String;
 
 public class Task
 {
-    public String species;
     public String activityType;
+    public String taskType;
     public String description;
     public long lastCompleted;
-    public String enclosure;
     public String frequency;
-    public String photo;
 
     public Task() {}
 
-    public Task(String species, String activityType, String description, long lastCompleted, String enclosure, String frequency, String photo)
+    public Task(String activityType, String description, long lastCompleted, String taskType, String frequency)
     {
-        this.species = species;
+
         this.activityType = activityType; // convert the String to enum in code
         this.description = description;
         this.lastCompleted = lastCompleted;
-        this.enclosure = enclosure;
+        this.taskType = taskType;
         this.frequency = frequency;
-        this.photo = photo;
-    }
-
-    public String getSpecies() {
-        return species;
-    }
-
-    public void setSpecies(String species) {
-        this.species = species;
     }
 
     public String getActivityType() {
@@ -58,13 +47,9 @@ public class Task
 
     public void setFrequency(String frequency) { this.frequency = frequency; }
 
-    public String getEnclosure() {
-        return enclosure;
+    public String getTaskType() {
+        return taskType;
     }
 
-    public void setEnclosure(String enclosure) { this.enclosure = enclosure; }
-
-    public String getPhoto() {
-        return photo;
-    }
+    public void setTaskType(String taskType) { this.taskType = taskType; }
 }

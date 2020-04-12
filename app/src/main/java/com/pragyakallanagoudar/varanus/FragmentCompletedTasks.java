@@ -22,18 +22,21 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 public class FragmentCompletedTasks extends Fragment implements
         View.OnClickListener,
-        TasksAdapter.OnCheckBoxSelectedListener {
+        TasksAdapter.OnTasksSelectedListener {
 
     View v;
     private FirebaseFirestore mFirestore;
     private Query mQueryCompletedTasks;
     private RecyclerView mCompletedTasksRecycler;
     private TasksAdapter mAdapter;
+    private String resident;
 
 
-    public FragmentCompletedTasks() {
+    public FragmentCompletedTasks(String residentId) {
+        this.resident = residentId;
     }
 
     @Nullable
@@ -81,11 +84,10 @@ public class FragmentCompletedTasks extends Fragment implements
     }
 
     @Override
-    public void onCheckBoxSelected(DocumentSnapshot tasks)
+    public void onTasksSelected(DocumentSnapshot tasks)
     {
         Intent intent = new Intent(v.getContext(),TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
-
         startActivity(intent);
 
     }

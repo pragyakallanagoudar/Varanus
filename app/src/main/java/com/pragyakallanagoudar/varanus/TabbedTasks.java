@@ -19,11 +19,14 @@ public class TabbedTasks extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
+    public static final String KEY_RESIDENT_ID = "key_resident_id";
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Security.insertProviderAt(Conscrypt.newProvider(), 1);
-
+        String residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         setContentView(R.layout.activity_tasks_tabbed);
 
         tabLayout =  findViewById(R.id.tablayout_id);
@@ -33,8 +36,8 @@ public class TabbedTasks extends AppCompatActivity {
 
         //Add fragment here
 
-        adapter.AddFragment(new FragmentActiveTasks(), "Active");
-        adapter.AddFragment(new FragmentCompletedTasks(), "Completed");
+        adapter.AddFragment(new FragmentActiveTasks(residentId), "Active");
+        adapter.AddFragment(new FragmentCompletedTasks(residentId), "Completed");
 
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);

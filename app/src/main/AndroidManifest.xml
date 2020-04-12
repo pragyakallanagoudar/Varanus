@@ -9,10 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Tasks" />
         <activity android:name=".TabbedTasks" />
         <activity android:name=".TaskDetailActivity" />
-        <activity android:name=".AnimalsPage" />
         <activity android:name=".AnimalDetailGraph" />
         <activity
             android:name=".MainActivity"

@@ -22,7 +22,7 @@ import android.view.View;
 
 public class Tasks extends AppCompatActivity implements
         View.OnClickListener,
-        TasksAdapter.OnCheckBoxSelectedListener {
+        TasksAdapter.OnTasksSelectedListener {
 
     private static final String TAG = "MainActivity";
     private FirebaseFirestore mFirestore;
@@ -89,12 +89,11 @@ public class Tasks extends AppCompatActivity implements
     }
 
     @Override
-    public void onCheckBoxSelected(DocumentSnapshot tasks)
+    public void onTasksSelected(DocumentSnapshot tasks)
     {
         Intent intent = new Intent(this, TaskDetailActivity.class);
-        intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
+        //intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, tasks.getId());
         startActivity(intent);
 
     }
-
 }
