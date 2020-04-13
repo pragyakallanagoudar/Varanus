@@ -12,33 +12,35 @@ import java.security.Security;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-
+/**
+ * Class description to come here.
+ */
 public class TabbedTasks extends AppCompatActivity {
 
-    private TabLayout tabLayout;
-    private ViewPager viewPager;
+    private TabLayout tabLayout; // Two tabs: currents Active and Completed
+    private ViewPager viewPager; // ??? -> swipe view?
     private ViewPagerAdapter adapter;
 
-    public static final String KEY_RESIDENT_ID = "key_resident_id";
+    // Resident ID retrieved from Intent
+    public static final String RESIDENT_ID = "resident_id";
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Security.insertProviderAt(Conscrypt.newProvider(), 1);
-        String residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         setContentView(R.layout.activity_tasks_tabbed);
+
+        // local variable version of RESIDENT_ID
+        String residentId = getIntent().getExtras().getString(RESIDENT_ID);
 
         tabLayout =  findViewById(R.id.tablayout_id);
         viewPager =  findViewById(R.id.viewpager_id);
+
+        // set up View Pager adapter and add it
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        viewPager.setAdapter(adapter);
-
-        //Add fragment here
-
-        adapter.AddFragment(new FragmentActiveTasks(residentId), "Active");
-        adapter.AddFragment(new FragmentCompletedTasks(residentId), "Completed");
-
+        adapter.addFragment(new FragmentActiveTasks(residentId), "Active");
+        adapter.addFragment(new FragmentCompletedTasks(residentId), "Completed");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

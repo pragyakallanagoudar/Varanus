@@ -2,7 +2,6 @@ package com.pragyakallanagoudar.varanus;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -13,19 +12,25 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * The MainActivity class is where everything starts.
+ */
+
 public class MainActivity extends AppCompatActivity implements
     ResidentAdapter.OnResidentSelectedListener {
 
-        private FirebaseFirestore mFirestore;
-        private Query mQueryTasks;
-        private RecyclerView mAnimalsRecycler;
-        private ResidentAdapter mAdapter;
+        private FirebaseFirestore mFirestore; // reference to Cloud Firestore database
+        private Query mQueryResidents; // query to the database to load tasks
+        private RecyclerView mAnimalsRecycler; // reference to RecyclerView
+        private ResidentAdapter mAdapter; // ???
 
         @Override
         protected void onCreate(Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
+            // Initialize the database references
             mAnimalsRecycler = findViewById(R.id.animal_recyclerview);
             initFirestore();
             initRecyclerView();
@@ -33,13 +38,14 @@ public class MainActivity extends AppCompatActivity implements
         }
         private void initFirestore() {
             mFirestore = FirebaseFirestore.getInstance();
-            mQueryTasks = mFirestore.collection("Guadalupe Residents")
+
+            // get the first 50 documents from the collection Guadalupe Residents
+            mQueryResidents = mFirestore.collection("Guadalupe Residents")
                     .limit(50);
         }
 
         private void initRecyclerView() {
-
-            mAdapter = new ResidentAdapter(mQueryTasks, this);
+            mAdapter = new ResidentAdapter(mQueryResidents, this);
             mAnimalsRecycler.setLayoutManager(new LinearLayoutManager(this));
             mAnimalsRecycler.setAdapter(mAdapter);
         }
@@ -57,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements
 
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, TabbedTasks.class);
-        intent.putExtra(TabbedTasks.KEY_RESIDENT_ID, resident.getId());
+        intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
         startActivity(intent);
     }
 }

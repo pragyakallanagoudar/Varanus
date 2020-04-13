@@ -6,12 +6,12 @@ import android.view.ViewGroup;
 
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.model.TaskLog;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.pragyakallanagoudar.varanus.model.TaskLog;
-
+// 4/12: May not be needed.
 
 /**
  * RecyclerView adapter for a bunch of Ratings.

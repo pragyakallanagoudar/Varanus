@@ -10,29 +10,27 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
-import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
-import com.pragyakallanagoudar.varanus.model.Task;
-import com.pragyakallanagoudar.varanus.model.TaskLog;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Transaction;
-import com.pragyakallanagoudar.varanus.adapter.FeedLogAdapter;
-import com.pragyakallanagoudar.varanus.adapter.BehaviourLogAdapter;
 import com.google.firebase.firestore.Query;
-
+import com.google.firebase.firestore.Transaction;
+import com.pragyakallanagoudar.varanus.adapter.BehaviourLogAdapter;
+import com.pragyakallanagoudar.varanus.adapter.FeedLogAdapter;
+import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.TaskLog;
 
 import java.util.Date;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 
 public class TaskDetailActivity extends AppCompatActivity implements
@@ -46,10 +44,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     private ImageView mImageView;
     private TextView mActivityTypeView;
-    private TextView mSpeciesView;
     private TextView mFrequencyView;
-    private TextView mDescriptionView;
-    private TextView mEnclosureView;
     private EditText mCommentText;
     private Spinner mFoodType;
     private Spinner mFoodCount;
@@ -70,10 +65,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         mImageView = findViewById(R.id.task_image);
         mActivityTypeView = findViewById(R.id.task_activityType);
-        //mSpeciesView = findViewById(R.id.task_species);
         mFrequencyView = findViewById(R.id.task_frequency);
-        //mDescriptionView = findViewById(R.id.task_description);
-        //mEnclosureView = findViewById(R.id.task_enclosure);
         mCommentText = findViewById(R.id.task_comments);
         mFoodType = findViewById(R.id.food_type_spinner);
         mFoodCount = findViewById(R.id.food_count_spinner);
@@ -97,14 +89,11 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mTaskRef = mFirestore.collection("Guadalupe Residents").document(residentId).collection("Tasks").document(taskId);
 
         // Get taskLogs
-        Query feedLogQuery = mTaskRef
-                .collection("Feedlog");
-
-        Query behaviourLogQuery = mTaskRef
-                .collection("Behaviourlog");
-
+        Query feedLogQuery = mTaskRef.collection("Feedlog");
+        // Query behaviourLogQuery = mTaskRef.collection("BehaviourLog");
         mFeedLogAdapter = new FeedLogAdapter(feedLogQuery);
-        BehaviourLogAdapter mBehaviourLogAdapter = new BehaviourLogAdapter(behaviourLogQuery);
+
+        // BehaviourLogAdapter mBehaviourLogAdapter = new BehaviourLogAdapter(behaviourLogQuery);
     }
 
 
@@ -130,7 +119,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
+        switch (v.getId())
+        {
             case R.id.submit_button:
                 onSubmitClicked(v);
                 break;
@@ -140,8 +130,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
     }
 
-    public void onSubmitClicked(View v) {
-
+    public void onSubmitClicked(View v)
+    {
+        // In the case of a mistake, this would always write a new log to the collection.
         tasklog.setComment(mCommentText.getText().toString());
         tasklog.setLastCompleted(new Date().getTime());
         tasklog.setFoodName(mFoodType.getSelectedItem().toString());
@@ -154,7 +145,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         finish();
     }
 
-    private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef, final TaskLog tasklog) {
+    // 4/12: Perhaps we should move this, as well as mistake code, to the TaskLog class.
+    private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef,
+                                                               final TaskLog tasklog) {
         // Create reference for new feedLog, for use inside the transaction
         final DocumentReference tasklogRef = taskRef.collection("tasklog")
                 .document();
@@ -185,14 +178,12 @@ public class TaskDetailActivity extends AppCompatActivity implements
         onTaskLoaded(snapshot.toObject(Task.class));
     }
 
-    private void onTaskLoaded(Task task) {
-
+    private void onTaskLoaded(Task task)
+    {
         mActivityTypeView.setText("Activity Type: " + task.getActivityType());
-        //mSpeciesView.setText("Species: " + task.getSpecies());
         mFrequencyView.setText("Task Frequency: " + task.getFrequency());
-        //mDescriptionView.setText("Task Description: " + task.getDescription());
-        //mEnclosureView.setText("Enclosure Name: " + task.getEnclosure());
 
+        // 4/12: We want to make design changes to this: have different xml files for FEED and CARE
         if(task.getTaskType().equals("Feed"))
         {
             mFoodType.setVisibility(View.VISIBLE);
@@ -204,21 +195,19 @@ public class TaskDetailActivity extends AppCompatActivity implements
             mFoodCount.setVisibility(View.GONE);
         }
 
+        // set to default values
         tasklog = new TaskLog("sample", task.getActivityType(), task.getDescription(),0,"sample enclosure",task.getFrequency(),"","",0);
-        // Background image
-        //Glide.with(mImageView.getContext())
-              //  .load(task.getPhoto())
-               // .into(mImageView);
     }
 
     //@Override
-    public void onTaskLog(TaskLog tasklog) {
+    public void onTaskLog(TaskLog tasklog)
+    {
         // In a transaction, add the new rating and update the aggregate totals
         addTaskLog(mTaskRef, tasklog)
                 .addOnSuccessListener(this, new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
-                        Log.d(TAG, "TaskLog added");
+                        Log.d(TAG, "TaskLog added successfully.");
 
                         // Hide keyboard and scroll to top
                         hideKeyboard();
@@ -228,12 +217,12 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Add rating failed", e);
+                        Log.w(TAG, "Failed to add TaskLog.", e);
 
                         // Show failure message and hide keyboard
                         hideKeyboard();
-                        Snackbar.make(findViewById(android.R.id.content), "Failed to add rating",
-                                Snackbar.LENGTH_SHORT).show();
+                        Snackbar.make(findViewById(android.R.id.content), "Failed to log information.",
+                                Snackbar.LENGTH_LONG).show();
                     }
                 });
     }

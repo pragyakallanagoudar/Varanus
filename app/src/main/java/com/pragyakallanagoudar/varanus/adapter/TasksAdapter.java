@@ -1,10 +1,8 @@
 package com.pragyakallanagoudar.varanus.adapter;
 
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -17,6 +15,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
  /* RecyclerView adapter for a list of Tasks.
   */
+
+ // 4/12: May not be needed.
 
 public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 

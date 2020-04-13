@@ -11,10 +11,10 @@ import com.pragyakallanagoudar.varanus.model.TaskLog;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 /**
- * RecyclerView adapter for a bunch of Ratings.
+ * The BehaviourLogAdapter class.
  */
+
 public class BehaviourLogAdapter extends FirestoreAdapter<BehaviourLogAdapter.ViewHolder> {
 
     public BehaviourLogAdapter(Query query) {

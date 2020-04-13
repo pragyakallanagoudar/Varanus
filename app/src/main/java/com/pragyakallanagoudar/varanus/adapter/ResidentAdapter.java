@@ -15,19 +15,15 @@ import com.pragyakallanagoudar.varanus.model.Resident;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-/* RecyclerView adapter for a list of Tasks.
- */
-
 public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder> {
 
-    public interface OnResidentSelectedListener {
-
+    public interface OnResidentSelectedListener
+    {
         void OnResidentSelected(DocumentSnapshot snapshot);
     }
 
     private OnResidentSelectedListener mListener;  // instance of above interface
 
-    // constructor
     public ResidentAdapter(Query query, OnResidentSelectedListener listener)
     {
         super(query);
@@ -43,15 +39,16 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position)
+    {
         holder.bind(getSnapshot(position), mListener);
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView taskCountView;
-        TextView animalView;
-        ImageView animalImageView;
-        ImageView animalStatusView;
+        TextView taskCountView; // displays # of tasks
+        TextView animalView; // name of the animal
+        ImageView animalImageView; // picture of animal
+        ImageView animalStatusView; // status of animal: tasks completed/not?
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -64,12 +61,15 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
         public void bind(final DocumentSnapshot snapshot,
                          final OnResidentSelectedListener listener) {
 
-            Resident Residents = snapshot.toObject(Resident.class);
-            Glide.with(animalImageView.getContext())
-                    .load(Residents.getPhoto())
-                    .into(animalImageView);
-            animalView.setText(Residents.getName());
+            // Saving the data to local variables
+            Resident resident = snapshot.toObject(Resident.class);
+            animalView.setText(resident.getName());
             animalStatusView.setBackgroundResource(R.drawable.ic_warning);
+
+            // Third-party library to show the photo attached to a certain URL
+            Glide.with(animalImageView.getContext())
+                    .load(resident.getPhoto())
+                    .into(animalImageView);
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -1,26 +1,27 @@
 package com.pragyakallanagoudar.varanus.adapter;
 
-import androidx.recyclerview.widget.RecyclerView;
+import android.util.Log;
 
+import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.firestore.EventListener;
-import android.util.Log;
 
 import java.util.ArrayList;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements EventListener<QuerySnapshot> {
 
-    private static final String TAG = "Firestore Adapter";
-    private Query mQuery;
-    private ListenerRegistration mRegistration;
-    private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>();
+    private static final String TAG = "Firestore Adapter"; // Log Tag
+    private Query mQuery; // query to database
+    private ListenerRegistration mRegistration; /// What is this?
+    private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>(); // list of data snapshots
 
     public FirestoreAdapter(Query query) {
         mQuery = query;
@@ -113,6 +114,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
     public int getItemCount() {
         return mSnapshots.size();
     }
+    // number of items that were retrieved
 
     protected DocumentSnapshot getSnapshot(int index) {
         return mSnapshots.get(index);

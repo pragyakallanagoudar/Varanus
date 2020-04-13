@@ -1,24 +1,22 @@
 package com.pragyakallanagoudar.varanus;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.Query;
+import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.snackbar.Snackbar;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
-
-import android.content.Intent;
-import android.os.Bundle;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-
-import android.util.Log;
-import android.view.View;
-
-
+// 4/12: This class might not be necessary anymore.
 
 public class Tasks extends AppCompatActivity implements
         View.OnClickListener,
@@ -56,11 +54,10 @@ public class Tasks extends AppCompatActivity implements
         mAdapter = new TasksAdapter(mQueryTasks, this) {
 
             @Override
-            protected void onDataChanged() {
+            protected void onDataChanged()
+            {
                 // Show/hide content if the query returns empty.
-
                     mTasksRecycler.setVisibility(View.VISIBLE);
-
             }
 
             //@Override

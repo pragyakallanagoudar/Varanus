@@ -27,21 +27,24 @@ public class FragmentActiveTasks extends Fragment implements
         View.OnClickListener,
         TasksAdapter.OnTasksSelectedListener {
 
-    View v;
-    private FirebaseFirestore mFirestore;
-    private Query mQueryActiveTasks;
-    private RecyclerView mActiveTasksRecycler;
+    private FirebaseFirestore mFirestore; // Cloud Firestore reference
+    private Query mQueryActiveTasks; // query to the database to get active tasks
+    private RecyclerView mActiveTasksRecycler; // RecylerView of active tasks
     private TasksAdapter mAdapter;
-    private String resident;
+    private String residentID; // name of resident?
+    View v;
 
-    public FragmentActiveTasks(String residentId) {
-        this.resident = residentId;
+    public FragmentActiveTasks(String residentID) {
+        this.residentID = residentID;
     }
 
     @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        v = inflater.inflate(R.layout.active_tasks_fragment,container,false);
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState)
+    {
+        v = inflater.inflate(R.layout.active_tasks_fragment, container,false);
         mActiveTasksRecycler = v.findViewById(R.id.active_tasks_recyclerview);
         mAdapter = new TasksAdapter(mQueryActiveTasks, (TasksAdapter.OnTasksSelectedListener) this);
         mActiveTasksRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -58,7 +61,8 @@ public class FragmentActiveTasks extends Fragment implements
 
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
-        mQueryActiveTasks = mFirestore.collection("Guadalupe Residents").document(resident).collection("Tasks")
+        mQueryActiveTasks = mFirestore.collection("Guadalupe Residents")
+                .document(residentID).collection("Tasks")
                 .whereLessThan("lastCompleted", new Date().getTime() - 1000*12*60);
     }
 
@@ -82,12 +86,13 @@ public class FragmentActiveTasks extends Fragment implements
         }
     }
 
+    
     @Override
     public void onTasksSelected(DocumentSnapshot tasks)
     {
         Intent intent = new Intent(v.getContext(),TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
-        intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, resident);
+        intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, residentID);
         startActivity(intent);
     }
 }
