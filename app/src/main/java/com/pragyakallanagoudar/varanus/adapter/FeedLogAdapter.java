@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.TaskLog;
+import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;

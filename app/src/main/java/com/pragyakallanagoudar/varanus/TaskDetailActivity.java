@@ -21,10 +21,13 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
-import com.pragyakallanagoudar.varanus.adapter.BehaviourLogAdapter;
 import com.pragyakallanagoudar.varanus.adapter.FeedLogAdapter;
+import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
+import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
+import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.Task;
-import com.pragyakallanagoudar.varanus.model.TaskLog;
+import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import java.util.Date;
 
@@ -42,6 +45,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public static final String KEY_TASK_ID = "key_task_id";
     public static final String KEY_RESIDENT_ID = "key_resident_id";
 
+    // The components on the screen.
     private ImageView mImageView;
     private TextView mActivityTypeView;
     private TextView mFrequencyView;
@@ -49,13 +53,18 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private Spinner mFoodType;
     private Spinner mFoodCount;
 
+    // Database references and listeners
     private FirebaseFirestore mFirestore;
     private DocumentReference mTaskRef, mResidentRef;
     private ListenerRegistration mTaskRegistration;
-    private TaskLog tasklog;
-    private BehaviourLogAdapter mBehaviourLogAdapter;
+
+    private TaskLog taskLog;
+
+    // 4/15: Perhaps we only need one adapter class.
     private FeedLogAdapter mFeedLogAdapter;
 
+    private String residentId;
+    private String taskType;
 
     @Nullable
     @Override
@@ -73,10 +82,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
 
-
         // Get task id from extras
         String taskId = getIntent().getExtras().getString(KEY_TASK_ID);
-        String residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
+        residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         if (taskId == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
         }
@@ -89,14 +97,13 @@ public class TaskDetailActivity extends AppCompatActivity implements
         mTaskRef = mFirestore.collection("Guadalupe Residents").document(residentId).collection("Tasks").document(taskId);
 
         // Get taskLogs
-        Query feedLogQuery = mTaskRef.collection("Feedlog");
+        Query feedLogQuery = mTaskRef.collection("Guadalupe Residents")
+                .document(residentId).collection("FeedLog");
         // Query behaviourLogQuery = mTaskRef.collection("BehaviourLog");
         mFeedLogAdapter = new FeedLogAdapter(feedLogQuery);
 
         // BehaviourLogAdapter mBehaviourLogAdapter = new BehaviourLogAdapter(behaviourLogQuery);
     }
-
-
 
     @Override
     public void onStart() {
@@ -132,12 +139,25 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     public void onSubmitClicked(View v)
     {
-        // In the case of a mistake, this would always write a new log to the collection.
-        tasklog.setComment(mCommentText.getText().toString());
-        tasklog.setLastCompleted(new Date().getTime());
-        tasklog.setFoodName(mFoodType.getSelectedItem().toString());
-        tasklog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
-        onTaskLog(tasklog);
+        if (taskType != null)
+        {
+            if (taskType.equals("Feed") && taskLog instanceof FeedLog)
+            {
+                taskLog.setDescription(mCommentText.getText().toString());
+                taskLog.setCompletedTime(new Date().getTime());
+
+                try {
+                    taskLog.setFoodName(mFoodType.getSelectedItem().toString());
+                    taskLog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
+                } catch (Exception e) {
+                    Snackbar.make(findViewById(android.R.id.content), "This type of TaskLog cannot accept food name and count. See logs.", Snackbar.LENGTH_LONG);
+                }
+            }
+        }
+
+
+        TasksAdapter.numTasks--;
+        onTaskLog(taskLog);
         finish();
     }
 
@@ -149,8 +169,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef,
                                                                final TaskLog tasklog) {
         // Create reference for new feedLog, for use inside the transaction
-        final DocumentReference tasklogRef = taskRef.collection("tasklog")
-                .document();
+        final DocumentReference taskLogRef = mFirestore.collection("Guadalupe Residents")
+                .document(residentId).collection("FeedLog").document();
 
         // In a transaction, add the new rating and update the aggregate totals
         return mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -166,7 +186,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
                 // Commit to Firestore
                 transaction.set(taskRef, task);
-                transaction.set(tasklogRef, tasklog);
+                transaction.set(taskLogRef, tasklog);
                 return null;
             }
         });
@@ -180,6 +200,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     private void onTaskLoaded(Task task)
     {
+        taskType = task.getTaskType();
+
         mActivityTypeView.setText("Activity Type: " + task.getActivityType());
         mFrequencyView.setText("Task Frequency: " + task.getFrequency());
 
@@ -196,10 +218,28 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
 
         // set to default values
-        tasklog = new TaskLog("sample", task.getActivityType(), task.getDescription(),0,"sample enclosure",task.getFrequency(),"","",0);
+        //taskLog = new TaskLog("sample", task.getActivityType(), task.getDescription(),0,"sample enclosure",task.getFrequency(),"","",0);
+
+        switch(task.getTaskType())
+        {
+            case "Feed":
+                taskLog = new FeedLog(0, "default", 0);
+                break;
+            case "Clean":
+                taskLog = new TaskLog(0, "");
+                break;
+            case "Behavior":
+                taskLog = new BehaviorLog(0, "");
+                break;
+            case "Exercise":
+                taskLog = new ExerciseLog(0, 0);
+                break;
+            default:
+                taskLog = new TaskLog(0, "");
+                break;
+        }
     }
 
-    //@Override
     public void onTaskLog(TaskLog tasklog)
     {
         // In a transaction, add the new rating and update the aggregate totals
@@ -227,6 +267,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 });
     }
 
+
+    // Code to hide the keyboard.
     private void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {

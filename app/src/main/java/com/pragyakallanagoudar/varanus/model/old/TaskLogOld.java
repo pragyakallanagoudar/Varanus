@@ -1,9 +1,8 @@
-package com.pragyakallanagoudar.varanus.model;
+package com.pragyakallanagoudar.varanus.model.old;
 
-import java.lang.String;
-
-public class TaskLog
+public class TaskLogOld
 {
+    /**
     public String species;
     public String activityType;
     public String description;
@@ -93,4 +92,5 @@ public class TaskLog
     public void setFoodName(String foodName) {
         this.foodName = foodName;
     }
+     */
 }

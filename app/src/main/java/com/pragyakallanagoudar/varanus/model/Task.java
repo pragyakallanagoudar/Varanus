@@ -15,7 +15,7 @@ public class Task
     public Task(String activityType, String description, long lastCompleted, String taskType, String frequency)
     {
 
-        this.activityType = activityType; // convert the String to enum in code
+        this.activityType = activityType;
         this.description = description;
         this.lastCompleted = lastCompleted;
         this.taskType = taskType;

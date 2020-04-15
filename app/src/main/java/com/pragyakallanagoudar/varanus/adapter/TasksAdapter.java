@@ -27,11 +27,14 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
     private OnTasksSelectedListener mListener;  // instance of above interface
 
+    public static int numTasks;
+
     // constructor
     public TasksAdapter(Query query, OnTasksSelectedListener listener)
     {
         super(query);
         mListener = listener;
+        numTasks = 0;
     }
 
     @NonNull
@@ -62,11 +65,12 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
         public void bind(final DocumentSnapshot snapshot,
                          final OnTasksSelectedListener listener) {
 
-            Task Tasks = snapshot.toObject(Task.class);
+            Task task = snapshot.toObject(Task.class);
+            numTasks++;
 
-            activityTypeView.setText(Tasks.getActivityType());
-            taskTypeView.setText(Tasks.getTaskType());
-            frequencyView.setText(Tasks.getFrequency());
+            activityTypeView.setText(task.getActivityType());
+            taskTypeView.setText(task.getTaskType());
+            frequencyView.setText(task.getFrequency());
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements
             // get the first 50 documents from the collection Guadalupe Residents
             mQueryResidents = mFirestore.collection("Guadalupe Residents")
                     .limit(50);
+
         }
 
         private void initRecyclerView() {

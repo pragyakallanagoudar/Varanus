@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?attr/selectableItemBackground"
+    android:clickable="false"
     android:orientation="vertical"
     android:padding="8dp">
 
@@ -19,29 +20,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/animal_image"
-        android:layout_toRightOf="@+id/animal_image"
-        android:layout_marginBottom="10dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="-2dp"
-        android:textStyle="bold"
+        android:layout_marginBottom="10dp"
+        android:layout_toRightOf="@+id/animal_image"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textStyle="bold"
         tools:text="Varanus" />
 
     <TextView
         android:id="@+id/task_count"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/animal_name"
         android:layout_below="@+id/animal_name"
+        android:layout_alignLeft="@+id/animal_name"
         android:layout_marginBottom="10dp"
         tools:text="Tasks for today - " />
 
     <ImageView
+        android:id="@+id/animal_status"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:id="@+id/animal_status"
-        tools:src="@drawable/ic_check"
+        android:layout_below="@+id/task_count"
         android:layout_alignLeft="@+id/task_count"
-        android:layout_below="@+id/task_count" />
+        tools:src="@drawable/ic_check" />
 </RelativeLayout>

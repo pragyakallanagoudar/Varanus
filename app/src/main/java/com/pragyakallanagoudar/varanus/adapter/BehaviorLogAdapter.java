@@ -6,7 +6,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.TaskLog;
+import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,9 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
  * The BehaviourLogAdapter class.
  */
 
-public class BehaviourLogAdapter extends FirestoreAdapter<BehaviourLogAdapter.ViewHolder> {
+public class BehaviorLogAdapter extends FirestoreAdapter<BehaviorLogAdapter.ViewHolder> {
 
-    public BehaviourLogAdapter(Query query) {
+    public BehaviorLogAdapter(Query query) {
         super(query);
     }
 

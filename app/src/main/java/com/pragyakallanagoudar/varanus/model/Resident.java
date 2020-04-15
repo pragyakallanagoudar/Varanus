@@ -7,6 +7,7 @@ public class Resident
     public String photo;
     public String name;
 
+
     public Resident() {}
 
     public Resident(String photo, String name)
@@ -21,4 +22,6 @@ public class Resident
     public String getName() {
         return name;
     }
+
+
 }

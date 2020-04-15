@@ -11,7 +11,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
-import com.pragyakallanagoudar.varanus.model.TaskLog;
+import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;

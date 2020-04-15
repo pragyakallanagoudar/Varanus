@@ -1,7 +1,8 @@
-package com.pragyakallanagoudar.varanus.model;
+package com.pragyakallanagoudar.varanus.model.old;
 
 import java.util.List;
 
+// 4/15: We can pretty much go ahead and delete this.
 public class Species
 {
     public String name; // the name of the species
