@@ -10,14 +10,13 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
-import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 
-public class AnimalDetailGraph extends AppCompatActivity implements
+public class AnimalDetailGraph extends Fragment implements
         View.OnClickListener,
         EventListener<DocumentSnapshot> {
 
@@ -29,10 +28,17 @@ public class AnimalDetailGraph extends AppCompatActivity implements
     private ListenerRegistration mTaskRegistration;
     private TaskLog tasklog;
 
+    public AnimalDetailGraph(String residentID)
+    {
+
+    }
+
     @Nullable
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
+        /**
         setContentView(R.layout.activity_animal_graph);
         mChartView = (LineChart) findViewById(R.id.feed_line_chart);
 
@@ -47,7 +53,7 @@ public class AnimalDetailGraph extends AppCompatActivity implements
         Query taskLogQuery = mTaskRef
                 .collection("tasklog").whereEqualTo("activityType", "FEED");
         //taskLogQuery.
-
+        */
     }
 
 
@@ -73,7 +79,7 @@ public class AnimalDetailGraph extends AppCompatActivity implements
     }
 
     public void onCancelClicked(View view) {
-        finish();
+        //finish();
     }
 
 

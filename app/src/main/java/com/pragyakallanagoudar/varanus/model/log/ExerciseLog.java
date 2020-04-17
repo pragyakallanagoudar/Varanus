@@ -1,5 +1,6 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
+/**
 public class ExerciseLog extends TaskLog
 {
     public int outsideTime;
@@ -16,3 +17,4 @@ public class ExerciseLog extends TaskLog
         this.outsideTime = outsideTime;
     }
 }
+*/

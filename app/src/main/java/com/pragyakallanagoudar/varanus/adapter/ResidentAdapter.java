@@ -65,7 +65,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             Resident resident = snapshot.toObject(Resident.class);
             animalView.setText(resident.getName());
             animalStatusView.setBackgroundResource(R.drawable.ic_warning);
-            taskCountView.setText(TasksAdapter.numTasks + " tasks remaining");
+            //taskCountView.setText(TasksAdapter.numTasks + " tasks remaining");
 
             // Third-party library to show the photo attached to a certain URL
             Glide.with(animalImageView.getContext())

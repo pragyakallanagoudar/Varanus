@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * RecyclerView adapter for a bunch of Ratings.
  */
-public class FeedLogAdapter extends FirestoreAdapter<FeedLogAdapter.ViewHolder> {
+public class TaskLogAdapter extends FirestoreAdapter<TaskLogAdapter.ViewHolder> {
 
-    public FeedLogAdapter(Query query) {
+    public TaskLogAdapter(Query query) {
         super(query);
     }
 
@@ -36,22 +36,11 @@ public class FeedLogAdapter extends FirestoreAdapter<FeedLogAdapter.ViewHolder> 
 
     static class ViewHolder extends RecyclerView.ViewHolder {
 
-       /* TextView nameView;
-        MaterialRatingBar ratingBar;
-        TextView textView;*/
-
         public ViewHolder(View itemView) {
             super(itemView);
-           /* nameView = itemView.findViewById(R.id.rating_item_name);
-            ratingBar = itemView.findViewById(R.id.rating_item_rating);
-            textView = itemView.findViewById(R.id.rating_item_text);*/
         }
 
-        public void bind(TaskLog tasklog) {
-            /*nameView.setText(rating.getUserName());
-            ratingBar.setRating((float) rating.getRating());
-            textView.setText(rating.getText());*/
-        }
+        public void bind(TaskLog tasklog) {}
     }
 
 }

@@ -28,5 +28,5 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tasks_text_view"
         android:layout_marginTop="-7dp"
-        tools:listitem="@layout/item_task" />
+        tools:listitem="@layout/item_task_old" />
 </RelativeLayout>

@@ -3,19 +3,14 @@ package com.pragyakallanagoudar.varanus;
 
 import android.content.Intent;
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
-
-import java.util.Date;
-
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -62,8 +57,7 @@ public class FragmentActiveTasks extends Fragment implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryActiveTasks = mFirestore.collection("Guadalupe Residents")
-                .document(residentID).collection("Tasks")
-                .whereLessThan("lastCompleted", new Date().getTime() - 1000*12*60);
+                .document(residentID).collection("Tasks");
     }
 
     private void initRecyclerView() {

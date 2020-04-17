@@ -1,6 +1,7 @@
 package com.pragyakallanagoudar.varanus;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.pragyakallanagoudar.varanus.adapter.ViewPagerAdapter;
@@ -20,6 +21,7 @@ public class TabbedTasks extends AppCompatActivity {
     private TabLayout tabLayout; // Two tabs: currents Active and Completed
     private ViewPager viewPager; // ??? -> swipe view?
     private ViewPagerAdapter adapter;
+    private TextView title;
 
     // Resident ID retrieved from Intent
     public static final String RESIDENT_ID = "resident_id";
@@ -32,15 +34,17 @@ public class TabbedTasks extends AppCompatActivity {
         setContentView(R.layout.activity_tasks_tabbed);
 
         // local variable version of RESIDENT_ID
-        String residentId = getIntent().getExtras().getString(RESIDENT_ID);
+        String residentID = getIntent().getExtras().getString(RESIDENT_ID);
 
         tabLayout =  findViewById(R.id.tablayout_id);
         viewPager =  findViewById(R.id.viewpager_id);
+        title = findViewById(R.id.title);
+        title.setText(residentID.substring(residentID.indexOf('-') + 2));
 
         // set up View Pager adapter and add it
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentActiveTasks(residentId), "Active");
-        adapter.addFragment(new FragmentCompletedTasks(residentId), "Completed");
+        adapter.addFragment(new FragmentActiveTasks(residentID), "Tasks");
+        adapter.addFragment(new AnimalDetailGraph(residentID), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

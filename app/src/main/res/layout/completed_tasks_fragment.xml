@@ -9,7 +9,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/completed_tasks_recyclerview"
-        tools:listitem="@layout/item_task">
+        tools:listitem="@layout/item_task_old">
     </androidx.recyclerview.widget.RecyclerView>
 
 </LinearLayout>
