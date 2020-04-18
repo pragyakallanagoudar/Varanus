@@ -1,13 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="0dp"
+    android:orientation="vertical"
+    android:padding="20dp">
+
+    <Spinner
+        android:id="@+id/select_log"
+        android:layout_width="match_parent"
+        android:layout_height="49dp"
+        android:entries="@array/profile_options"
+        android:spinnerMode="dropdown" />
 
     <com.github.mikephil.charting.charts.LineChart
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/feed_line_chart">
-
-    </com.github.mikephil.charting.charts.LineChart>
+        android:id="@+id/outside_time_chart"
+        android:layout_width="341dp"
+        android:layout_height="418dp"
+        android:layout_margin="20dp"
+        android:padding="20dp" />
 
 </LinearLayout>

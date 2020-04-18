@@ -41,7 +41,7 @@ public class FragmentActiveTasks extends Fragment implements
     {
         v = inflater.inflate(R.layout.active_tasks_fragment, container,false);
         mActiveTasksRecycler = v.findViewById(R.id.active_tasks_recyclerview);
-        mAdapter = new TasksAdapter(mQueryActiveTasks, (TasksAdapter.OnTasksSelectedListener) this);
+        mAdapter = new TasksAdapter(mQueryActiveTasks, this);
         mActiveTasksRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
         mActiveTasksRecycler.setAdapter(mAdapter);
         return v;

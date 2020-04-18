@@ -1,4 +1,4 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.model.old;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.TaskDetailActivity;
 import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
 
 import java.util.Date;
@@ -84,7 +86,7 @@ public class FragmentCompletedTasks extends Fragment implements
     @Override
     public void onTasksSelected(DocumentSnapshot tasks)
     {
-        Intent intent = new Intent(v.getContext(),TaskDetailActivity.class);
+        Intent intent = new Intent(v.getContext(), TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
         startActivity(intent);
 

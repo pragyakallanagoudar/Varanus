@@ -1,20 +1,20 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
-/**
+
 public class FeedLog extends TaskLog
 {
     public String foodName;
     public int foodCount;
 
-    public FeedLog(long completedTime, String extraDesc, String foodName, int foodCount)
+    public FeedLog(long completedTime)
     {
-        super(completedTime, extraDesc);
+        super(completedTime);
 
     }
 
     public FeedLog(long completedTime, String foodName, int foodCount)
     {
-        super(completedTime, "");
+        super(completedTime);
         foodName = this.foodName;
         foodCount = this.foodCount;
     }
@@ -37,4 +37,3 @@ public class FeedLog extends TaskLog
         this.foodName = foodName;
     }
 }
-*/

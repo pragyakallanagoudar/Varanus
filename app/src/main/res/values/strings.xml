@@ -44,4 +44,13 @@
         <item>10</item>
     </string-array>
 
+    <string-array name="profile_options">
+        <item>@string/choose_food_count</item>
+
+        <item>Diet</item>
+        <item>Exercise</item>
+        <item>Enclosure</item>
+        <item>Behavior</item>
+    </string-array>
+
 </resources>

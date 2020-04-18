@@ -7,36 +7,23 @@
 
     <TextView
         android:id="@+id/text_activity_type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#020101"
+        android:layout_width="131dp"
+        android:layout_height="68dp"
+        android:layout_marginStart="10dp"
         android:layout_marginLeft="10dp"
-        android:text="activityType"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:padding="5dp"
         android:width="100dp"
-    />
+        android:padding="20dp"
+        android:text="ACTIVITY"
+        android:textColor="#020101"
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/text_task_type"
-        android:layout_width="wrap_content"
+        android:id="@+id/text_task_instruction"
+        android:layout_width="171dp"
         android:layout_height="wrap_content"
-        android:textColor="#020101"
-        android:layout_toRightOf="@+id/text_activity_type"
-        android:text="taskType"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:padding="5dp"/>
+        android:layout_weight="1"
+        android:text="Task Instruction."
+        android:textSize="16sp" />
 
-    <TextView
-        android:id="@+id/text_task_frequency"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="#020101"
-        android:layout_toRightOf="@+id/text_task_type"
-        android:text="frequency"
-        android:textStyle="bold"
-        android:textSize="18dp"
-        android:padding="5dp"/>
 </LinearLayout>

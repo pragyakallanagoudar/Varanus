@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.TaskType;
 
 import java.util.Date;
 
@@ -55,16 +56,23 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView activityTypeView;
-        TextView taskTypeView;
-        TextView frequencyView;
+        //TextView activityTypeView;
+        //TextView taskTypeView;
+        //TextView frequencyView;
+
+        TextView activityView;
+        TextView instructionView;
         LinearLayout layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            activityTypeView = itemView.findViewById(R.id.text_activity_type);
-            taskTypeView = itemView.findViewById(R.id.text_task_type);
-            frequencyView = itemView.findViewById(R.id.text_task_frequency);
+            //activityTypeView = itemView.findViewById(R.id.text_activity_type);
+            //taskTypeView = itemView.findViewById(R.id.text_task_type);
+            //frequencyView = itemView.findViewById(R.id.text_task_frequency);
+
+            activityView = itemView.findViewById(R.id.text_activity_type);
+            instructionView = itemView.findViewById(R.id.text_task_instruction);
+
             layout = itemView.findViewById(R.id.task_layout);
         }
 
@@ -80,19 +88,54 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             if ((task.getLastCompleted() > (new Date()).getTime() - 84600000))
             {
                 Log.e(LOG_TAG, task.getTaskType() + " GRAY");
-                layout.setBackgroundColor(Color.LTGRAY);
+                // layout.setBackgroundColor(Color.LTGRAY);
+                activityView.setTextColor(Color.LTGRAY);
+                instructionView.setTextColor(Color.LTGRAY);
             }
             else
             {
                 Log.e(LOG_TAG, task.getTaskType() + " WHITE");
-                layout.setBackgroundColor(Color.WHITE);
+                //layout.setBackgroundColor(Color.WHITE);
+                activityView.setTextColor(Color.BLACK);
+                instructionView.setTextColor(Color.BLACK);
+            }
+            //taskTypeView.setText(task.getTaskType());
+            //frequencyView.setText(task.getFrequency());
+
+            activityView.setText(task.getActivityType());
+
+            String taskID = snapshot.getId();
+            TaskType type;
+
+            try {
+                type = TaskType.valueOf(taskID.substring(0, taskID.indexOf('-')).toUpperCase());
+            } catch (StringIndexOutOfBoundsException e) {
+                type = TaskType.OTHER;
+            }
+            String instruction = "Here is an example task instruction.";
+
+
+            switch (type)
+            {
+                case FEED:
+                    instruction = "Feed.";
+                    break;
+                case CLEAN:
+                    instruction = "Clean enclosure.";
+                    break;
+                case BEHAVIOR:
+                    instruction = "Report unusual behavior.";
+                    break;
+                case EXERCISE:
+                    instruction = "Outside for some exercise.";
+                    break;
+                default:
+                    instruction = type.toString();
+                    break;
             }
 
 
-            activityTypeView.setText(task.getActivityType());
-            taskTypeView.setText(task.getTaskType());
-            frequencyView.setText(task.getFrequency());
-
+            instructionView.setText(instruction);
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override

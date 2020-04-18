@@ -24,6 +24,9 @@ import com.google.firebase.firestore.Transaction;
 import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.pragyakallanagoudar.varanus.model.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;
+import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
+import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import java.util.Date;
@@ -50,6 +53,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TextView title;
     private Spinner mFoodType;
     private Spinner mFoodCount;
+    private EditText mExerciseTime;
+    private EditText mBehaviorText;
 
     // Database references and listeners
     private FirebaseFirestore mFirestore;
@@ -59,7 +64,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TaskLog taskLog;
 
     // 4/15: Perhaps we only need one adapter class.
-    private TaskLogAdapter mFeedLogAdapter;
+    private TaskLogAdapter mTaskLogAdapter;
 
     private String residentID;
     private TaskType type;
@@ -80,7 +85,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
         type = TaskType.valueOf(taskID.substring(0, taskID.indexOf('-')).toUpperCase());
 
-        // Get logName
+        // Get logName and set content view according to task type (retrieved above)
         switch(type) {
             case FEED:
                 logName = "FeedLog";
@@ -90,11 +95,13 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 break;
             case BEHAVIOR:
                 logName = "BehaviorLog";
-                setContentView(R.layout.activity_task_default);
+                setContentView(R.layout.activity_task_behavior);
+                mBehaviorText = findViewById(R.id.edit_behavior);
                 break;
             case EXERCISE:
                 logName = "ExerciseLog";
-                setContentView(R.layout.activity_task_default);
+                setContentView(R.layout.activity_task_exercise);
+                mExerciseTime = findViewById(R.id.edit_time);
                 break;
             case CLEAN:
                 logName = "CleanLog";
@@ -102,6 +109,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 break;
             default:
                 logName = ""; // this is a bit dangerous lol
+                setContentView(R.layout.activity_task_default);
                 break;
         }
 
@@ -126,14 +134,14 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         Query taskLogQuery = mFirestore.collection("Guadalupe Residents")
                 .document(residentID).collection(logName);
-        mFeedLogAdapter = new TaskLogAdapter(taskLogQuery);
+        mTaskLogAdapter = new TaskLogAdapter(taskLogQuery, type);
     }
 
     @Override
     public void onStart() {
         Log.e(TAG, "onStart()");
         super.onStart();
-        mFeedLogAdapter.startListening();
+        mTaskLogAdapter.startListening();
         mTaskRegistration = mTaskRef.addSnapshotListener(this);
     }
 
@@ -141,7 +149,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public void onStop() {
         super.onStop();
         Log.e(TAG, "OnStop()");
-        mFeedLogAdapter.stopListening();
+        mTaskLogAdapter.stopListening();
 
         if (mTaskRegistration != null) {
             mTaskRegistration.remove();
@@ -165,39 +173,64 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public void onSubmitClicked(View v)
     {
         // This is going to require some interesting changes...
+        // 4/17: Trying to figure out how to make this ensure that all information
+        // is logged before clicking the submit button.
         Log.e(TAG, "onSubmitClicked");
 
-        switch(type)
-        {
-            case FEED:
-                taskLog.setFoodName(mFoodType.getSelectedItem().toString());
-                taskLog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
-                break;
-            default:
-                // do nothing: we will come back and resolve this
-        }
+        taskLog.setCompletedTime(new Date().getTime());
 
-        /**
-        if (type != null)
-        {
-            if (type == TaskType.FEED)
-            {
-                taskLog.setDescription(mCommentText.getText().toString());
-                taskLog.setCompletedTime(new Date().getTime());
+        boolean emptyFields = false;
+        boolean isProblem = false;
 
-                try {
-                    taskLog.setFoodName(mFoodType.getSelectedItem().toString());
-                    taskLog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
-                } catch (Exception e) {
-                    Snackbar.make(findViewById(android.R.id.content),
-                            "This type of TaskLog cannot accept food name and count. See logs.",
-                            Snackbar.LENGTH_LONG);
-                }
+        try {
+            switch (type) {
+                case FEED:
+                    String foodType = mFoodType.getSelectedItem().toString();
+                    String foodCount = mFoodCount.getSelectedItem().toString();
+                    emptyFields = foodType.equals("Food Type") || foodCount.equals("Food Count");
+                    if (!emptyFields)
+                    {
+                        taskLog.setFoodName(foodType);
+                        taskLog.setFoodCount(Integer.parseInt(foodCount));
+                    }
+                    break;
+                case EXERCISE:
+                    // default value: 0 (shown in hint)
+                    try{
+                        taskLog.setOutsideTime(Integer.parseInt(mExerciseTime.getText().toString()));
+                    } catch (NumberFormatException e) {
+                        taskLog.setOutsideTime(0);
+                    }
+                    break;
+                case BEHAVIOR:
+                    emptyFields = mBehaviorText.getText().toString().trim().equals("");
+                    if (!emptyFields)
+                        taskLog.setBehaviorText(mBehaviorText.getText().toString());
+                    Log.e(TAG, "behavior text " + mBehaviorText.getText().toString());
+                    break;
+                default:
+                    // do nothing: we will come back and resolve this
             }
+        }  catch (Exception e) {
+                isProblem = true;
+                Snackbar problem = Snackbar.make(findViewById(android.R.id.content),
+                        "This type of TaskLog cannot store this information. See logs.",
+                        Snackbar.LENGTH_LONG);
+                problem.show();
         }
-         */
-        onTaskLog(taskLog);
-        finish();
+
+        if (emptyFields) {
+            Snackbar empty = Snackbar.make(findViewById(android.R.id.content),
+                    "Please fill in all information.",
+                    Snackbar.LENGTH_SHORT);
+            empty.show();
+        }
+
+        if (!isProblem && !emptyFields)
+        {
+            onTaskLog(taskLog);
+            finish();
+        }
     }
 
     public void onCancelClicked(View view) {
@@ -260,7 +293,20 @@ public class TaskDetailActivity extends AppCompatActivity implements
             mFoodCount.setVisibility(View.GONE);
         }
         */
-        taskLog = new TaskLog(type, 0, "", "sample", 0, 0);
+        switch(type) {
+            case FEED:
+                taskLog = new FeedLog(0, "sample", 0);
+                break;
+            case EXERCISE:
+                taskLog = new ExerciseLog(0, 0);
+                break;
+            case BEHAVIOR:
+                taskLog = new BehaviorLog(0, "");
+                break;
+            default:
+                taskLog = new TaskLog(0);
+                break;
+        }
     }
 
     public void onTaskLog(TaskLog tasklog)
