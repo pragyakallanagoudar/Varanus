@@ -17,6 +17,8 @@
     <string name="choose_a_food_type">Food Type</string>
     <string name="choose_food_count">Food Count</string>
     <string name="sample_varanus">sample varanus</string>
+    <string name="submit">Submit</string>
+    <string name="cancel">Cancel</string>
 
     <!-- Food Type activity -->
     <string-array name="foodType">

@@ -47,6 +47,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TextView mActivityTypeView;
     private TextView mFrequencyView;
     private EditText mCommentText;
+    private TextView title;
     private Spinner mFoodType;
     private Spinner mFoodCount;
 
@@ -60,7 +61,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     // 4/15: Perhaps we only need one adapter class.
     private TaskLogAdapter mFeedLogAdapter;
 
-    private String residentId;
+    private String residentID;
     private TaskType type;
     private String logName;
 
@@ -73,7 +74,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         // Get task id from extras
         String taskID = getIntent().getExtras().getString(KEY_TASK_ID);
-        residentId = getIntent().getExtras().getString(KEY_RESIDENT_ID);
+        residentID = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         if (taskID == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
         }
@@ -83,43 +84,48 @@ public class TaskDetailActivity extends AppCompatActivity implements
         switch(type) {
             case FEED:
                 logName = "FeedLog";
+                setContentView(R.layout.activity_task_feed);
+                mFoodType = findViewById(R.id.food_type_spinner);
+                mFoodCount = findViewById(R.id.food_count_spinner);
                 break;
             case BEHAVIOR:
                 logName = "BehaviorLog";
+                setContentView(R.layout.activity_task_default);
                 break;
             case EXERCISE:
                 logName = "ExerciseLog";
+                setContentView(R.layout.activity_task_default);
                 break;
             case CLEAN:
                 logName = "CleanLog";
+                setContentView(R.layout.activity_task_default);
                 break;
             default:
                 logName = ""; // this is a bit dangerous lol
                 break;
         }
 
-        // PENDING: make the different layouts for activity_task and choose according to type
-        setContentView(R.layout.activity_task_detail);
-        mImageView = findViewById(R.id.task_image);
-        mActivityTypeView = findViewById(R.id.task_activityType);
-        mFrequencyView = findViewById(R.id.task_frequency);
-        mCommentText = findViewById(R.id.task_comments);
-        mFoodType = findViewById(R.id.food_type_spinner);
-        mFoodCount = findViewById(R.id.food_count_spinner);
-
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
+        title = findViewById(R.id.title);
+        title.setText(type.toString() + " " + residentID.substring(residentID.indexOf('-') + 2));
+
+        // ONGOING: make the different layouts for activity_task and choose according to type
+        // mImageView = findViewById(R.id.task_image);
+        // mActivityTypeView = findViewById(R.id.task_activityType);
+        // mFrequencyView = findViewById(R.id.task_frequency);
+        // mCommentText = findViewById(R.id.task_comments);
 
         // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();
 
         // Get reference to the log
-        mResidentRef = mFirestore.collection("Guadalupe Residents").document(residentId);
-        mTaskRef = mFirestore.collection("Guadalupe Residents").document(residentId)
+        mResidentRef = mFirestore.collection("Guadalupe Residents").document(residentID);
+        mTaskRef = mFirestore.collection("Guadalupe Residents").document(residentID)
                 .collection("Tasks").document(taskID);
 
         Query taskLogQuery = mFirestore.collection("Guadalupe Residents")
-                .document(residentId).collection(logName);
+                .document(residentID).collection(logName);
         mFeedLogAdapter = new TaskLogAdapter(taskLogQuery);
     }
 
@@ -160,6 +166,18 @@ public class TaskDetailActivity extends AppCompatActivity implements
     {
         // This is going to require some interesting changes...
         Log.e(TAG, "onSubmitClicked");
+
+        switch(type)
+        {
+            case FEED:
+                taskLog.setFoodName(mFoodType.getSelectedItem().toString());
+                taskLog.setFoodCount(mFoodCount.getSelectedItem().hashCode());
+                break;
+            default:
+                // do nothing: we will come back and resolve this
+        }
+
+        /**
         if (type != null)
         {
             if (type == TaskType.FEED)
@@ -177,6 +195,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 }
             }
         }
+         */
         onTaskLog(taskLog);
         finish();
     }
@@ -191,7 +210,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         Log.e(TAG, "addTaskLog");
         // Create reference for new feedLog, for use inside the transaction
         final DocumentReference taskLogRef = mFirestore.collection("Guadalupe Residents")
-                .document(residentId).collection(logName).document();
+                .document(residentID).collection(logName).document();
 
         // In a transaction, add the new rating and update the aggregate totals
         return mFirestore.runTransaction(new Transaction.Function<Void>() {
@@ -225,9 +244,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
         Log.e(TAG, "onTaskLoaded()");
         //taskType = task.getTaskType();
 
-        mActivityTypeView.setText("Activity Type: " + task.getActivityType());
-        mFrequencyView.setText("Task Frequency: " + task.getFrequency());
+        // mActivityTypeView.setText("Activity Type: " + task.getActivityType());
+        // mFrequencyView.setText("Task Frequency: " + task.getFrequency());
 
+        /**
         // 4/12: We want to make design changes to this: have different xml files for FEED and CARE
         if(task.getTaskType().equals("Feed"))
         {
@@ -239,7 +259,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
             mFoodType.setVisibility(View.GONE);
             mFoodCount.setVisibility(View.GONE);
         }
-
+        */
         taskLog = new TaskLog(type, 0, "", "sample", 0, 0);
     }
 

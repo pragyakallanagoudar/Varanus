@@ -61,7 +61,7 @@ public class TaskLog
          */
     }
 
-    public void setFoodName(String foodName) throws Exception
+    public void setFoodName(String foodName) //throws Exception
     {
         this.foodName = foodName;
         /**
