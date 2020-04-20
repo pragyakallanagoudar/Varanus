@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -67,6 +68,8 @@ public class AnimalDetailGraph extends Fragment implements
         mOutsideChart = v.findViewById(R.id.outside_time_chart);
         getLogs("ExerciseLog");
         mOutsideChart.invalidate();
+
+
         return v;
     }
 
@@ -108,9 +111,15 @@ public class AnimalDetailGraph extends Fragment implements
         }
         LineDataSet dataSet = new LineDataSet(entries, "Time Spent Outside");
         dataSet.setColor(Color.BLACK);
-        dataSet.setValueTextColor(Color.RED);
+        // dataSet.setValueTextColor(Color.RED);
         LineData lineData = new LineData(dataSet);
         mOutsideChart.setData(lineData);
+        mOutsideChart.setDrawGridBackground(false);
+        Description desc = new Description();
+        desc.setText("The time spent outside everyday for the past 15 days.");
+        mOutsideChart.setDescription(desc);
+        mOutsideChart.setNoDataText("Varanus is unable to retrieve the OutsideLogs from the database.");
+        mOutsideChart.setDrawBorders(true);
         mOutsideChart.invalidate();
     }
 
@@ -126,7 +135,7 @@ public class AnimalDetailGraph extends Fragment implements
         final List<TaskLog> logs = new ArrayList<TaskLog>();
 
         Query mQueryLogs = mFirestore.collection("Guadalupe Residents")
-                .document(residentID).collection(logName).orderBy("completedTime", Query.Direction.ASCENDING).limit(30);
+                .document(residentID).collection(logName).orderBy("completedTime", Query.Direction.ASCENDING).limit(15);
         mQueryLogs
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

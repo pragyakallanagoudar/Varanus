@@ -9,10 +9,11 @@ public class Task
     public String description;
     public long lastCompleted;
     public String frequency;
+    public String lastLogID;
 
     public Task() {}
 
-    public Task(String activityType, String description, long lastCompleted, String taskType, String frequency)
+    public Task(String activityType, String description, long lastCompleted, String taskType, String frequency, String lastLogID)
     {
 
         this.activityType = activityType;
@@ -20,6 +21,7 @@ public class Task
         this.lastCompleted = lastCompleted;
         this.taskType = taskType;
         this.frequency = frequency;
+        this.lastLogID = lastLogID;
     }
 
     public String getActivityType() {
@@ -52,4 +54,8 @@ public class Task
     }
 
     public void setTaskType(String taskType) { this.taskType = taskType; }
+
+    public String getLastLogID() { return lastLogID; }
+
+    public void setLastLogID(String lastLogID) { this.lastLogID = lastLogID; }
 }

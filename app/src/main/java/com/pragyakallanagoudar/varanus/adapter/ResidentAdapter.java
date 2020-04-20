@@ -49,6 +49,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
         TextView animalView; // name of the animal
         ImageView animalImageView; // picture of animal
         ImageView animalStatusView; // status of animal: tasks completed/not?
+        String TAG = ViewHolder.class.getSimpleName();
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -65,7 +66,28 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             Resident resident = snapshot.toObject(Resident.class);
             animalView.setText(resident.getName());
             animalStatusView.setBackgroundResource(R.drawable.ic_warning);
-            //taskCountView.setText(TasksAdapter.numTasks + " tasks remaining");
+
+            /**
+            final int[] count = {0};
+            FirebaseFirestore.getInstance().collection("Guadalupe Residents")
+                    .document(snapshot.getId()).collection("Tasks")
+                    .whereLessThan("lastCompleted", new Date().getTime()-84600000).get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                for (DocumentSnapshot document : task.getResult()) {
+                                    count[0] = count[0] + 1;
+                                }
+                                Log.d("TAG", "BOOYAH! YAY!" + count[0] + "");
+                            } else {
+                                Log.d(TAG, "Error getting documents: ", task.getException());
+                            }
+                        }
+                    });
+             */
+
+            // taskCountView.setText(count[0] + " tasks remaining");
 
             // Third-party library to show the photo attached to a certain URL
             Glide.with(animalImageView.getContext())

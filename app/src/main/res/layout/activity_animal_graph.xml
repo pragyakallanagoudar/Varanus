@@ -8,13 +8,23 @@
 
     <Spinner
         android:id="@+id/select_log"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="49dp"
         android:entries="@array/profile_options"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dropdown"
+        android:layout_gravity="center"/>
+
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/outside_time_chart"
+        android:layout_width="341dp"
+        android:layout_height="418dp"
+        android:layout_margin="20dp"
+        android:padding="20dp" />
+        -->
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pie_chart"
         android:layout_width="341dp"
         android:layout_height="418dp"
         android:layout_margin="20dp"

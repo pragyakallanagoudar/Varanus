@@ -60,8 +60,8 @@ public class MainActivity extends AppCompatActivity implements
         }
 
     @Override
-    public void OnResidentSelected(DocumentSnapshot resident) {
-
+    public void OnResidentSelected(DocumentSnapshot resident)
+    {
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, TabbedTasks.class);
         intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());

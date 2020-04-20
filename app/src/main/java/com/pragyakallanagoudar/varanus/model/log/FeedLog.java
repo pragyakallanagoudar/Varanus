@@ -15,21 +15,20 @@ public class FeedLog extends TaskLog
     public FeedLog(long completedTime, String foodName, int foodCount)
     {
         super(completedTime);
-        foodName = this.foodName;
-        foodCount = this.foodCount;
+        this.foodName = foodName;
+        this.foodCount = foodCount;
     }
 
-    public int getFoodCount() {
-        return foodCount;
-    }
+    public FeedLog () {}
+
+
+    public int getFoodCount() { return foodCount; }
+
+    public String getFoodName() { return foodName; }
 
     @Override
     public void setFoodCount(int foodCount) {
         this.foodCount = foodCount;
-    }
-
-    public String getFoodName() {
-        return foodName;
     }
 
     @Override
