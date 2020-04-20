@@ -20,6 +20,8 @@
     <string name="submit">Submit</string>
     <string name="cancel">Cancel</string>
     <string name="select_profile_option">Select a Report</string>
+    <string name="default_task_description">Hello, %1$s! Thank you for %2$s. Please click Submit below to let us know you\'re done.</string>
+    <string name="task_description">Hello, %1$s! Thank you for %2$s. Please %3$s below and click Submit.</string>
 
     <!-- Food Type activity -->
     <string-array name="foodType">
@@ -53,5 +55,7 @@
         <item>Enclosure</item>
         <item>Behavior</item>
     </string-array>
+
+
 
 </resources>

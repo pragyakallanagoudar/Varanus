@@ -3,6 +3,7 @@ package com.pragyakallanagoudar.varanus;
 // All import statements listed below
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -49,6 +50,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     // The components on the screen.
     private TextView title;
+    private TextView description;
     private Spinner mFoodType;
     private Spinner mFoodCount;
     private EditText mExerciseTime;
@@ -82,6 +84,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
         type = TaskType.valueOf(taskID.substring(0, taskID.indexOf('-')).toUpperCase());
 
+        Resources res = getResources();
+        String descriptionText, task, info = "";
+        String user = "User";
+
         // Get logName and set content view according to task type (retrieved above)
         switch(type) {
             case FEED:
@@ -89,24 +95,37 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 setContentView(R.layout.activity_task_feed);
                 mFoodType = findViewById(R.id.food_type_spinner);
                 mFoodCount = findViewById(R.id.food_count_spinner);
+                task = "feeding " + residentID.substring(residentID.indexOf("-") + 2);
+                info = "select the food type and count";
+                descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case BEHAVIOR:
                 logName = "BehaviorLog";
                 setContentView(R.layout.activity_task_behavior);
                 mBehaviorText = findViewById(R.id.edit_behavior);
+                task = "reporting " + residentID.substring(residentID.indexOf("-") + 2) + "'s behavior";
+                info = "enter a short summary";
+                descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case EXERCISE:
                 logName = "ExerciseLog";
                 setContentView(R.layout.activity_task_exercise);
                 mExerciseTime = findViewById(R.id.edit_time);
+                task = "taking " + residentID.substring(residentID.indexOf("-") + 2) + " out for some exercise";
+                info = "enter the time spent outside";
+                descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case CLEAN:
                 logName = "CleanLog";
                 setContentView(R.layout.activity_task_default);
+                task = "cleaning " + residentID.substring(residentID.indexOf("-") + 2) + "'s enclosure";
+                descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
                 break;
             default:
                 logName = ""; // this is a bit dangerous lol
                 setContentView(R.layout.activity_task_default);
+                task = "completing this task for " + residentID.substring(residentID.indexOf("-") + 2);
+                descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
                 break;
         }
 
@@ -114,6 +133,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         findViewById(R.id.submit_button).setOnClickListener(this);
         title = findViewById(R.id.title);
         title.setText(type.toString() + " " + residentID.substring(residentID.indexOf('-') + 2));
+
+        description = findViewById(R.id.description);
+        description.setText(descriptionText);
 
         // Initialize Firestore
         mFirestore = FirebaseFirestore.getInstance();

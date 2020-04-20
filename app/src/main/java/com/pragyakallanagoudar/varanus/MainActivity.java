@@ -7,6 +7,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.adapter.ResidentAdapter;
+import com.pragyakallanagoudar.varanus.model.Resident;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -43,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements
             mQueryResidents = mFirestore.collection("Guadalupe Residents")
                     .limit(50);
 
+            // to try the experimental version, replace "Guadalupe Residents" with "Experimental" above
         }
 
         private void initRecyclerView() {
@@ -62,9 +64,11 @@ public class MainActivity extends AppCompatActivity implements
     @Override
     public void OnResidentSelected(DocumentSnapshot resident)
     {
+        Resident resClass = resident.toObject(Resident.class);
         // Go to the details page for the selected restaurant
         Intent intent = new Intent(this, TabbedTasks.class);
         intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
+        intent.putExtra(TabbedTasks.RESIDENT_NAME, resClass.getName());
         startActivity(intent);
     }
 }

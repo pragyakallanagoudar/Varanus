@@ -45,7 +45,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView taskCountView; // displays # of tasks
+        TextView enclosureView; // displays enclosure
         TextView animalView; // name of the animal
         ImageView animalImageView; // picture of animal
         ImageView animalStatusView; // status of animal: tasks completed/not?
@@ -53,7 +53,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-            taskCountView = itemView.findViewById(R.id.task_count);
+            enclosureView = itemView.findViewById(R.id.enclosure);
             animalView = itemView.findViewById(R.id.animal_name);
             animalImageView = itemView.findViewById(R.id.animal_image);
             animalStatusView = itemView.findViewById(R.id.animal_status);
@@ -64,28 +64,10 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
 
             // Saving the data to local variables
             Resident resident = snapshot.toObject(Resident.class);
+            // enclosureView.setText(resident.getSpecies() + ", " + resident.getEnclosure());
+            enclosureView.setText("Tasks Remaining");
             animalView.setText(resident.getName());
             animalStatusView.setBackgroundResource(R.drawable.ic_warning);
-
-            /**
-            final int[] count = {0};
-            FirebaseFirestore.getInstance().collection("Guadalupe Residents")
-                    .document(snapshot.getId()).collection("Tasks")
-                    .whereLessThan("lastCompleted", new Date().getTime()-84600000).get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful()) {
-                                for (DocumentSnapshot document : task.getResult()) {
-                                    count[0] = count[0] + 1;
-                                }
-                                Log.d("TAG", "BOOYAH! YAY!" + count[0] + "");
-                            } else {
-                                Log.d(TAG, "Error getting documents: ", task.getException());
-                            }
-                        }
-                    });
-             */
 
             // taskCountView.setText(count[0] + " tasks remaining");
 

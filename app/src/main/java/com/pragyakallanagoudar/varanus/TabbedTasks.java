@@ -25,7 +25,7 @@ public class TabbedTasks extends AppCompatActivity {
 
     // Resident ID retrieved from Intent
     public static final String RESIDENT_ID = "resident_id";
-
+    public static final String RESIDENT_NAME = "resident_name";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +35,12 @@ public class TabbedTasks extends AppCompatActivity {
 
         // local variable version of RESIDENT_ID
         String residentID = getIntent().getExtras().getString(RESIDENT_ID);
+        String residentName = getIntent().getExtras().getString(RESIDENT_NAME);
 
         tabLayout =  findViewById(R.id.tablayout_id);
         viewPager =  findViewById(R.id.viewpager_id);
         title = findViewById(R.id.title);
-        title.setText(residentID.substring(residentID.indexOf('-') + 2));
+        title.setText(residentName);
 
         // set up View Pager adapter and add it
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
