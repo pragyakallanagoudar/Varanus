@@ -2,14 +2,21 @@ package com.pragyakallanagoudar.varanus;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.adapter.ResidentAdapter;
 import com.pragyakallanagoudar.varanus.model.Resident;
 
+
+import java.util.Collections;
+import com.firebase.ui.auth.AuthUI;
+
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,11 +32,14 @@ public class MainActivity extends AppCompatActivity implements
         private RecyclerView mAnimalsRecycler; // reference to RecyclerView
         private ResidentAdapter mAdapter; // ???
 
+        private static final int RC_SIGN_IN = 9001;
+
         @Override
         protected void onCreate(Bundle savedInstanceState)
         {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+
 
             // Initialize the database references
             mAnimalsRecycler = findViewById(R.id.animal_recyclerview);
@@ -56,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements
         @Override
         public void onStart() {
             super.onStart();
+
+            if (shouldStartSignIn()) {
+                startSignIn();
+                return;
+            }
+
             if (mAdapter != null) {
                 mAdapter.startListening();
             }
@@ -70,5 +86,20 @@ public class MainActivity extends AppCompatActivity implements
         intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
         intent.putExtra(TabbedTasks.RESIDENT_NAME, resClass.getName());
         startActivity(intent);
+    }
+
+    private boolean shouldStartSignIn() {
+        return (FirebaseAuth.getInstance().getCurrentUser() == null);
+    }
+
+    private void startSignIn() {
+        // Sign in with FirebaseUI
+        Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
+                .setAvailableProviders(Collections.singletonList(
+                        new AuthUI.IdpConfig.EmailBuilder().build()))
+                .setIsSmartLockEnabled(false)
+                .build();
+
+        startActivityForResult(intent, RC_SIGN_IN);
     }
 }
