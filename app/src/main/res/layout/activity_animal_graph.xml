@@ -1,33 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout2"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="0dp"
-    android:orientation="vertical"
-    android:padding="20dp">
+    android:layout_margin="0dp">
 
     <Spinner
         android:id="@+id/select_log"
         android:layout_width="wrap_content"
-        android:layout_height="49dp"
+        android:layout_height="wrap_content"
         android:entries="@array/profile_options"
         android:spinnerMode="dropdown"
-        android:layout_gravity="center"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.065" />
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/diet_chart"
+        android:layout_width="341dp"
+        android:layout_height="443dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_log">
+
+    </com.github.mikephil.charting.charts.BarChart>
 
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/outside_time_chart"
         android:layout_width="341dp"
-        android:layout_height="418dp"
-        android:layout_margin="20dp"
-        android:padding="20dp" />
-        -->
+        android:layout_height="443dp"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_log">
 
-    <com.github.mikephil.charting.charts.PieChart
-        android:id="@+id/pie_chart"
-        android:layout_width="341dp"
-        android:layout_height="418dp"
-        android:layout_margin="20dp"
-        android:padding="20dp" />
+    </com.github.mikephil.charting.charts.LineChart>
 
-</LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

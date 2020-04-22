@@ -16,7 +16,6 @@ import java.util.Collections;
 import com.firebase.ui.auth.AuthUI;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements
     public void OnResidentSelected(DocumentSnapshot resident)
     {
         Resident resClass = resident.toObject(Resident.class);
-        // Go to the details page for the selected restaurant
+        // Go to the details page for the selected resident
         Intent intent = new Intent(this, TabbedTasks.class);
         intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
         intent.putExtra(TabbedTasks.RESIDENT_NAME, resClass.getName());

@@ -25,25 +25,27 @@
 
     <Spinner
         android:id="@+id/food_type_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="152dp"
+        android:layout_height="42dp"
         android:layout_marginBottom="24dp"
         android:entries="@array/foodType"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/food_count_spinner"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="Select Food" />
 
     <Spinner
         android:id="@+id/food_count_spinner"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="152dp"
+        android:layout_height="42dp"
         android:layout_below="@+id/food_type_spinner"
         android:layout_marginTop="260dp"
         android:entries="@array/foodCount"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.492"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Select Food" />
