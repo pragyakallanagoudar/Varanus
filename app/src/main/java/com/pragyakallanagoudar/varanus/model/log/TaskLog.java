@@ -1,5 +1,7 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
+import com.pragyakallanagoudar.varanus.model.TaskType;
+
 public class TaskLog
 {
     public long completedTime;
@@ -34,6 +36,11 @@ public class TaskLog
     }
 
     public void setBehaviorText (String behaviorText) throws Exception
+    {
+        throw new Exception();
+    }
+
+    public void setTask (TaskType task) throws Exception
     {
         throw new Exception();
     }

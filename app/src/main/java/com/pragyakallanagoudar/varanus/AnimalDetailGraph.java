@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -51,6 +52,7 @@ public class AnimalDetailGraph extends Fragment implements
     private Spinner mProfileSelector;
     private LineChart mOutsideChart;
     private BarChart mDietChart;
+    private TextView mEnclosureReport;
 
     private FirebaseFirestore mFirestore;
     private String residentID;
@@ -81,6 +83,9 @@ public class AnimalDetailGraph extends Fragment implements
         getLogs("FeedLog");
         mDietChart.invalidate();
 
+        mEnclosureReport = v.findViewById(R.id.enclosure_report);
+        // create enclosure report here
+
         setAllInvisible();
 
         mProfileSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -97,6 +102,8 @@ public class AnimalDetailGraph extends Fragment implements
                     case "Exercise":
                         mOutsideChart.setVisibility(View.VISIBLE);
                         break;
+                    case "Enclosure":
+                        mEnclosureReport.setVisibility(View.VISIBLE);
                 }
             }
 
@@ -112,6 +119,7 @@ public class AnimalDetailGraph extends Fragment implements
     private void setAllInvisible () {
         mOutsideChart.setVisibility(View.INVISIBLE);
         mDietChart.setVisibility(View.INVISIBLE);
+        mEnclosureReport.setVisibility(View.INVISIBLE);
     }
 
     @Nullable

@@ -129,6 +129,9 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
                 case EXERCISE:
                     instruction = "Outside for some exercise.";
                     break;
+                case ENRICH:
+                    instruction = "Enclosure enrichment.";
+                    break;
                 default:
                     instruction = type.toString();
                     break;

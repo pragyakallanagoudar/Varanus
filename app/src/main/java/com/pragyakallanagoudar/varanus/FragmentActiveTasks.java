@@ -57,7 +57,7 @@ public class FragmentActiveTasks extends Fragment implements
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryActiveTasks = mFirestore.collection("Guadalupe Residents")
-                .document(residentID).collection("Tasks");
+                .document(residentID).collection("Tasks").orderBy("activityType");
     }
 
     private void initRecyclerView() {

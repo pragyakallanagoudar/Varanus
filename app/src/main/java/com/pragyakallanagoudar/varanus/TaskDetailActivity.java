@@ -28,6 +28,7 @@ import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.pragyakallanagoudar.varanus.model.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;
 import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
@@ -88,6 +89,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
         String descriptionText, task, info = "";
         String user = "User";
 
+        Log.e(TAG, type.toString());
+
         // Get logName and set content view according to task type (retrieved above)
         switch(type) {
             case FEED:
@@ -116,9 +119,17 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case CLEAN:
-                logName = "CleanLog";
+                //logName = "CleanLog";
+                logName = "EnclosureLog";
                 setContentView(R.layout.activity_task_default);
                 task = "cleaning " + residentID.substring(residentID.indexOf("-") + 2) + "'s enclosure";
+                descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
+                break;
+            case ENRICH:
+                Log.e(TAG, "yo???");
+                logName = "EnclosureLog";
+                setContentView(R.layout.activity_task_default);
+                task = "enriching " + residentID.substring(residentID.indexOf("-") + 2) + "'s enclosure";
                 descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
                 break;
             default:
@@ -237,6 +248,11 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 case BEHAVIOR:
                     taskLog = new BehaviorLog(0, "");
                     break;
+                case ENRICH:
+                case CLEAN:
+                    Log.e(TAG, "Are we going in here?");
+                    taskLog = new EnclosureLog(0, type);
+                    break;
                 default:
                     taskLog = new TaskLog(0);
                     break;
@@ -266,7 +282,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     Log.e(TAG, exerciseLog.getOutsideTime() + "");
                     break;
                 case CLEAN:
-                    taskLog = document.toObject(TaskLog.class);
+                case ENRICH:
+                    taskLog = document.toObject(EnclosureLog.class);
                     break;
                 case BEHAVIOR:
                     taskLog = document.toObject(BehaviorLog.class);

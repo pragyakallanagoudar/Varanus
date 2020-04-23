@@ -41,10 +41,21 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_log">
 
     </com.github.mikephil.charting.charts.LineChart>
+
+    <TextView
+        android:id="@+id/enclosure_report"
+        android:layout_width="341dp"
+        android:layout_height="443dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/select_log"
+        tools:layout_editor_absoluteX="71dp"
+        tools:layout_editor_absoluteY="358dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
