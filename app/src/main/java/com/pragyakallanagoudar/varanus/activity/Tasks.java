@@ -1,4 +1,4 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,6 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
+import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;

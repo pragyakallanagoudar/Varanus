@@ -1,4 +1,4 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.activity;
 
 // All import statements listed below
 
@@ -24,6 +24,7 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.ListenerRegistration;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
+import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.pragyakallanagoudar.varanus.model.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;

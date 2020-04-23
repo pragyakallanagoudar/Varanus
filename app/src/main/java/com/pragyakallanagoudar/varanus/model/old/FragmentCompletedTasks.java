@@ -10,7 +10,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.TaskDetailActivity;
+import com.pragyakallanagoudar.varanus.activity.TaskDetailActivity;
 import com.pragyakallanagoudar.varanus.adapter.TasksAdapter;
 
 import java.util.Date;

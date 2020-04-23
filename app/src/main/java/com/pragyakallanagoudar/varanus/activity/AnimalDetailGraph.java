@@ -1,8 +1,10 @@
-package com.pragyakallanagoudar.varanus;
+package com.pragyakallanagoudar.varanus.activity;
 
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.RelativeSizeSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,6 +33,10 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 // import com.google.type.Date;
+// import com.google.type.Date;
+import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.model.TaskType;
+import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
@@ -104,6 +110,8 @@ public class AnimalDetailGraph extends Fragment implements
                         break;
                     case "Enclosure":
                         mEnclosureReport.setVisibility(View.VISIBLE);
+                        getLogs("EnclosureLog");
+                        break;
                 }
             }
 
@@ -171,6 +179,9 @@ public class AnimalDetailGraph extends Fragment implements
                                     case "FeedLog":
                                         logs.add(document.toObject(FeedLog.class));
                                         break;
+                                    case "EnclosureLog":
+                                        logs.add(document.toObject(EnclosureLog.class));
+                                        break;
                                     default:
                                         logs.add(document.toObject(TaskLog.class));
                                         break;
@@ -187,96 +198,154 @@ public class AnimalDetailGraph extends Fragment implements
     private void makeGraph (String logName, List<TaskLog> logs)
     {
         Log.e(TAG, "makeGraph()");
-        int counter = 1;
 
         switch(logName) {
             case "ExerciseLog":
-                // Create the Exercise Report
-                List<Entry> exerciseEntries = new ArrayList<Entry>();
-                for (TaskLog log : logs)
-                {
-                    ExerciseLog exerciseLog = (ExerciseLog)log;
-                    exerciseEntries.add(new Entry(counter, exerciseLog.getOutsideTime()));
-                    Log.e(TAG, "DATA HERE " + exerciseLog.getOutsideTime());
-                    counter++;
-                }
-                LineDataSet dataSet = new LineDataSet(exerciseEntries, "Time Spent Outside");
-                dataSet.setColor(Color.BLACK);
-                // dataSet.setValueTextColor(Color.RED);
-                LineData lineData = new LineData(dataSet);
-                mOutsideChart.setData(lineData);
-                mOutsideChart.setDrawGridBackground(false);
-                Description desc = new Description();
-                desc.setText("The time spent outside everyday for the past 15 days.");
-                mOutsideChart.setDescription(desc);
-                mOutsideChart.setNoDataText("Varanus is unable to retrieve the OutsideLogs from the database.");
-                mOutsideChart.setDrawBorders(true);
-                mOutsideChart.invalidate();
+                makeExerciseReport(logs);
                 break;
 
             case "FeedLog":
-                Log.e(TAG, "We are here to make the FeedLog Report.");
-                List<BarEntry> feedEntries = new ArrayList<BarEntry>();
-                long weekBreakoff = logs.get(0).getCompletedTime() + 10 /**604800000*/;
-                int cricketCount = 0;
-                int ratCount = 0;
-                for (int i = 0; i < logs.size(); i++)
-                {
-                    FeedLog feedLog = (FeedLog)logs.get(i);
-                    if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
-                        cricketCount += feedLog.getFoodCount();
-                        Log.e(TAG, "We have a Cricket FeedLog!");
-                    }
-                    else
-                    {
-                        ratCount += feedLog.getFoodCount();
-                        Log.e(TAG, "We have a Rat FeedLog!");
-                    }
-                    if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff)
-                    {
-                        weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
-                        feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
-                        cricketCount = ratCount = 0;
-                        counter++;
-                        Log.e(TAG, "New Week");
-                    }
-                }
-                // There is one odd case that hasn't been handled that will come up.
+                makeDietReport(logs);
+                break;
 
-                feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
-
-                BarDataSet foodSet;
-                if (mDietChart.getData() != null &&
-                        mDietChart.getData().getDataSetCount() > 0) {
-                    Log.e(TAG, "First conditional space");
-                    foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
-                    foodSet.setValues(feedEntries);
-                    mDietChart.getData().notifyDataChanged();
-                    mDietChart.notifyDataSetChanged();
-                } else {
-                    Log.e(TAG, "Second conditional space");
-                    foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
-                    Log.e(TAG, foodSet.toString());
-                    foodSet.setDrawIcons(false);
-                    Resources res = getResources();
-                    int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark)};
-                    foodSet.setColors(colors);
-                    foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
-                    ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-                    dataSets.add(foodSet);
-
-                    BarData data = new BarData(dataSets);
-                    data.setValueTextColor(Color.WHITE);
-
-                    mDietChart.setData(data);
-                }
-
-                mDietChart.setFitBars(true);
-                mDietChart.invalidate();
-
+            case "EnclosureLog":
+                makeEnclosureReport(logs);
                 break;
         }
 
+    }
+
+    private void makeExerciseReport (List<TaskLog> logs)
+    {
+        int counter = 1;
+        // Create the Exercise Report
+        List<Entry> exerciseEntries = new ArrayList<Entry>();
+        for (TaskLog log : logs)
+        {
+            ExerciseLog exerciseLog = (ExerciseLog)log;
+            exerciseEntries.add(new Entry(counter, exerciseLog.getOutsideTime()));
+            Log.e(TAG, "DATA HERE " + exerciseLog.getOutsideTime());
+            counter++;
+        }
+        LineDataSet dataSet = new LineDataSet(exerciseEntries, "Time Spent Outside");
+        dataSet.setColor(Color.BLACK);
+        // dataSet.setValueTextColor(Color.RED);
+        LineData lineData = new LineData(dataSet);
+        mOutsideChart.setData(lineData);
+        mOutsideChart.setDrawGridBackground(false);
+        Description desc = new Description();
+        desc.setText("The time spent outside everyday for the past 15 days.");
+        mOutsideChart.setDescription(desc);
+        mOutsideChart.setNoDataText("Varanus is unable to retrieve the OutsideLogs from the database.");
+        mOutsideChart.setDrawBorders(true);
+        mOutsideChart.invalidate();
+    }
+
+    private void makeDietReport (List<TaskLog> logs)
+    {
+        int counter = 1;
+        Log.e(TAG, "We are here to make the FeedLog Report.");
+        List<BarEntry> feedEntries = new ArrayList<BarEntry>();
+        long weekBreakoff = logs.get(0).getCompletedTime() + 10 /**604800000*/;
+        int cricketCount = 0;
+        int ratCount = 0;
+        for (int i = 0; i < logs.size(); i++)
+        {
+            FeedLog feedLog = (FeedLog)logs.get(i);
+            if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
+                cricketCount += feedLog.getFoodCount();
+                Log.e(TAG, "We have a Cricket FeedLog!");
+            }
+            else
+            {
+                ratCount += feedLog.getFoodCount();
+                Log.e(TAG, "We have a Rat FeedLog!");
+            }
+            if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff)
+            {
+                weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
+                feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
+                cricketCount = ratCount = 0;
+                counter++;
+                Log.e(TAG, "New Week");
+            }
+        }
+        // There is one odd case that hasn't been handled that will come up.
+
+        feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
+
+        BarDataSet foodSet;
+        if (mDietChart.getData() != null &&
+                mDietChart.getData().getDataSetCount() > 0) {
+            Log.e(TAG, "First conditional space");
+            foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
+            foodSet.setValues(feedEntries);
+            mDietChart.getData().notifyDataChanged();
+            mDietChart.notifyDataSetChanged();
+        } else {
+            Log.e(TAG, "Second conditional space");
+            foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
+            Log.e(TAG, foodSet.toString());
+            foodSet.setDrawIcons(false);
+            Resources res = getResources();
+            int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark)};
+            foodSet.setColors(colors);
+            foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
+            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+            dataSets.add(foodSet);
+
+            BarData data = new BarData(dataSets);
+            data.setValueTextColor(Color.WHITE);
+
+            mDietChart.setData(data);
+        }
+
+        mDietChart.setFitBars(true);
+        mDietChart.invalidate();
+    }
+
+    private void makeEnclosureReport(List<TaskLog> logs)
+    {
+        int expectedClean = (int) ((new Date().getTime() - logs.get(0).getCompletedTime()) / 84600000);
+        int actualClean = 0;
+        int expectedEnrich = (int) ((new Date().getTime() - logs.get(0).getCompletedTime()) / 604800000);
+        int actualEnrich = 0;
+
+        for (TaskLog log : logs)
+        {
+            EnclosureLog enclosureLog = (EnclosureLog)log;
+            if (enclosureLog.getTask() == TaskType.CLEAN)
+                actualClean++;
+            else
+                actualEnrich++;
+        }
+        int cleanLevel = getLevel((double)(actualClean) / expectedClean);
+        int enrichLevel = getLevel((double)(actualEnrich) / expectedEnrich);
+        String[] messages = {"This indicates that the enclosure is being regularly %sed.",
+                            "This indicates that the enclosure is not being %sed enough.",
+                            "This indicates that the enclosure is not being %sed regularly."};
+        String source = "Clean Level " + cleanLevel + "\n" + String.format(messages[cleanLevel-1], "clean")
+                + "\n\nEnrichment Level " + enrichLevel + "\n" + String.format(messages[cleanLevel-1], "enrich");
+        SpannableString ssn = new SpannableString(source);
+        ssn.setSpan(new RelativeSizeSpan(2f), 0, source.indexOf('\n'), 0);
+        ssn.setSpan(new RelativeSizeSpan(2f), source.indexOf('.') + 1, source.lastIndexOf('\n') + 1, 0);
+        mEnclosureReport.setText(ssn);
+    }
+
+    private int getLevel (double ratio)
+    {
+        if (ratio > 0.90)
+        {
+            return 1;
+        }
+        else if (ratio > 0.70)
+        {
+            return 2;
+        }
+        else
+        {
+            return 3;
+        }
     }
 
     @Override

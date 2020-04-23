@@ -11,11 +11,11 @@
         android:roundIcon="@drawable/ic_varanus_logo2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".TabbedTasks" />
-        <activity android:name=".TaskDetailActivity" />
-        <activity android:name=".AnimalDetailGraph" />
+        <activity android:name=".activity.TabbedTasks" />
+        <activity android:name=".activity.TaskDetailActivity" />
+        <activity android:name=".activity.AnimalDetailGraph" />
         <activity
-            android:name=".MainActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
