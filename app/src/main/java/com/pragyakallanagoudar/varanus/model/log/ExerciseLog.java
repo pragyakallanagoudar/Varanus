@@ -1,6 +1,8 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
 
+import android.os.Parcel;
+
 public class ExerciseLog extends TaskLog
 {
     public int outsideTime;
@@ -27,5 +29,17 @@ public class ExerciseLog extends TaskLog
                 "completedTime=" + completedTime + "," +
                 "outsideTime=" + outsideTime +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(completedTime);
+        parcel.writeString(user);
+        parcel.writeInt(outsideTime);
     }
 }

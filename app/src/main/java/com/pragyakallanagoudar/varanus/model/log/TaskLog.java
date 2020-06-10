@@ -1,14 +1,35 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.pragyakallanagoudar.varanus.model.TaskType;
 
-public class TaskLog
+public class TaskLog implements Parcelable
 {
     public long completedTime;
+    public String user;
 
     public TaskLog (long completedTime) { this.completedTime = completedTime; }
 
     public TaskLog () {}
+
+    protected TaskLog(Parcel in) {
+        completedTime = in.readLong();
+        user = in.readString();
+    }
+
+    public static final Creator<TaskLog> CREATOR = new Creator<TaskLog>() {
+        @Override
+        public TaskLog createFromParcel(Parcel in) {
+            return new TaskLog(in);
+        }
+
+        @Override
+        public TaskLog[] newArray(int size) {
+            return new TaskLog[size];
+        }
+    };
 
     public long getCompletedTime()
     {
@@ -19,6 +40,16 @@ public class TaskLog
     {
         this.completedTime = completedTime;
     }
+
+    public String getUser()
+    {
+        if (user != null)
+            return user;
+        else
+            return "Unidentified User";
+    }
+
+    public void setUser(String user) { this.user = user; }
 
     public void setFoodCount(int foodCount) throws Exception
     {
@@ -43,6 +74,28 @@ public class TaskLog
     public void setTask (TaskType task) throws Exception
     {
         throw new Exception();
+    }
+
+    public void setCleanLevel (int cleanLevel) throws Exception
+    {
+        throw new Exception();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeLong(completedTime);
+        parcel.writeString(user);
+    }
+
+    @Override
+    public String toString()
+    {
+        return "TaskLog";
     }
 
 }

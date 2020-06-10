@@ -22,6 +22,7 @@
     <string name="select_profile_option">Select a Report</string>
     <string name="default_task_description">Hello, %1$s! Thank you for %2$s. Please click Submit below to let us know you\'re done.</string>
     <string name="task_description">Hello, %1$s! Thank you for %2$s. Please %3$s below and click Submit.</string>
+    <string name="email_summary_description">Hello, %1$s! Enter the recipient email address and the time frame below to receive a report on %2$s\'s health.</string>
 
     <!-- Food Type activity -->
     <string-array name="foodType">
@@ -54,7 +55,15 @@
         <item>Exercise</item>
         <item>Enclosure</item>
         <item>Behavior</item>
+        <item>Email Summary</item>
     </string-array>
+
+    <string-array name="clean_levels">
+        <item>Not Cleaned</item>
+        <item>Cleaned</item>
+        <item>Deep Cleaned</item>
+    </string-array>
+
     <string name="title_activity_sign_up">SignUpActivity</string>
     <!-- Strings used for fragments for navigation -->
     <string name="first_fragment_label">First Fragment</string>
@@ -64,6 +73,8 @@
 
     <string name="hello_first_fragment">Hello first fragment</string>
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_activity_email_summary">EmailSummaryActivity</string>
 
 
 </resources>

@@ -1,5 +1,6 @@
 package com.pragyakallanagoudar.varanus.adapter;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
         TextView enclosureView; // displays enclosure
         TextView animalView; // name of the animal
         ImageView animalImageView; // picture of animal
-        ImageView animalStatusView; // status of animal: tasks completed/not?
+       // ImageView animalStatusView; // status of animal: tasks completed/not?
         String TAG = ViewHolder.class.getSimpleName();
 
         public ViewHolder(View itemView) {
@@ -56,7 +57,8 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             enclosureView = itemView.findViewById(R.id.enclosure);
             animalView = itemView.findViewById(R.id.animal_name);
             animalImageView = itemView.findViewById(R.id.animal_image);
-            animalStatusView = itemView.findViewById(R.id.animal_status);
+           // animalStatusView = itemView.findViewById(R.id.animal_status);
+            Log.e(TAG, "making the viewholder");
         }
 
         public void bind(final DocumentSnapshot snapshot,
@@ -64,10 +66,11 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
 
             // Saving the data to local variables
             Resident resident = snapshot.toObject(Resident.class);
-            // enclosureView.setText(resident.getSpecies() + ", " + resident.getEnclosure());
-            enclosureView.setText("Tasks Remaining");
+            Log.e(TAG, "inside the bind method");
+            enclosureView.setText(resident.getSpecies() + ", " + resident.getEnclosure());
+            // enclosureView.setText("Tasks Remaining");
             animalView.setText(resident.getName());
-            animalStatusView.setBackgroundResource(R.drawable.ic_warning);
+            // animalStatusView.setBackgroundResource(R.drawable.ic_warning);
 
             // taskCountView.setText(count[0] + " tasks remaining");
 

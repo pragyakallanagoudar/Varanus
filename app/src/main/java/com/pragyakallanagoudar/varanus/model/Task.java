@@ -6,18 +6,16 @@ public class Task
 {
     public String activityType;
     public String taskType;
-    public String description;
     public long lastCompleted;
     public String frequency;
     public String lastLogID;
 
     public Task() {}
 
-    public Task(String activityType, String description, long lastCompleted, String taskType, String frequency, String lastLogID)
+    public Task(String activityType, long lastCompleted, String taskType, String frequency, String lastLogID)
     {
 
         this.activityType = activityType;
-        this.description = description;
         this.lastCompleted = lastCompleted;
         this.taskType = taskType;
         this.frequency = frequency;
@@ -32,12 +30,6 @@ public class Task
     {
         this.activityType = activityType;
     }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) { this.description = description; }
 
     public long getLastCompleted() { return lastCompleted; }
 

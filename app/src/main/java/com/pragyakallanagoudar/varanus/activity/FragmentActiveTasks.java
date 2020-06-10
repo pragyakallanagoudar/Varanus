@@ -28,10 +28,14 @@ public class FragmentActiveTasks extends Fragment implements
     private RecyclerView mActiveTasksRecycler; // RecylerView of active tasks
     private TasksAdapter mAdapter;
     private String residentID; // name of resident?
+    private String residentName;
     View v;
 
-    public FragmentActiveTasks(String residentID) {
+    public FragmentActiveTasks () {}
+
+    public FragmentActiveTasks(String residentID, String residentName) {
         this.residentID = residentID;
+        this.residentName = residentName;
     }
 
     @Nullable
@@ -88,6 +92,7 @@ public class FragmentActiveTasks extends Fragment implements
         Intent intent = new Intent(v.getContext(), TaskDetailActivity.class);
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
         intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, residentID);
+        intent.putExtra(TaskDetailActivity.KEY_RESIDENT_NAME, residentName);
         startActivity(intent);
     }
 }

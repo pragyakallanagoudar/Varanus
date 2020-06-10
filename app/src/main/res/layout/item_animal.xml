@@ -8,12 +8,14 @@
     android:orientation="vertical"
     android:padding="8dp">
 
+
     <ImageView
         android:id="@+id/animal_image"
         android:layout_width="100dp"
         android:layout_height="100dp"
         android:scaleType="centerCrop"
         tools:src="@drawable/varanus" />
+
 
     <TextView
         android:id="@+id/animal_name"
@@ -39,6 +41,8 @@
         android:text="Enclosure"
         tools:text="Enclosure" />
 
+    <!--
+
     <ImageView
         android:id="@+id/animal_status"
         android:layout_width="30dp"
@@ -46,4 +50,5 @@
         android:layout_below="@+id/enclosure"
         android:layout_alignLeft="@+id/enclosure"
         tools:src="@drawable/ic_check" />
+        -->
 </RelativeLayout>

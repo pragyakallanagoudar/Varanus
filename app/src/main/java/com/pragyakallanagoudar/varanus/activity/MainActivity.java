@@ -1,7 +1,15 @@
 package com.pragyakallanagoudar.varanus.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -33,6 +41,8 @@ public class MainActivity extends AppCompatActivity implements
 
         private static final int RC_SIGN_IN = 9001;
 
+        private static String TAG = MainActivity.class.getSimpleName();
+
         @Override
         protected void onCreate(Bundle savedInstanceState)
         {
@@ -45,18 +55,21 @@ public class MainActivity extends AppCompatActivity implements
             initFirestore();
             initRecyclerView();
 
+            Toolbar toolbar = findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
         }
         private void initFirestore() {
             mFirestore = FirebaseFirestore.getInstance();
 
             // get the first 50 documents from the collection Guadalupe Residents
             mQueryResidents = mFirestore.collection("Guadalupe Residents")
-                    .limit(50);
+                    .limit(50).orderBy("enclosure");
 
             // to try the experimental version, replace "Guadalupe Residents" with "Experimental" above
         }
 
         private void initRecyclerView() {
+            Log.e(TAG, "initRecyclerView()");
             mAdapter = new ResidentAdapter(mQueryResidents, this);
             mAnimalsRecycler.setLayoutManager(new LinearLayoutManager(this));
             mAnimalsRecycler.setAdapter(mAdapter);
@@ -88,11 +101,13 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     private boolean shouldStartSignIn() {
+        Log.e(String.valueOf(FirebaseAuth.getInstance().getCurrentUser()), MainActivity.class.getSimpleName());
         return (FirebaseAuth.getInstance().getCurrentUser() == null);
     }
 
     private void startSignIn() {
         // Sign in with FirebaseUI
+        Log.e("hi", MainActivity.class.getSimpleName());
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))
@@ -100,5 +115,45 @@ public class MainActivity extends AppCompatActivity implements
                 .build();
 
         startActivityForResult(intent, RC_SIGN_IN);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out:
+                new AlertDialog.Builder(this)
+                        .setTitle("Sign Out")
+                        .setMessage("Are you sure you want to sign out?")
+
+                        // Specifying a listener allows you to take an action before dismissing the dialog.
+                        // The dialog is automatically dismissed when a dialog button is clicked.
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                FirebaseAuth.getInstance().signOut();
+                                if (shouldStartSignIn()) startSignIn();
+                            }
+                        })
+
+                        // A null listener allows the button to dismiss the dialog and take no further action.
+                        .setNegativeButton(android.R.string.no, null)
+                        .show();
+                        break;
+            case R.id.unlock_controls:
+                if (item.getTitle().equals("Unlock Admin Controls")) {
+                    item.setTitle("Lock Admin Controls");
+                } else {
+                    item.setTitle("Unlock Admin Controls");
+                }
+
+                break;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

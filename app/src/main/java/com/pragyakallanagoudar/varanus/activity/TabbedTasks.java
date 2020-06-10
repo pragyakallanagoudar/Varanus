@@ -47,8 +47,8 @@ public class TabbedTasks extends AppCompatActivity {
 
         // set up View Pager adapter and add it
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentActiveTasks(residentID), "Tasks");
-        adapter.addFragment(new AnimalDetailGraph(residentID), "Profile");
+        adapter.addFragment(new FragmentActiveTasks(residentID, residentName), "Tasks");
+        adapter.addFragment(new AnimalDetailGraph(residentID, residentName), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
     }

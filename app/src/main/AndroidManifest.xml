@@ -2,8 +2,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.pragyakallanagoudar.varanus">
 
-    <!--android:roundIcon="@mipmap/ic_launcher_round"-->
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -11,6 +9,10 @@
         android:roundIcon="@drawable/ic_varanus_logo2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.EmailSummaryActivity"
+            android:label="@string/title_activity_email_summary"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".activity.TabbedTasks" />
         <activity android:name=".activity.TaskDetailActivity" />
         <activity android:name=".activity.AnimalDetailGraph" />

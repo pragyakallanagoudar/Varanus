@@ -2,9 +2,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.pragyakallanagoudar.varanus.activity.MainActivity">
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
-        android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:id="@+id/sign_out"
+        android:icon="@drawable/ic_sign_out"
+        android:title="Sign Out"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/unlock_controls"
+        android:icon="@drawable/ic_sign_out"
+        android:title="Unlock Admin Controls"
+        app:showAsAction="never"/>
+
 </menu>

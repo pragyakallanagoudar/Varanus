@@ -16,6 +16,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -34,6 +35,7 @@ import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
+
 import java.util.Date;
 
 import androidx.annotation.NonNull;
@@ -49,6 +51,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     public static final String KEY_TASK_ID = "key_task_id";
     public static final String KEY_RESIDENT_ID = "key_resident_id";
+    public static final String KEY_RESIDENT_NAME = "key_resident_name";
 
     // The components on the screen.
     private TextView title;
@@ -57,6 +60,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private Spinner mFoodCount;
     private EditText mExerciseTime;
     private EditText mBehaviorText;
+    private Spinner mCleanLevel;
 
     // Database references and listeners
     private FirebaseFirestore mFirestore;
@@ -67,6 +71,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TaskLogAdapter mTaskLogAdapter;
 
     private String residentID;
+    private String residentName;
     private TaskType type;
     private String logName;
     private String oldTaskID; // empty String if task is black
@@ -81,6 +86,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         // Get task id from extras
         String taskID = getIntent().getExtras().getString(KEY_TASK_ID);
         residentID = getIntent().getExtras().getString(KEY_RESIDENT_ID);
+        residentName = getIntent().getExtras().getString(KEY_RESIDENT_NAME);
         if (taskID == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
         }
@@ -88,7 +94,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         Resources res = getResources();
         String descriptionText, task, info = "";
-        String user = "User";
+        String user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        // user = user.substring(user.indexOf(" "));
 
         Log.e(TAG, type.toString());
 
@@ -99,7 +106,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 setContentView(R.layout.activity_task_feed);
                 mFoodType = findViewById(R.id.food_type_spinner);
                 mFoodCount = findViewById(R.id.food_count_spinner);
-                task = "feeding " + residentID.substring(residentID.indexOf("-") + 2);
+                task = "feeding " + residentName;
                 info = "select the food type and count";
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
@@ -107,7 +114,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 logName = "BehaviorLog";
                 setContentView(R.layout.activity_task_behavior);
                 mBehaviorText = findViewById(R.id.edit_behavior);
-                task = "reporting " + residentID.substring(residentID.indexOf("-") + 2) + "'s behavior";
+                task = "reporting " + residentName + "'s behavior";
                 info = "enter a short summary";
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
@@ -115,22 +122,24 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 logName = "ExerciseLog";
                 setContentView(R.layout.activity_task_exercise);
                 mExerciseTime = findViewById(R.id.edit_time);
-                task = "taking " + residentID.substring(residentID.indexOf("-") + 2) + " out for some exercise";
+                task = "taking " + residentName + " outside";
                 info = "enter the time spent outside";
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case CLEAN:
                 //logName = "CleanLog";
                 logName = "EnclosureLog";
-                setContentView(R.layout.activity_task_default);
-                task = "cleaning " + residentID.substring(residentID.indexOf("-") + 2) + "'s enclosure";
-                descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
+                setContentView(R.layout.activity_task_clean);
+                mCleanLevel = findViewById(R.id.select_clean_level);
+                task = "cleaning " + residentName + "'s enclosure";
+                info = "select the level of cleaning done";
+                descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case ENRICH:
                 Log.e(TAG, "yo???");
                 logName = "EnclosureLog";
                 setContentView(R.layout.activity_task_default);
-                task = "enriching " + residentID.substring(residentID.indexOf("-") + 2) + "'s enclosure";
+                task = "enriching " + residentName + "'s enclosure";
                 descriptionText = String.format(res.getString(R.string.default_task_description), user, task);
                 break;
             default:
@@ -144,7 +153,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
         title = findViewById(R.id.title);
-        title.setText(type.toString() + " " + residentID.substring(residentID.indexOf('-') + 2));
+        title.setText(type.toString() + " " + residentName);
 
         description = findViewById(R.id.description);
         description.setText(descriptionText);
@@ -252,7 +261,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 case ENRICH:
                 case CLEAN:
                     Log.e(TAG, "Are we going in here?");
-                    taskLog = new EnclosureLog(0, type);
+                    taskLog = new EnclosureLog(0, type, 0);
                     break;
                 default:
                     taskLog = new TaskLog(0);
@@ -283,6 +292,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     Log.e(TAG, exerciseLog.getOutsideTime() + "");
                     break;
                 case CLEAN:
+                    taskLog = document.toObject(EnclosureLog.class);
+                    EnclosureLog enclosureLog = (EnclosureLog)taskLog;
+                    mCleanLevel.setSelection(enclosureLog.getCleanLevel());
+                    break;
                 case ENRICH:
                     taskLog = document.toObject(EnclosureLog.class);
                     break;
@@ -327,6 +340,9 @@ public class TaskDetailActivity extends AppCompatActivity implements
         // set completed time of the taskLog to now.
         taskLog.setCompletedTime(new Date().getTime());
 
+        // set user to name of current user
+        taskLog.setUser(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+
         // Boolean switches for two possible types of errors
         boolean emptyFields = false; // all fields have not been filled.
         boolean wrongLog = false; // wrong type of TaskLog used (technically, should not be possible.)
@@ -356,6 +372,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     if (!emptyFields)
                         taskLog.setBehaviorText(mBehaviorText.getText().toString());
                     Log.e(TAG, "behavior text " + mBehaviorText.getText().toString());
+                    break;
+                case CLEAN:
+                    // default value: "Not Cleaned"
+                    taskLog.setCleanLevel(mCleanLevel.getSelectedItemPosition());
                     break;
                 default:
                     // do nothing: we will come back and resolve this

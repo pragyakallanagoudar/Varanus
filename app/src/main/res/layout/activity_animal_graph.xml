@@ -45,17 +45,60 @@
 
     </com.github.mikephil.charting.charts.LineChart>
 
-    <TextView
-        android:id="@+id/enclosure_report"
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:id="@+id/enclosure_calendar"
         android:layout_width="341dp"
         android:layout_height="443dp"
-        android:text="TextView"
-        android:textSize="10sp"
-        android:textStyle="bold"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:compactCalendarBackgroundColor="#008577"
+        app:compactCalendarCurrentDayBackgroundColor="#00574B"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#23B0A1"
+        app:compactCalendarMultiEventIndicatorColor="#fff"
+        app:compactCalendarTargetHeight="250dp"
+        app:compactCalendarTextColor="#fff"
+        app:compactCalendarTextSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/select_log" />
+
+    <ScrollView
+        android:id="@+id/behavior_view"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_gravity="center_horizontal"
+        android:padding="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/border"
+        app:layout_constraintTop_toBottomOf="@+id/select_log">
+
+        <TextView
+            android:id="@+id/behavior_report"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="#000000"
+            android:textSize="15sp" />
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/month_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/behavior_view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/behavior_view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

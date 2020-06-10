@@ -1,17 +1,20 @@
 package com.pragyakallanagoudar.varanus.activity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.RelativeSizeSpan;
+import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -23,8 +26,12 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +43,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 // import com.google.type.Date;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.TaskType;
+import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
@@ -44,32 +52,45 @@ import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-
 
 public class AnimalDetailGraph extends Fragment implements
         View.OnClickListener,
         EventListener<DocumentSnapshot> {
 
     public static final String KEY_TASK_ID = "key_task_id";
+
     private Spinner mProfileSelector;
     private LineChart mOutsideChart;
     private BarChart mDietChart;
-    private TextView mEnclosureReport;
+    private ScrollView mBehaviorView;
+    private TextView mBehaviorReport;
+    private CompactCalendarView mEnclosureCalendar;
+    private TextView mMonthView;
 
     private FirebaseFirestore mFirestore;
     private String residentID;
+    private String residentName;
     View v;
 
+    private boolean summary;
+    private int logsRetrieved;
+
+    private Intent emailIntent;
 
     private String TAG = AnimalDetailGraph.class.getSimpleName();
 
-    public AnimalDetailGraph(String residentID)
+    private boolean[] reportGenerated;
+
+    public AnimalDetailGraph(String residentID, String residentName)
     {
         this.residentID = residentID;
+        this.residentName = residentName;
     }
 
     @Nullable
@@ -82,17 +103,24 @@ public class AnimalDetailGraph extends Fragment implements
         v = inflater.inflate(R.layout.activity_animal_graph, container,false);
         mProfileSelector = v.findViewById(R.id.select_log);
         mOutsideChart = v.findViewById(R.id.outside_time_chart);
-        getLogs("ExerciseLog");
         mOutsideChart.invalidate();
 
         mDietChart = v.findViewById(R.id.diet_chart);
-        getLogs("FeedLog");
         mDietChart.invalidate();
 
-        mEnclosureReport = v.findViewById(R.id.enclosure_report);
+        mEnclosureCalendar = v.findViewById(R.id.enclosure_calendar);
+        mEnclosureCalendar.shouldScrollMonth(true);
+        mMonthView = v.findViewById(R.id.month_view);
         // create enclosure report here
 
+        mBehaviorReport = v.findViewById(R.id.behavior_report);
+        mBehaviorView = v.findViewById(R.id.behavior_view);
+
+        emailIntent = new Intent(getContext(), EmailSummaryActivity.class);
+
         setAllInvisible();
+
+        reportGenerated = new boolean[4];
 
         mProfileSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
@@ -104,13 +132,32 @@ public class AnimalDetailGraph extends Fragment implements
                 switch (mProfileSelector.getSelectedItem().toString()) {
                     case "Diet":
                         mDietChart.setVisibility(View.VISIBLE);
+                        if (!reportGenerated[0])
+                            getLogs("FeedLog");
                         break;
                     case "Exercise":
                         mOutsideChart.setVisibility(View.VISIBLE);
+                        if (!reportGenerated[1])
+                            getLogs("ExerciseLog");
                         break;
                     case "Enclosure":
-                        mEnclosureReport.setVisibility(View.VISIBLE);
+                        mEnclosureCalendar.setVisibility(View.VISIBLE);
+                        mMonthView.setVisibility(View.VISIBLE);
+                        if (!reportGenerated[2])
+                            getLogs("EnclosureLog");
+                        break;
+                    case "Behavior":
+                        mBehaviorReport.setVisibility(View.VISIBLE);
+                        mBehaviorView.setVisibility(View.VISIBLE);
+                        if (!reportGenerated[3])
+                            getLogs("BehaviorLog");
+                        break;
+                    case "Email Summary":
+                        summary = true;
+                        getLogs("FeedLog");
+                        getLogs("ExerciseLog");
                         getLogs("EnclosureLog");
+                        getLogs("BehaviorLog");
                         break;
                 }
             }
@@ -127,7 +174,10 @@ public class AnimalDetailGraph extends Fragment implements
     private void setAllInvisible () {
         mOutsideChart.setVisibility(View.INVISIBLE);
         mDietChart.setVisibility(View.INVISIBLE);
-        mEnclosureReport.setVisibility(View.INVISIBLE);
+        mBehaviorReport.setVisibility(View.INVISIBLE);
+        mBehaviorView.setVisibility(View.INVISIBLE);
+        mEnclosureCalendar.setVisibility(View.INVISIBLE);
+        mMonthView.setVisibility(View.INVISIBLE);
     }
 
     @Nullable
@@ -158,10 +208,10 @@ public class AnimalDetailGraph extends Fragment implements
     private void getLogs (final String logName)
     {
         Log.e(TAG, "getLogs()");
-        final List<TaskLog> logs = new ArrayList<TaskLog>();
+        final ArrayList<TaskLog> logs = new ArrayList<TaskLog>();
 
         Query mQueryLogs = mFirestore.collection("Guadalupe Residents")
-                .document(residentID).collection(logName).orderBy("completedTime", Query.Direction.ASCENDING).limit(15);
+                .document(residentID).collection(logName).orderBy("completedTime", Query.Direction.DESCENDING);
         mQueryLogs
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
@@ -182,6 +232,9 @@ public class AnimalDetailGraph extends Fragment implements
                                     case "EnclosureLog":
                                         logs.add(document.toObject(EnclosureLog.class));
                                         break;
+                                    case "BehaviorLog":
+                                        logs.add(document.toObject(BehaviorLog.class));
+                                        break;
                                     default:
                                         logs.add(document.toObject(TaskLog.class));
                                         break;
@@ -197,26 +250,155 @@ public class AnimalDetailGraph extends Fragment implements
 
     private void makeGraph (String logName, List<TaskLog> logs)
     {
-        Log.e(TAG, "makeGraph()");
+        Log.e(TAG, "makeGraph() -- what the fork");
 
-        switch(logName) {
-            case "ExerciseLog":
-                makeExerciseReport(logs);
-                break;
+        if (summary)
+        {
+            Log.e(TAG, "summary is true fellas");
+            switch (logName) {
+                case "ExerciseLog":
+                    ArrayList<ExerciseLog> exerciseLogs = new ArrayList<>();
+                    for (TaskLog log: logs)
+                    {
+                        exerciseLogs.add((ExerciseLog)log);
+                    }
+                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.EXERCISE_LOGS), exerciseLogs);
+                    break;
 
-            case "FeedLog":
-                makeDietReport(logs);
-                break;
+                case "FeedLog":
+                    ArrayList<FeedLog> feedLogs = new ArrayList<>();
+                    for (TaskLog log: logs)
+                    {
+                        FeedLog feedLog = (FeedLog) log;
+                        feedLogs.add((FeedLog) log);
+                        Log.e(TAG, "the note 6/9 " + feedLog.toString());
+                    }
+                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.FEED_LOGS), feedLogs);
+                    break;
 
-            case "EnclosureLog":
-                makeEnclosureReport(logs);
-                break;
+                case "EnclosureLog":
+                    ArrayList<EnclosureLog> enclosureLogs = new ArrayList<>();
+                    for (TaskLog log: logs)
+                    {
+                        enclosureLogs.add((EnclosureLog) log);
+                    }
+                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.ENCLOSURE_LOGS), enclosureLogs);
+                    break;
+
+                case "BehaviorLog":
+                    ArrayList<BehaviorLog> behaviorLogs = new ArrayList<>();
+                    for (TaskLog log: logs)
+                    {
+                        behaviorLogs.add((BehaviorLog) log);
+                    }
+                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.BEHAVIOR_LOGS), behaviorLogs);
+                    break;
+            }
+            logsRetrieved++;
+            if (logsRetrieved == 4)
+            {
+                sendEmailSummary();
+            }
+        } else {
+            Log.e(TAG, "summary is false fellas");
+            switch (logName) {
+                case "ExerciseLog":
+                    makeExerciseReport(logs);
+                    break;
+
+                case "FeedLog":
+                    makeDietReport(logs);
+                    break;
+
+                case "EnclosureLog":
+                    makeEnclosureReport(logs);
+                    break;
+
+                case "BehaviorLog":
+                    makeBehaviorReport(logs);
+                    break;
+            }
         }
+    }
 
+    private void sendEmailSummary ()
+    {
+        /**
+        Log.e(TAG, "sendEmailSummary ()");
+        // Intent intent = new Intent(getContext(), EmailSummaryActivity.class);
+        emailIntent.putExtra(EmailSummaryActivity.RESIDENT_NAME, residentName);
+        startActivity(emailIntent);
+         */
+        summary = false;
+    }
+
+    private void makeDietReport (List<TaskLog> logs)
+    {
+        Log.e(TAG, "makeDietReport ()");
+        int counter = 1;
+        if (logs.size() > 0) {
+            Log.e(TAG, "We are here to make the FeedLog Report.");
+            List<BarEntry> feedEntries = new ArrayList<BarEntry>();
+            long weekBreakoff = logs.get(0).getCompletedTime() + 10 /**604800000*/;
+            int cricketCount = 0;
+            int ratCount = 0;
+            for (int i = 0; i < logs.size(); i++) {
+                FeedLog feedLog = (FeedLog) logs.get(i);
+                if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
+                    cricketCount += feedLog.getFoodCount();
+                    Log.e(TAG, "We have a Cricket FeedLog!");
+                } else {
+                    ratCount += feedLog.getFoodCount();
+                    Log.e(TAG, "We have a Rat FeedLog!");
+                }
+                if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff) {
+                    weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
+                    feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
+                    cricketCount = ratCount = 0;
+                    counter++;
+                    Log.e(TAG, "New Week");
+                }
+            }
+            // There is one odd case that hasn't been handled that will come up.
+
+            feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
+
+            BarDataSet foodSet;
+            if (mDietChart.getData() != null &&
+                    mDietChart.getData().getDataSetCount() > 0) {
+                Log.e(TAG, "First conditional space");
+                foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
+                foodSet.setValues(feedEntries);
+                mDietChart.getData().notifyDataChanged();
+                mDietChart.notifyDataSetChanged();
+            } else {
+                Log.e(TAG, "Second conditional space");
+                foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
+                Log.e(TAG, foodSet.toString());
+                foodSet.setDrawIcons(false);
+                Resources res = getResources();
+                int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark)};
+                foodSet.setColors(colors);
+                foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
+                ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
+                dataSets.add(foodSet);
+
+                BarData data = new BarData(dataSets);
+                data.setValueTextColor(Color.WHITE);
+
+                mDietChart.setData(data);
+            }
+
+            mDietChart.setFitBars(true);
+            mDietChart.invalidate();
+        }
+        reportGenerated[0] = true;
     }
 
     private void makeExerciseReport (List<TaskLog> logs)
     {
+        Resources resources = getResources();
+        Log.e(TAG, "makeExerciseReport ()");
         int counter = 1;
         // Create the Exercise Report
         List<Entry> exerciseEntries = new ArrayList<Entry>();
@@ -229,7 +411,7 @@ public class AnimalDetailGraph extends Fragment implements
         }
         LineDataSet dataSet = new LineDataSet(exerciseEntries, "Time Spent Outside");
         dataSet.setColor(Color.BLACK);
-        // dataSet.setValueTextColor(Color.RED);
+        dataSet.setCircleColors(resources.getColor(R.color.colorAccent));
         LineData lineData = new LineData(dataSet);
         mOutsideChart.setData(lineData);
         mOutsideChart.setDrawGridBackground(false);
@@ -239,114 +421,146 @@ public class AnimalDetailGraph extends Fragment implements
         mOutsideChart.setNoDataText("Varanus is unable to retrieve the OutsideLogs from the database.");
         mOutsideChart.setDrawBorders(true);
         mOutsideChart.invalidate();
+
+        reportGenerated[1] = true;
     }
 
-    private void makeDietReport (List<TaskLog> logs)
+
+    private void makeEnclosureReport(final List<TaskLog> logs)
     {
-        int counter = 1;
-        Log.e(TAG, "We are here to make the FeedLog Report.");
-        List<BarEntry> feedEntries = new ArrayList<BarEntry>();
-        long weekBreakoff = logs.get(0).getCompletedTime() + 10 /**604800000*/;
-        int cricketCount = 0;
-        int ratCount = 0;
-        for (int i = 0; i < logs.size(); i++)
-        {
-            FeedLog feedLog = (FeedLog)logs.get(i);
-            if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
-                cricketCount += feedLog.getFoodCount();
-                Log.e(TAG, "We have a Cricket FeedLog!");
-            }
-            else
-            {
-                ratCount += feedLog.getFoodCount();
-                Log.e(TAG, "We have a Rat FeedLog!");
-            }
-            if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff)
-            {
-                weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
-                feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
-                cricketCount = ratCount = 0;
-                counter++;
-                Log.e(TAG, "New Week");
-            }
-        }
-        // There is one odd case that hasn't been handled that will come up.
-
-        feedEntries.add(new BarEntry(counter, new float[] {cricketCount, ratCount}));
-
-        BarDataSet foodSet;
-        if (mDietChart.getData() != null &&
-                mDietChart.getData().getDataSetCount() > 0) {
-            Log.e(TAG, "First conditional space");
-            foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
-            foodSet.setValues(feedEntries);
-            mDietChart.getData().notifyDataChanged();
-            mDietChart.notifyDataSetChanged();
-        } else {
-            Log.e(TAG, "Second conditional space");
-            foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
-            Log.e(TAG, foodSet.toString());
-            foodSet.setDrawIcons(false);
-            Resources res = getResources();
-            int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark)};
-            foodSet.setColors(colors);
-            foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
-            ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
-            dataSets.add(foodSet);
-
-            BarData data = new BarData(dataSets);
-            data.setValueTextColor(Color.WHITE);
-
-            mDietChart.setData(data);
-        }
-
-        mDietChart.setFitBars(true);
-        mDietChart.invalidate();
-    }
-
-    private void makeEnclosureReport(List<TaskLog> logs)
-    {
-        int expectedClean = (int) ((new Date().getTime() - logs.get(0).getCompletedTime()) / 84600000);
-        int actualClean = 0;
-        int expectedEnrich = (int) ((new Date().getTime() - logs.get(0).getCompletedTime()) / 604800000);
-        int actualEnrich = 0;
-
+        Resources resources = getResources();
+        mEnclosureCalendar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark));
+        Log.e(TAG, "makeEnclosureReport ()");
+        int[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
+        final String[] texts = {"Not Cleaned", "Cleaned", "Deep Cleaned"};
+        mMonthView.setText(getSimpleDate(mEnclosureCalendar.getFirstDayOfCurrentMonth()));
         for (TaskLog log : logs)
         {
             EnclosureLog enclosureLog = (EnclosureLog)log;
+            Event event = new Event(Color.LTGRAY, enclosureLog.getCompletedTime(), "Unidentified Event");
             if (enclosureLog.getTask() == TaskType.CLEAN)
-                actualClean++;
+            {
+                int cleanLevel = enclosureLog.getCleanLevel();
+                event = new Event(colors[cleanLevel], enclosureLog.getCompletedTime(), texts[cleanLevel]);
+                mEnclosureCalendar.addEvent(event);
+            }
             else
-                actualEnrich++;
+            {
+                event = new Event(Color.MAGENTA, enclosureLog.getCompletedTime(), "Enriched");
+            }
+            mEnclosureCalendar.addEvent(event);
         }
-        int cleanLevel = getLevel((double)(actualClean) / expectedClean);
-        int enrichLevel = getLevel((double)(actualEnrich) / expectedEnrich);
-        String[] messages = {"This indicates that the enclosure is being regularly %sed.",
-                            "This indicates that the enclosure is not being %sed enough.",
-                            "This indicates that the enclosure is not being %sed regularly."};
-        String source = "Clean Level " + cleanLevel + "\n" + String.format(messages[cleanLevel-1], "clean")
-                + "\n\nEnrichment Level " + enrichLevel + "\n" + String.format(messages[cleanLevel-1], "enrich");
-        SpannableString ssn = new SpannableString(source);
-        ssn.setSpan(new RelativeSizeSpan(2f), 0, source.indexOf('\n'), 0);
-        ssn.setSpan(new RelativeSizeSpan(2f), source.indexOf('.') + 1, source.lastIndexOf('\n') + 1, 0);
-        mEnclosureReport.setText(ssn);
+        mEnclosureCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+            @Override
+            public void onDayClick(Date dateClicked) {
+                final Context context = v.getContext();
+
+                for (TaskLog log : logs)
+                {
+                    EnclosureLog enclosureLog = (EnclosureLog)log;
+                    Date logDate = new Date(enclosureLog.getCompletedTime());
+                    if (logDate.getTime() - dateClicked.getTime() < 86400000 && logDate.getTime() - dateClicked.getTime() > 0)
+                    {
+                        Log.e(TAG, "There is a log corresponding to this date.");
+                        Log.e(TAG, logDate.getTime() - dateClicked.getTime() + "");
+                        String date = getDate(dateClicked.toString());
+                        if (enclosureLog.getTask() == TaskType.CLEAN)
+                        {
+                            String text = texts[enclosureLog.getCleanLevel()] + " on " + date + " by " + enclosureLog.getUser();
+                            Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
+                        }
+                        else
+                        {
+                            Toast.makeText(context, "Enriched on " + date + " by " + enclosureLog.getUser(), Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onMonthScroll(Date firstDayOfNewMonth) {
+                mMonthView.setText(getSimpleDate(firstDayOfNewMonth));
+            }
+        });
+        reportGenerated[2] = true;
     }
 
-    private int getLevel (double ratio)
+    public String getSimpleDate (Date firstDayOfNewMonth)
     {
-        if (ratio > 0.90)
-        {
-            return 1;
+        String dateStr = firstDayOfNewMonth.toString();
+        String month = dateStr.substring(dateStr.indexOf(' ') + 1,
+                dateStr.indexOf(' ', 4));
+        String year = dateStr.substring(dateStr.lastIndexOf(' '));
+        switch (month) {
+            case "Jan":
+                month = "January";
+                break;
+            case "Feb":
+                month = "February";
+                break;
+            case "Mar":
+                month = "March";
+                break;
+            case "Apr":
+                month = "April";
+                break;
+            case "May":
+                month = "May";
+                break;
+            case "Jun":
+                month = "June";
+                break;
+            case "Jul":
+                month = "July";
+                break;
+            case "Aug":
+                month = "August";
+                break;
+            case "Sep":
+                month = "September";
+                break;
+            case "Oct":
+                month = "October";
+                break;
+            case "Nov":
+                month = "November";
+                break;
+            case "Dec":
+                month = "December";
+                break;
         }
-        else if (ratio > 0.70)
-        {
-            return 2;
-        }
-        else
-        {
-            return 3;
-        }
+        return month + " " + year;
     }
+
+    private void makeBehaviorReport(List<TaskLog> logs)
+    {
+        Log.e(TAG, "makeBehaviorReport()");
+        Log.e("hello", this.getClass().getSimpleName());
+        String source = new String();
+        for (TaskLog log : logs)
+        {
+            BehaviorLog behaviorLog = (BehaviorLog)log;
+            Date date = new Date(log.getCompletedTime());
+            String dateString = getDate(date.toString());
+            // make the source string in HTML to be cool
+            source += "<b>" + dateString + " by " + log.getUser() + "</b><br>" + behaviorLog.getBehaviorText() + "<br><br>";
+        }
+        Log.e(this.getClass().getSimpleName(), source);
+        mBehaviorReport.setText(Html.fromHtml(source));
+        reportGenerated[3] = true;
+    }
+
+    private String getDate (String verbose)
+    {
+        Pattern pattern = Pattern.compile("\\w{3} \\w+ \\d{2}");
+        Matcher matcher = pattern.matcher(verbose);
+        if (matcher.find())
+        {
+            return matcher.group();
+        }
+        return verbose;
+    }
+
 
     @Override
     public void onStart() {
