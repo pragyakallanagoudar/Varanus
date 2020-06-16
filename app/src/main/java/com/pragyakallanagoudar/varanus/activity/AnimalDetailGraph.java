@@ -253,61 +253,7 @@ public class AnimalDetailGraph extends Fragment implements
 
     private void makeGraph (String logName, List<TaskLog> logs)
     {
-        Log.e(TAG, "makeGraph() -- what the fork");
-
-        /**
-        if (summary)
-        {
-            /**
-            Log.e(TAG, "summary is true fellas");
-            switch (logName) {
-                case "ExerciseLog":
-                    ArrayList<ExerciseLog> exerciseLogs = new ArrayList<>();
-                    for (TaskLog log: logs)
-                    {
-                        exerciseLogs.add((ExerciseLog)log);
-                    }
-                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.EXERCISE_LOGS), exerciseLogs);
-                    break;
-
-                case "FeedLog":
-                    ArrayList<FeedLog> feedLogs = new ArrayList<>();
-                    for (TaskLog log: logs)
-                    {
-                        FeedLog feedLog = (FeedLog) log;
-                        feedLogs.add((FeedLog) log);
-                        Log.e(TAG, "the note 6/9 " + feedLog.toString());
-                    }
-                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.FEED_LOGS), feedLogs);
-                    break;
-
-                case "EnclosureLog":
-                    ArrayList<EnclosureLog> enclosureLogs = new ArrayList<>();
-                    for (TaskLog log: logs)
-                    {
-                        enclosureLogs.add((EnclosureLog) log);
-                    }
-                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.ENCLOSURE_LOGS), enclosureLogs);
-                    break;
-
-                case "BehaviorLog":
-                    ArrayList<BehaviorLog> behaviorLogs = new ArrayList<>();
-                    for (TaskLog log: logs)
-                    {
-                        behaviorLogs.add((BehaviorLog) log);
-                    }
-                    emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.BEHAVIOR_LOGS), behaviorLogs);
-                    break;
-            }
-
-            logsRetrieved++;
-            if (logsRetrieved == 4)
-            {
-                sendEmailSummary();
-            }
-        } else {
-         */
-        Log.e(TAG, "summary is false fellas");
+        Log.e(TAG, "makeGraph()");
         switch (logName) {
             case "ExerciseLog":
                 makeExerciseReport(logs);
@@ -324,13 +270,11 @@ public class AnimalDetailGraph extends Fragment implements
             case "BehaviorLog":
                 makeBehaviorReport(logs);
                 break;
-            //}
         }
     }
 
     private void sendEmailSummary ()
     {
-
         Log.e(TAG, "sendEmailSummary ()");
         // Intent intent = new Intent(getContext(), EmailSummaryActivity.class);
         emailIntent.putExtra(EmailSummaryActivity.RESIDENT_ID, residentID);
