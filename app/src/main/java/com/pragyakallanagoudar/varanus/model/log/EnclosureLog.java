@@ -30,4 +30,17 @@ public class EnclosureLog extends TaskLog
     public int getCleanLevel() { return cleanLevel; }
 
     public void setCleanLevel(int cleanLevel) { this.cleanLevel = cleanLevel; }
+
+    @Override
+    public String toString()
+    {
+        if (task == TaskType.CLEAN)
+        {
+            if (cleanLevel == 0) return "Enclosure not cleaned";
+            if (cleanLevel == 1) return "Enclosure cleaned";
+            else return "Enclosure deep cleaned";
+        }
+        else
+            return "Enclosure enriched";
+    }
 }

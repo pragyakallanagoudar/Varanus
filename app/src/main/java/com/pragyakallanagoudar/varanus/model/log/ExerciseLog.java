@@ -25,12 +25,10 @@ public class ExerciseLog extends TaskLog
 
     @Override
     public String toString() {
-        return "ExerciseLog{" +
-                "completedTime=" + completedTime + "," +
-                "outsideTime=" + outsideTime +
-                '}';
+        return outsideTime + " minutes spent outside";
     }
 
+    /**
     @Override
     public int describeContents() {
         return 0;
@@ -42,4 +40,5 @@ public class ExerciseLog extends TaskLog
         parcel.writeString(user);
         parcel.writeInt(outsideTime);
     }
+    */
 }

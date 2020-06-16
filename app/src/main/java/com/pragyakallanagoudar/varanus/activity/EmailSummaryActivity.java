@@ -4,14 +4,18 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import io.grpc.ClientStreamTracer;
 
 import android.text.Html;
+import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +23,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
@@ -38,23 +46,19 @@ import java.util.regex.Pattern;
 public class EmailSummaryActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String RESIDENT_NAME = "resident_name";
-    public static final ArrayList<FeedLog> FEED_LOGS = null;
-    public static final ArrayList<ExerciseLog> EXERCISE_LOGS = null;
-    public static final ArrayList<EnclosureLog> ENCLOSURE_LOGS = null;
-    public static final ArrayList<BehaviorLog> BEHAVIOR_LOGS = null;
+    public static final String RESIDENT_ID = "resident_id";
 
-    public String residentName;
-    public List<TaskLog> feedTaskLogs;
-    public List<FeedLog> feedLogs;
-    public List<TaskLog> exerciseTaskLogs;
-    public List<ExerciseLog> exerciseLogs;
-    public List<TaskLog> enclosureTaskLogs;
-    public List<EnclosureLog> enclosureLogs;
-    public List<TaskLog> behaviorTaskLogs;
-    public List<BehaviorLog> behaviorLogs;
+    private FirebaseFirestore mFirestore;
+    public String residentName, residentID;
+    public List<TaskLog> feedLogs;
+    public List<TaskLog> exerciseLogs;
+    public List<TaskLog> enclosureLogs;
+    public List<TaskLog> behaviorLogs;
 
     public TextView mEmailText;
     public EditText mRecipients, mStartDate, mEndDate;
+
+    public boolean allDone;
 
     public static String TAG = EmailSummaryActivity.class.getSimpleName();
 
@@ -74,27 +78,79 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.send_button).setOnClickListener(this);
         findViewById(R.id.cancel_button).setOnClickListener(this);
 
+        initFirestore();
+
         Resources res = getResources();
 
+        feedLogs = new ArrayList<>();
+        exerciseLogs = new ArrayList<>();
+        enclosureLogs = new ArrayList<>();
+        behaviorLogs = new ArrayList<>();
+
         residentName = getIntent().getExtras().getString(RESIDENT_NAME);
-
-        feedTaskLogs = getIntent().getExtras().getParcelableArrayList(String.valueOf(FEED_LOGS));
-        feedLogs = null;/**getIntent().getExtras().getParcelableArrayList(String.valueOf(FEED_LOGS));*/
-
-        exerciseTaskLogs = getIntent().getExtras().getParcelableArrayList(String.valueOf(EXERCISE_LOGS));
-        exerciseLogs = null;/**getIntent().getExtras().getParcelableArrayList(String.valueOf(EXERCISE_LOGS));*/
-
-        enclosureTaskLogs = getIntent().getExtras().getParcelableArrayList(String.valueOf(ENCLOSURE_LOGS));
-        enclosureLogs = null;/**getIntent().getExtras().getParcelableArrayList(String.valueOf(ENCLOSURE_LOGS));*/
-
-        behaviorTaskLogs = getIntent().getExtras().getParcelableArrayList(String.valueOf(BEHAVIOR_LOGS));
-        behaviorLogs = null;/**getIntent().getExtras().getParcelableArrayList(String.valueOf(BEHAVIOR_LOGS));*/
+        residentID = getIntent().getExtras().getString(RESIDENT_ID);
 
         String user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         mEmailText.setText(String.format(res.getString(R.string.email_summary_description), user, residentName));
 
-        Log.e(TAG, "the note 6/9 " + feedLogs.get(0).toString());
+        getLogs("FeedLog");
+        getLogs("ExerciseLog");
+        getLogs("EnclosureLog");
+        getLogs("BehaviorLog");
+        Log.e(TAG, "We're all done! Yay!");
+        allDone = true;
+    }
 
+    private void initFirestore() {
+        mFirestore = FirebaseFirestore.getInstance();
+    }
+
+    /** This methods gets all the logs from a certain log that has been passed in
+     *  as an argument. It then proceeds to add it to the list that has been
+     *  referenced as a parameter.
+     * @param logName
+     * @return
+     */
+    private void getLogs (final String logName)
+    {
+        Log.e(TAG, "getLogs()");
+        final ArrayList<TaskLog> logs = new ArrayList<TaskLog>();
+
+        Query mQueryLogs = mFirestore.collection("Guadalupe Residents")
+                .document(residentID).collection(logName).orderBy("completedTime", Query.Direction.ASCENDING);
+        mQueryLogs
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot document : task.getResult())
+                            {
+                                Log.e(TAG, document.getId() + " => " + document.getData());
+                                switch (logName) {
+                                    case "ExerciseLog":
+                                        Log.e(TAG, " bonjour + " + document.toObject(ExerciseLog.class).toString());
+                                        exerciseLogs.add(document.toObject(ExerciseLog.class));
+                                        break;
+                                    case "FeedLog":
+                                        feedLogs.add(document.toObject(FeedLog.class));
+                                        break;
+                                    case "EnclosureLog":
+                                        enclosureLogs.add(document.toObject(EnclosureLog.class));
+                                        break;
+                                    case "BehaviorLog":
+                                        behaviorLogs.add(document.toObject(BehaviorLog.class));
+                                        break;
+                                    default:
+                                        logs.add(document.toObject(TaskLog.class));
+                                        break;
+                                }
+                            }
+                        } else {
+                            Log.e(TAG, "Error getting documents: ", task.getException());
+                        }
+                    }
+                });
     }
 
     @Override
@@ -114,6 +170,9 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
 
     private void sendMail ()
     {
+        while (!allDone)
+            Snackbar.make(findViewById(android.R.id.content), "Please wait as we load the data.", Snackbar.LENGTH_SHORT).show();
+
         Log.e(TAG, "sendMail()");
         // There is a strange bug here. Here's everything
         String recipientList = mRecipients.getText().toString();
@@ -124,12 +183,6 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         // it's really the date conversion that needs to work
         // and then getting all the logs, of course.
 
-        /**
-        Date startDate = (Date) mStartDate.getText().toString();
-        Date endDate = (Date) mEndDate.getText();
-        Log.e(TAG, "start: " + startDate.toString());
-        Log.e(TAG, "end " + endDate.toString());
-        */
         Date startDate = new Date();
         Date endDate = new Date();
         boolean allIsWell = true;
@@ -138,10 +191,10 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         endDate = retrieveDate(mEndDate.getText().toString().trim(), false);
         allIsWell = startDate != null && endDate != null;
 
-        if (startDate.after(endDate))
+        if (!allIsWell && startDate.after(endDate))
         {
             Snackbar.make(findViewById(android.R.id.content), "Start date must be before end date.", Snackbar.LENGTH_SHORT).show();
-            allIsWell = true;
+            allIsWell = false;
         }
 
         // Use the dates given to retrieve all of the logs.
@@ -151,7 +204,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             Log.e(TAG, "start: " + startDate.toString());
             Log.e(TAG, "end " + endDate.toString());
 
-            String feedText = null, exerciseText = null, enclosureText, behaviorText;
+            String feedText = "", exerciseText = "", enclosureText, behaviorText;
             int dietPos, exercisePos, enclosurePos, behaviorPos;
 
             // Make the report here after Lauren responds to the email.
@@ -159,35 +212,34 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             // breaks them up by day and stitches them into one journal.
 
             // To start, find the starting position in each list:
-            dietPos = getPosition(feedTaskLogs, startDate.getTime());
-            exercisePos = getPosition(exerciseTaskLogs, startDate.getTime());
+            dietPos = getPosition(feedLogs, startDate.getTime());
+            exercisePos = getPosition(exerciseLogs, startDate.getTime());
 
-            /**
             for (long time = startDate.getTime(); time <= endDate.getTime(); time+=86400000)
             {
-                if (dateIsGood(feedTaskLogs, dietPos, time))
+                while (dateIsGood(feedLogs, dietPos, time))
                 {
-                    FeedLog feedLog = feedLogs.get(dietPos);
-                    feedText = feedLog.toString();
+                    FeedLog feedLog = (FeedLog)feedLogs.get(dietPos);
+                    feedText += feedLog.toString() + "\n";
                     dietPos++;
                 }
-                if (dateIsGood(exerciseTaskLogs, exercisePos, time))
+                while (dateIsGood(exerciseLogs, exercisePos, time))
                 {
-                    ExerciseLog exerciseLog = exerciseLogs.get(exercisePos);
+                    ExerciseLog exerciseLog = (ExerciseLog)exerciseLogs.get(exercisePos);
                     exerciseText = exerciseLog.toString();
                     exercisePos++;
                 }
-                if (feedText != null || exerciseText != null) {
+                if (!feedText.equals("") || !exerciseText.equals("")) {
                     // add to report
-                    report += getDate(new Date(time).toString()) + "\n";
-                    if (feedText != null) report += feedText + "\n";
-                    if (exerciseText != null) report += exerciseText + "\n";
+                    report += getDate(new Date(time).toString()) + ":\n";
+                    if (!feedText.equals("")) report += feedText;
+                    if (!exerciseText.equals("")) report += exerciseText + "\n";
                     report += "\n";
+                    feedText = exerciseText = "";
                 }
 
-
             }
-             */
+            Log.e(TAG, report);
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_EMAIL, recipients);
@@ -205,6 +257,8 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
 
     private boolean dateIsGood (List<TaskLog> logs, int position, long time)
     {
+        // long completedTime = logs.get(position).getCompletedTime();
+        if (position >= logs.size()) return false;
         long completedTime = logs.get(position).getCompletedTime();
         return completedTime >= time && completedTime <= time + 86400000;
     }
@@ -233,6 +287,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
 
     private Date retrieveDate (String dateStr, boolean isStart)
     {
+
         try {
             int month, day, year;
             Date date;

@@ -78,7 +78,7 @@ public class AnimalDetailGraph extends Fragment implements
     private String residentName;
     View v;
 
-    private boolean summary;
+    // private boolean summary;
     private int logsRetrieved;
 
     private Intent emailIntent;
@@ -153,11 +153,14 @@ public class AnimalDetailGraph extends Fragment implements
                             getLogs("BehaviorLog");
                         break;
                     case "Email Summary":
-                        summary = true;
+                        sendEmailSummary();
+                        // summary = true;
+                        /**
                         getLogs("FeedLog");
                         getLogs("ExerciseLog");
                         getLogs("EnclosureLog");
                         getLogs("BehaviorLog");
+                         */
                         break;
                 }
             }
@@ -252,8 +255,10 @@ public class AnimalDetailGraph extends Fragment implements
     {
         Log.e(TAG, "makeGraph() -- what the fork");
 
+        /**
         if (summary)
         {
+            /**
             Log.e(TAG, "summary is true fellas");
             switch (logName) {
                 case "ExerciseLog":
@@ -294,42 +299,44 @@ public class AnimalDetailGraph extends Fragment implements
                     emailIntent.putParcelableArrayListExtra(String.valueOf(EmailSummaryActivity.BEHAVIOR_LOGS), behaviorLogs);
                     break;
             }
+
             logsRetrieved++;
             if (logsRetrieved == 4)
             {
                 sendEmailSummary();
             }
         } else {
-            Log.e(TAG, "summary is false fellas");
-            switch (logName) {
-                case "ExerciseLog":
-                    makeExerciseReport(logs);
-                    break;
+         */
+        Log.e(TAG, "summary is false fellas");
+        switch (logName) {
+            case "ExerciseLog":
+                makeExerciseReport(logs);
+                break;
 
-                case "FeedLog":
-                    makeDietReport(logs);
-                    break;
+            case "FeedLog":
+                makeDietReport(logs);
+                break;
 
-                case "EnclosureLog":
-                    makeEnclosureReport(logs);
-                    break;
+            case "EnclosureLog":
+                makeEnclosureReport(logs);
+                break;
 
-                case "BehaviorLog":
-                    makeBehaviorReport(logs);
-                    break;
-            }
+            case "BehaviorLog":
+                makeBehaviorReport(logs);
+                break;
+            //}
         }
     }
 
     private void sendEmailSummary ()
     {
-        /**
+
         Log.e(TAG, "sendEmailSummary ()");
         // Intent intent = new Intent(getContext(), EmailSummaryActivity.class);
+        emailIntent.putExtra(EmailSummaryActivity.RESIDENT_ID, residentID);
         emailIntent.putExtra(EmailSummaryActivity.RESIDENT_NAME, residentName);
         startActivity(emailIntent);
-         */
-        summary = false;
+        // summary = false;
     }
 
     private void makeDietReport (List<TaskLog> logs)

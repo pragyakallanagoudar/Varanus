@@ -2,6 +2,7 @@ package com.pragyakallanagoudar.varanus.model.log;
 
 
 import android.os.Parcel;
+import android.util.Log;
 
 public class FeedLog extends TaskLog
 {
@@ -21,6 +22,29 @@ public class FeedLog extends TaskLog
         this.foodCount = foodCount;
     }
 
+    /**
+    protected FeedLog(Parcel in) {
+        Log.e("FeedLog", "feedlog parcel constructor");
+        completedTime = in.readLong();
+        user = in.readString();
+        foodName = in.readString();
+        foodCount = in.readInt();
+    }
+
+    public static final Creator<FeedLog> CREATOR = new Creator<FeedLog>() {
+        @Override
+        public FeedLog createFromParcel(Parcel in) {
+            Log.e("FeedLog", "feedlog createFromParcel()");
+            return new FeedLog(in);
+        }
+
+        @Override
+        public FeedLog[] newArray(int size) {
+            Log.e("FeedLog", "feedlog newArray()");
+            return new FeedLog[size];
+        }
+    };
+    */
     public FeedLog () {}
 
 
@@ -40,12 +64,10 @@ public class FeedLog extends TaskLog
 
     @Override
     public String toString() {
-        return "FeedLog{" +
-                "foodName='" + foodName + '\'' +
-                ", foodCount=" + foodCount +
-                '}';
+        return foodCount + " " + foodName + " eaten";
     }
 
+    /**
     @Override
     public int describeContents() {
         return 0;
@@ -53,9 +75,11 @@ public class FeedLog extends TaskLog
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
+        Log.e("FeedLog", "feedlog writeToParcel()");
         parcel.writeLong(completedTime);
         parcel.writeString(user);
         parcel.writeString(foodName);
         parcel.writeInt(foodCount);
     }
+    */
 }

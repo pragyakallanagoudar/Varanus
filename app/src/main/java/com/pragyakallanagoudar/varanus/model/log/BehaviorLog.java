@@ -19,4 +19,12 @@ public class BehaviorLog extends TaskLog
     }
 
     public String getBehaviorText () { return behaviorText; }
+
+    @Override
+    public String toString()
+    {
+        return behaviorText;
+    }
+
+
 }
