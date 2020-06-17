@@ -4,13 +4,13 @@ public class BehaviorLog extends TaskLog
 {
     public String behaviorText;
 
-    public BehaviorLog (long completedTime, String behaviorText)
+    public BehaviorLog(long completedTime, String behaviorText)
     {
         super(completedTime);
         this.behaviorText = behaviorText;
     }
 
-    public BehaviorLog () {}
+    public BehaviorLog() {}
 
     @Override
     public void setBehaviorText(String behaviorText)

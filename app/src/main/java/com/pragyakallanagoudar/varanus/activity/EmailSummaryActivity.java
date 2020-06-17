@@ -204,7 +204,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             Log.e(TAG, "start: " + startDate.toString());
             Log.e(TAG, "end " + endDate.toString());
 
-            String feedText = "", exerciseText = "", enclosureText, behaviorText;
+            String feedText = "", exerciseText = "", enclosureText = "", behaviorText = "";
             int dietPos, exercisePos, enclosurePos, behaviorPos;
 
             // Make the report here after Lauren responds to the email.
@@ -214,6 +214,8 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             // To start, find the starting position in each list:
             dietPos = getPosition(feedLogs, startDate.getTime());
             exercisePos = getPosition(exerciseLogs, startDate.getTime());
+            enclosurePos = getPosition(exerciseLogs, startDate.getTime());
+            behaviorPos = getPosition(behaviorLogs, startDate.getTime());
 
             for (long time = startDate.getTime(); time <= endDate.getTime(); time+=86400000)
             {
@@ -226,16 +228,31 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
                 while (dateIsGood(exerciseLogs, exercisePos, time))
                 {
                     ExerciseLog exerciseLog = (ExerciseLog)exerciseLogs.get(exercisePos);
-                    exerciseText = exerciseLog.toString();
+                    exerciseText += exerciseLog.toString() + "\n";
                     exercisePos++;
                 }
-                if (!feedText.equals("") || !exerciseText.equals("")) {
+                while (dateIsGood(enclosureLogs, enclosurePos, time))
+                {
+                    EnclosureLog enclosureLog = (EnclosureLog)enclosureLogs.get(enclosurePos);
+                    enclosureText = enclosureLog.toString() + "\n";
+                    enclosurePos++;
+                }
+                while (dateIsGood(behaviorLogs, behaviorPos, time))
+                {
+                    BehaviorLog behaviorLog = (BehaviorLog)behaviorLogs.get(behaviorPos);
+                    behaviorText = behaviorLog.toString() + "\n";
+                    behaviorPos++;
+                }
+                if (!feedText.equals("") || !exerciseText.equals("")
+                        || !enclosureText.equals("") || !behaviorText.equals("")) {
                     // add to report
                     report += getDate(new Date(time).toString()) + ":\n";
                     if (!feedText.equals("")) report += feedText;
-                    if (!exerciseText.equals("")) report += exerciseText + "\n";
+                    if (!exerciseText.equals("")) report += exerciseText;
+                    if (!enclosureText.equals("")) report += enclosureText;
+                    if (!behaviorText.equals("")) report += behaviorText;
                     report += "\n";
-                    feedText = exerciseText = "";
+                    feedText = exerciseText = enclosureText = behaviorText = "";
                 }
 
             }
@@ -249,7 +266,8 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
             // also why is this showing Google Drive...?
-            // because other apps can also have the whole message thing. use the other thing instead.
+            // because other apps can also have the whole message thing.
+            // Actually, just test it on the actual tab first.
             intent.setType("message/rfc822");
             startActivity(Intent.createChooser(intent, "Choose an email client to send this report."));
         }

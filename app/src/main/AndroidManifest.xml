@@ -9,10 +9,13 @@
         android:roundIcon="@drawable/ic_varanus_logo2"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.GeneralActivity"></activity>
+        <activity android:name=".activity.BalanceActivity" />
+        <activity android:name=".activity.AnimalsActivity" />
         <activity
             android:name=".activity.EmailSummaryActivity"
             android:label="@string/title_activity_email_summary"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.TabbedTasks" />
         <activity android:name=".activity.TaskDetailActivity" />
         <activity android:name=".activity.AnimalDetailGraph" />
