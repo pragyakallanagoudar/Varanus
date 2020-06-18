@@ -60,19 +60,19 @@
 
     <ScrollView
         android:id="@+id/general_view"
-        android:layout_width="279dp"
-        android:layout_height="439dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:padding="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.496"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.194">
+        app:layout_constraintVertical_bias="0.049">
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/general_text_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
