@@ -29,7 +29,7 @@ import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
 import com.pragyakallanagoudar.varanus.model.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;
-import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
@@ -256,7 +256,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     taskLog = new ExerciseLog(0, 0);
                     break;
                 case BEHAVIOR:
-                    taskLog = new BehaviorLog(0, "");
+                    taskLog = new TextLog(0, "");
                     break;
                 case ENRICH:
                 case CLEAN:
@@ -300,8 +300,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     taskLog = document.toObject(EnclosureLog.class);
                     break;
                 case BEHAVIOR:
-                    taskLog = document.toObject(BehaviorLog.class);
-                    BehaviorLog behaviorLog = (BehaviorLog)taskLog;
+                    taskLog = document.toObject(TextLog.class);
+                    TextLog behaviorLog = (TextLog)taskLog;
                     mBehaviorText.setText(behaviorLog.getBehaviorText());
                     break;
             }

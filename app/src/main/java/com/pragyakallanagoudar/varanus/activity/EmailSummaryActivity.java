@@ -6,19 +6,14 @@ import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import io.grpc.ClientStreamTracer;
 
-import android.text.Html;
-import android.text.LoginFilter;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -28,14 +23,12 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -96,7 +89,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         getLogs("FeedLog");
         getLogs("ExerciseLog");
         getLogs("EnclosureLog");
-        getLogs("BehaviorLog");
+        getLogs("TextLog");
         Log.e(TAG, "We're all done! Yay!");
         allDone = true;
     }
@@ -138,8 +131,8 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
                                     case "EnclosureLog":
                                         enclosureLogs.add(document.toObject(EnclosureLog.class));
                                         break;
-                                    case "BehaviorLog":
-                                        behaviorLogs.add(document.toObject(BehaviorLog.class));
+                                    case "TextLog":
+                                        behaviorLogs.add(document.toObject(TextLog.class));
                                         break;
                                     default:
                                         logs.add(document.toObject(TaskLog.class));
@@ -239,7 +232,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
                 }
                 while (dateIsGood(behaviorLogs, behaviorPos, time))
                 {
-                    BehaviorLog behaviorLog = (BehaviorLog)behaviorLogs.get(behaviorPos);
+                    TextLog behaviorLog = (TextLog)behaviorLogs.get(behaviorPos);
                     behaviorText = behaviorLog.toString() + "\n";
                     behaviorPos++;
                 }

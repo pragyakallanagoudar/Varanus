@@ -90,15 +90,16 @@
         android:id="@+id/editText2"
         android:layout_width="280dp"
         android:layout_height="90dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:gravity="start|top"
         android:hint="Say something..."
         android:inputType="textMultiLine"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/cancel_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.496"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.798" />
+        app:layout_constraintVertical_bias="0.994" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

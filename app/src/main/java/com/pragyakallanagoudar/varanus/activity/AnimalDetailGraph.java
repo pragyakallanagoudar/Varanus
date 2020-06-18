@@ -30,8 +30,6 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -43,7 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 // import com.google.type.Date;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.TaskType;
-import com.pragyakallanagoudar.varanus.model.log.BehaviorLog;
+import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
 import com.pragyakallanagoudar.varanus.model.log.FeedLog;
@@ -155,12 +153,6 @@ public class AnimalDetailGraph extends Fragment implements
                     case "Email Summary":
                         sendEmailSummary();
                         // summary = true;
-                        /**
-                        getLogs("FeedLog");
-                        getLogs("ExerciseLog");
-                        getLogs("EnclosureLog");
-                        getLogs("BehaviorLog");
-                         */
                         break;
                 }
             }
@@ -236,7 +228,7 @@ public class AnimalDetailGraph extends Fragment implements
                                         logs.add(document.toObject(EnclosureLog.class));
                                         break;
                                     case "BehaviorLog":
-                                        logs.add(document.toObject(BehaviorLog.class));
+                                        logs.add(document.toObject(TextLog.class));
                                         break;
                                     default:
                                         logs.add(document.toObject(TaskLog.class));
@@ -490,7 +482,7 @@ public class AnimalDetailGraph extends Fragment implements
         String source = new String();
         for (TaskLog log : logs)
         {
-            BehaviorLog behaviorLog = (BehaviorLog)log;
+            TextLog behaviorLog = (TextLog)log;
             Date date = new Date(log.getCompletedTime());
             String dateString = getDate(date.toString());
             // make the source string in HTML to be cool

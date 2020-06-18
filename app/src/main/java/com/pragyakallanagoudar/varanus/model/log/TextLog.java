@@ -1,16 +1,16 @@
 package com.pragyakallanagoudar.varanus.model.log;
 
-public class BehaviorLog extends TaskLog
+public class TextLog extends TaskLog
 {
     public String behaviorText;
 
-    public BehaviorLog(long completedTime, String behaviorText)
+    public TextLog(long completedTime, String behaviorText)
     {
         super(completedTime);
         this.behaviorText = behaviorText;
     }
 
-    public BehaviorLog() {}
+    public TextLog() {}
 
     @Override
     public void setBehaviorText(String behaviorText)
