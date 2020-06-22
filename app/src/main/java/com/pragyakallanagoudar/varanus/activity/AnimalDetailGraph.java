@@ -41,6 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 // import com.google.type.Date;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.TaskType;
+import com.pragyakallanagoudar.varanus.model.Utils;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
@@ -406,7 +407,7 @@ public class AnimalDetailGraph extends Fragment implements
                     {
                         Log.e(TAG, "There is a log corresponding to this date.");
                         Log.e(TAG, logDate.getTime() - dateClicked.getTime() + "");
-                        String date = getDate(dateClicked.toString());
+                        String date = Utils.getDate(dateClicked.toString());
                         if (enclosureLog.getTask() == TaskType.CLEAN)
                         {
                             String text = texts[enclosureLog.getCleanLevel()] + " on " + date + " by " + enclosureLog.getUser();
@@ -484,24 +485,13 @@ public class AnimalDetailGraph extends Fragment implements
         {
             TextLog behaviorLog = (TextLog)log;
             Date date = new Date(log.getCompletedTime());
-            String dateString = getDate(date.toString());
+            String dateString = Utils.getDate(date.toString());
             // make the source string in HTML to be cool
             source += "<b>" + dateString + " by " + log.getUser() + "</b><br>" + behaviorLog.getBehaviorText() + "<br><br>";
         }
         Log.e(this.getClass().getSimpleName(), source);
         mBehaviorReport.setText(Html.fromHtml(source));
         reportGenerated[3] = true;
-    }
-
-    private String getDate (String verbose)
-    {
-        Pattern pattern = Pattern.compile("\\w{3} \\w+ \\d{2}");
-        Matcher matcher = pattern.matcher(verbose);
-        if (matcher.find())
-        {
-            return matcher.group();
-        }
-        return verbose;
     }
 
 

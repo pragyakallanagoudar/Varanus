@@ -23,6 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pragyakallanagoudar.varanus.R;
+import com.pragyakallanagoudar.varanus.model.Utils;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
@@ -239,7 +240,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
                 if (!feedText.equals("") || !exerciseText.equals("")
                         || !enclosureText.equals("") || !behaviorText.equals("")) {
                     // add to report
-                    report += getDate(new Date(time).toString()) + ":\n";
+                    report += Utils.getDate(new Date(time).toString()) + ":\n";
                     if (!feedText.equals("")) report += feedText;
                     if (!exerciseText.equals("")) report += exerciseText;
                     if (!enclosureText.equals("")) report += enclosureText;
@@ -274,16 +275,6 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         return completedTime >= time && completedTime <= time + 86400000;
     }
 
-    private String getDate (String verbose)
-    {
-        Pattern pattern = Pattern.compile("\\w{3} \\w+ \\d{2}");
-        Matcher matcher = pattern.matcher(verbose);
-        if (matcher.find())
-        {
-            return matcher.group();
-        }
-        return verbose;
-    }
 
     private int getPosition (List<TaskLog> logs, long time)
     {

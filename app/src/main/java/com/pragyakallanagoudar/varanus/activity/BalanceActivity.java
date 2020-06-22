@@ -3,8 +3,14 @@ package com.pragyakallanagoudar.varanus.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.InputType;
 import android.util.Log;
@@ -40,6 +46,10 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
     public static final String TAG = BalanceActivity.class.getSimpleName();
     private DocumentReference docRef;
 
+    public static final String CHANNEL_1_ID = "balance";
+
+    private NotificationManagerCompat notificationManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -47,6 +57,8 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.balance);
 
         balanceView = findViewById(R.id.balance_view);
+
+        notificationManager = NotificationManagerCompat.from(this);
 
         docRef = FirebaseFirestore.getInstance().collection("Balance").document("balance");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -145,6 +157,15 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         NumberFormat formatter = new DecimalFormat("#0.00");
         balanceView.setText("$" + formatter.format(newBalance));
 
+        if (newBalance < 5.0)
+        {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
+                    .setContentTitle("Low Balance Alert")
+                    .setContentText("Your current gift card balance is " + newBalance)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        }
+        balance = newBalance;
     }
     private void updateBalance(double newBalance)
     {
@@ -165,6 +186,40 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
                 Log.w(TAG, "Error writing document", e);
             }
         });
+
+        balance = newBalance;
+
+        if (balance < 5.0)
+            sendNotification();
     }
 
+
+    private void sendNotification()
+    {
+        createNotificationChannel();
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, CHANNEL_1_ID)
+                .setSmallIcon(R.drawable.ic_warning)
+                .setContentTitle("Low Balance Alert")
+                .setContentText("The gift card balance is currently " + balance)
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        notificationManager.notify(1, builder.build());
+    }
+
+
+    private void createNotificationChannel ()
+    {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(
+                    CHANNEL_1_ID,
+                    "Low Balance Alert",
+                    NotificationManager.IMPORTANCE_HIGH);
+            channel.setDescription("The gift card balance is " + balance);
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(channel);
+        }
+    }
 }
