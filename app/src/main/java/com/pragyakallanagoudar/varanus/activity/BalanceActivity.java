@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.DialogInterface;
@@ -22,33 +21,24 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.pragyakallanagoudar.varanus.R;
 
-import org.w3c.dom.Document;
-
-import java.sql.DatabaseMetaData;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.util.HashMap;
-import java.util.InputMismatchException;
 import java.util.Map;
 
 public class BalanceActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private double balance;
-    private TextView balanceView;
+    private double balance; // the current balance in the gift card
+    private TextView balanceView; // the BalanceView shows the balance in text
     public static final String TAG = BalanceActivity.class.getSimpleName();
-    private DocumentReference docRef;
+    private DocumentReference docRef; // the DocumentReference to the balance in the database
 
     public static final String CHANNEL_1_ID = "balance";
-
-    private NotificationManagerCompat notificationManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -58,8 +48,9 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
 
         balanceView = findViewById(R.id.balance_view);
 
-        notificationManager = NotificationManagerCompat.from(this);
+        // NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
+        // get the balance from the database
         docRef = FirebaseFirestore.getInstance().collection("Balance").document("balance");
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -84,21 +75,12 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         findViewById(R.id.purchase).setOnClickListener(this);
     }
 
-    /**
-    private void initFirestore() {
-        mFirestore = FirebaseFirestore.getInstance();
-
-        // get the first 50 documents from the collection Guadalupe Residents
-        mQueryResidents = mFirestore.collection("Guadalupe Residents")
-                .limit(50).orderBy("enclosure");
-
-        // to try the experimental version, replace "Guadalupe Residents" with "Experimental" above
-    }
-     */
-
     @Override
     public void onClick(final View view)
     {
+        // Create a dialog box to enter this information, with two possible tracks:
+        // add purchase and deduct from balance and add gift card to add to balance.
+
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         final double[] amount = {0.00};
 
@@ -152,11 +134,16 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         builder.show();
     }
 
+    /**
+     * Update the balance view when given the new balance.
+     * @param newBalance        the new balance after an action (add purchase or gift card)
+     */
     private void updateBalanceView (double newBalance)
     {
         NumberFormat formatter = new DecimalFormat("#0.00");
         balanceView.setText("$" + formatter.format(newBalance));
 
+        /**
         if (newBalance < 5.0)
         {
             NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
@@ -165,8 +152,14 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
                     .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
         }
+         */
         balance = newBalance;
     }
+
+    /**
+     * Update the balance in the database.
+     * @param newBalance        the new balance after an action (add purchase or gift card)
+     */
     private void updateBalance(double newBalance)
     {
         Map<String, Double> newMap = new HashMap<>();
@@ -193,7 +186,9 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
             sendNotification();
     }
 
-
+    /**
+     * Send a notification when the balance is low.
+     */
     private void sendNotification()
     {
         createNotificationChannel();
@@ -209,7 +204,9 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         notificationManager.notify(1, builder.build());
     }
 
-
+    /**
+     * Create a notification channel to use for the low balance notification.
+     */
     private void createNotificationChannel ()
     {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

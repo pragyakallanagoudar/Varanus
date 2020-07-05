@@ -5,8 +5,6 @@ import android.widget.TextView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.activity.AnimalDetailGraph;
-import com.pragyakallanagoudar.varanus.activity.FragmentActiveTasks;
 import com.pragyakallanagoudar.varanus.adapter.ViewPagerAdapter;
 
 import org.conscrypt.Conscrypt;
@@ -22,7 +20,7 @@ import androidx.viewpager.widget.ViewPager;
 public class TabbedTasks extends AppCompatActivity {
 
     private TabLayout tabLayout; // Two tabs: currents Active and Completed
-    private ViewPager viewPager; // ??? -> swipe view?
+    private ViewPager viewPager;
     private ViewPagerAdapter adapter;
     private TextView title;
 

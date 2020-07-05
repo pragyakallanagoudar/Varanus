@@ -19,16 +19,18 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * The fragment of active tasks
+ */
 public class FragmentActiveTasks extends Fragment implements
-        View.OnClickListener,
         TasksAdapter.OnTasksSelectedListener {
 
     private FirebaseFirestore mFirestore; // Cloud Firestore reference
     private Query mQueryActiveTasks; // query to the database to get active tasks
     private RecyclerView mActiveTasksRecycler; // RecylerView of active tasks
-    private TasksAdapter mAdapter;
+    private TasksAdapter mAdapter; // the TasksAdapter
     private String residentID; // name of resident?
-    private String residentName;
+    private String residentName; // the name of the resident
     View v;
 
     public FragmentActiveTasks () {}
@@ -65,17 +67,6 @@ public class FragmentActiveTasks extends Fragment implements
                 .document(residentID).collection("Tasks").orderBy("activityType");
     }
 
-    private void initRecyclerView() {
-
-        mAdapter = new TasksAdapter(mQueryActiveTasks, this);
-        mActiveTasksRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
-        mActiveTasksRecycler.setAdapter(mAdapter);
-    }
-
-    public void onClick (View view)
-    {
-
-    }
 
     @Override
     public void onStart() {

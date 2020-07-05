@@ -21,22 +21,12 @@ import com.firebase.ui.auth.AuthUI;
 import androidx.appcompat.app.AppCompatActivity;
 
 /**
- * The MainActivity class is where everything starts.
+ * The MainActivity class is where everything starts: the landing page, where you can
+ * access animal tasks/profiles, general information, and gift card balance.
  */
 
 public class MainActivity extends AppCompatActivity implements
     /**ResidentAdapter.OnResidentSelectedListener,*/ View.OnClickListener {
-
-    /**
-    private FirebaseFirestore mFirestore; // reference to Cloud Firestore database
-    private Query mQueryResidents; // query to the database to load tasks
-    private RecyclerView mAnimalsRecycler; // reference to RecyclerView
-    private ResidentAdapter mAdapter; // ???
-
-    private static final int RC_SIGN_IN = 9001;
-
-    private static String TAG = MainActivity.class.getSimpleName();
-     */
 
     private static final int RC_SIGN_IN = 9001;
 
@@ -63,33 +53,11 @@ public class MainActivity extends AppCompatActivity implements
         findViewById(R.id.balance).setOnClickListener(this);
         findViewById(R.id.general).setOnClickListener(this);
 
-        /**
-        // Initialize the database references
-        mAnimalsRecycler = findViewById(R.id.animal_recyclerview);
-        initFirestore();
-        initRecyclerView(); */
-
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-    }
-    /**
-    private void initFirestore() {
-        mFirestore = FirebaseFirestore.getInstance();
 
-        // get the first 50 documents from the collection Guadalupe Residents
-        mQueryResidents = mFirestore.collection("Guadalupe Residents")
-                .limit(50).orderBy("enclosure");
-
-        // to try the experimental version, replace "Guadalupe Residents" with "Experimental" above
-    }
-
-    private void initRecyclerView() {
-        Log.e(TAG, "initRecyclerView()");
-        mAdapter = new ResidentAdapter(mQueryResidents, this);
-        mAnimalsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mAnimalsRecycler.setAdapter(mAdapter);
-    }
-     */
+        getSupportActionBar().setTitle("New Varanus");
+}   
 
     @Override
     public void onStart() {
@@ -100,11 +68,6 @@ public class MainActivity extends AppCompatActivity implements
             return;
         }
 
-        /**
-        if (mAdapter != null) {
-            mAdapter.startListening();
-        }
-         */
     }
 
     @Override
@@ -129,23 +92,16 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     /**
-    @Override
-    public void OnResidentSelected(DocumentSnapshot resident)
-    {
-        Resident resClass = resident.toObject(Resident.class);
-        // Go to the details page for the selected resident
-        Intent intent = new Intent(this, TabbedTasks.class);
-        intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
-        intent.putExtra(TabbedTasks.RESIDENT_NAME, resClass.getName());
-        startActivity(intent);
-    }
-    */
-
+     * @return      whether the current user is null, which means the signin activity should start
+     */
     private boolean shouldStartSignIn() {
         Log.e(String.valueOf(FirebaseAuth.getInstance().getCurrentUser()), MainActivity.class.getSimpleName());
         return (FirebaseAuth.getInstance().getCurrentUser() == null);
     }
 
+    /**
+     * Start the built-in sign in activity.
+     */
     private void startSignIn() {
         // Sign in with FirebaseUI
         Log.e("hi", MainActivity.class.getSimpleName());

@@ -23,7 +23,7 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.Utils;
+import com.pragyakallanagoudar.varanus.utilities.Utils;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
@@ -37,22 +37,25 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Activity to send an email with the logs about a particular animal.
+ */
 public class EmailSummaryActivity extends AppCompatActivity implements View.OnClickListener {
 
     public static final String RESIDENT_NAME = "resident_name";
     public static final String RESIDENT_ID = "resident_id";
 
-    private FirebaseFirestore mFirestore;
-    public String residentName, residentID;
-    public List<TaskLog> feedLogs;
-    public List<TaskLog> exerciseLogs;
-    public List<TaskLog> enclosureLogs;
-    public List<TaskLog> behaviorLogs;
+    private FirebaseFirestore mFirestore; // the instance of Firestore to the database
+    public String residentName, residentID; // the name of the residentID
+    public List<TaskLog> feedLogs; // the list of FeedLog instances
+    public List<TaskLog> exerciseLogs; // the list of ExerciseLog instances
+    public List<TaskLog> enclosureLogs; // the list of EnclosureLog instances
+    public List<TaskLog> behaviorLogs; // the list of BehaviorLog instances
 
-    public TextView mEmailText;
-    public EditText mRecipients, mStartDate, mEndDate;
+    public TextView mEmailText; // the body of the email
+    public EditText mRecipients, mStartDate, mEndDate; // the EditText instances for each data point
 
-    public boolean allDone;
+    public boolean allDone; // when the loading is all done
 
     public static String TAG = EmailSummaryActivity.class.getSimpleName();
 
@@ -72,7 +75,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         findViewById(R.id.send_button).setOnClickListener(this);
         findViewById(R.id.cancel_button).setOnClickListener(this);
 
-        initFirestore();
+        mFirestore = FirebaseFirestore.getInstance();
 
         Resources res = getResources();
 
@@ -95,14 +98,10 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         allDone = true;
     }
 
-    private void initFirestore() {
-        mFirestore = FirebaseFirestore.getInstance();
-    }
-
     /** This methods gets all the logs from a certain log that has been passed in
      *  as an argument. It then proceeds to add it to the list that has been
      *  referenced as a parameter.
-     * @param logName
+     * @param logName       the name of the collection in the database
      * @return
      */
     private void getLogs (final String logName)
@@ -162,6 +161,9 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * Send the email!
+     */
     private void sendMail ()
     {
         while (!allDone)
@@ -267,15 +269,26 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         }
     }
 
+    /**
+     * Returns whether the log at the position has a "good" date that satisfies
+     * @param logs          the list of TaskLog instances
+     * @param position      the position in question
+     * @param time          the time to compare the log time in question with
+     * @return
+     */
     private boolean dateIsGood (List<TaskLog> logs, int position, long time)
     {
-        // long completedTime = logs.get(position).getCompletedTime();
         if (position >= logs.size()) return false;
         long completedTime = logs.get(position).getCompletedTime();
         return completedTime >= time && completedTime <= time + 86400000;
     }
 
-
+    /**
+     * Get the right position to start from given a certain date.
+     * @param logs      the list of TaskLog instances
+     * @param time      ...the time
+     * @return
+     */
     private int getPosition (List<TaskLog> logs, long time)
     {
         for (int i = 0; i < logs.size(); i++)
@@ -287,6 +300,12 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
         return -1;
     }
 
+    /**
+     * Retrive the date from the data entered in the field.
+     * @param dateStr       the string in the format MM/DD/YYYY
+     * @param isStart       if it is the start date (if false, the end date)
+     * @return
+     */
     private Date retrieveDate (String dateStr, boolean isStart)
     {
 

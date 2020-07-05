@@ -41,7 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 // import com.google.type.Date;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.TaskType;
-import com.pragyakallanagoudar.varanus.model.Utils;
+import com.pragyakallanagoudar.varanus.utilities.Utils;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
 import com.pragyakallanagoudar.varanus.model.log.ExerciseLog;
@@ -51,40 +51,40 @@ import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Date;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-public class AnimalDetailGraph extends Fragment implements
-        View.OnClickListener,
-        EventListener<DocumentSnapshot> {
+/**
+ * The AnimalDetailGraph activity displays insights about the selected animal:
+ * diet, outside time, behavior logs, enclosure cleaning history, and the action
+ * to send logs via email.
+ */
+public class AnimalDetailGraph extends Fragment /**implements
+        /**View.OnClickListener,
+        EventListener<DocumentSnapshot>*/ {
 
     public static final String KEY_TASK_ID = "key_task_id";
 
-    private Spinner mProfileSelector;
-    private LineChart mOutsideChart;
-    private BarChart mDietChart;
-    private ScrollView mBehaviorView;
-    private TextView mBehaviorReport;
-    private CompactCalendarView mEnclosureCalendar;
-    private TextView mMonthView;
+    private Spinner mProfileSelector; // which report to show
+    private LineChart mOutsideChart; // line graph showing time spent outside
+    private BarChart mDietChart; // stacked bar chart with diet information
+    private ScrollView mBehaviorView; // textview for the...
+    private TextView mBehaviorReport; // ...journal with daily logs about behavior
+    private CompactCalendarView mEnclosureCalendar; // calendar showing enclosure logs
+    private TextView mMonthView; // shows the current month of the calendar
 
-    private FirebaseFirestore mFirestore;
-    private String residentID;
-    private String residentName;
+    private FirebaseFirestore mFirestore; // Firestore instance
+    private String residentID; // the residentID of the selected animal
+    private String residentName; // the name of this animal
     View v;
 
-    // private boolean summary;
-    private int logsRetrieved;
-
-    private Intent emailIntent;
+    private Intent emailIntent; // the intent to start EmailSummaryActivity
 
     private String TAG = AnimalDetailGraph.class.getSimpleName();
 
-    private boolean[] reportGenerated;
+    private boolean[] reportGenerated; // whether or not each report has been generated
 
     public AnimalDetailGraph(String residentID, String residentName)
     {
@@ -99,6 +99,9 @@ public class AnimalDetailGraph extends Fragment implements
                              @Nullable Bundle savedInstanceState)
     {
         Log.e(TAG, "onCreateView()");
+
+        // Instantiate all of the variables.
+
         v = inflater.inflate(R.layout.activity_animal_graph, container,false);
         mProfileSelector = v.findViewById(R.id.select_log);
         mOutsideChart = v.findViewById(R.id.outside_time_chart);
@@ -110,10 +113,9 @@ public class AnimalDetailGraph extends Fragment implements
         mEnclosureCalendar = v.findViewById(R.id.enclosure_calendar);
         mEnclosureCalendar.shouldScrollMonth(true);
         mMonthView = v.findViewById(R.id.month_view);
-        // create enclosure report here
 
-        mBehaviorReport = v.findViewById(R.id.behavior_report);
-        mBehaviorView = v.findViewById(R.id.behavior_view);
+        mBehaviorReport = v.findViewById(R.id.general_text_view);
+        mBehaviorView = v.findViewById(R.id.general_view);
 
         emailIntent = new Intent(getContext(), EmailSummaryActivity.class);
 
@@ -123,6 +125,7 @@ public class AnimalDetailGraph extends Fragment implements
 
         mProfileSelector.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
+            // When an item from the list is selected.
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l)
             {
@@ -167,6 +170,9 @@ public class AnimalDetailGraph extends Fragment implements
         return v;
     }
 
+    /**
+     * Makes all the view invisible. After this, can selectively show some views.
+     */
     private void setAllInvisible () {
         mOutsideChart.setVisibility(View.INVISIBLE);
         mDietChart.setVisibility(View.INVISIBLE);
@@ -182,23 +188,14 @@ public class AnimalDetailGraph extends Fragment implements
     {
         Log.e(TAG, "onCreate()");
         super.onCreate(savedInstanceState);
-        initFirestore();
-
-    }
-
-    private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
+
     }
-
-    /**
-     *
-     */
-
 
     /** This methods gets all the logs from a certain log that has been passed in
      *  as an argument. It then proceeds to add it to the list that has been
      *  referenced as a parameter.
-     * @param logName
+     * @param logName   the name of the log associated with the selected item in the list.
      * @return
      */
     private void getLogs (final String logName)
@@ -244,6 +241,11 @@ public class AnimalDetailGraph extends Fragment implements
                 });
     }
 
+    /**
+     * Call the appropriate method based on the name of log.
+     * @param logName       the name of the log
+     * @param logs          the list of logs
+     */
     private void makeGraph (String logName, List<TaskLog> logs)
     {
         Log.e(TAG, "makeGraph()");
@@ -266,16 +268,21 @@ public class AnimalDetailGraph extends Fragment implements
         }
     }
 
+    /**
+     * If "Send Email Summary" is selected, start the email activity.
+     */
     private void sendEmailSummary ()
     {
         Log.e(TAG, "sendEmailSummary ()");
-        // Intent intent = new Intent(getContext(), EmailSummaryActivity.class);
         emailIntent.putExtra(EmailSummaryActivity.RESIDENT_ID, residentID);
         emailIntent.putExtra(EmailSummaryActivity.RESIDENT_NAME, residentName);
         startActivity(emailIntent);
-        // summary = false;
     }
 
+    /**
+     * Create the stacked bar chart based on the diet information.
+     * @param logs      the list of DietLog instances
+     */
     private void makeDietReport (List<TaskLog> logs)
     {
         Log.e(TAG, "makeDietReport ()");
@@ -283,7 +290,7 @@ public class AnimalDetailGraph extends Fragment implements
         if (logs.size() > 0) {
             Log.e(TAG, "We are here to make the FeedLog Report.");
             List<BarEntry> feedEntries = new ArrayList<BarEntry>();
-            long weekBreakoff = logs.get(0).getCompletedTime() + 10 /**604800000*/;
+            long weekBreakoff = logs.get(0).getCompletedTime() + 10;
             int cricketCount = 0;
             int ratCount = 0;
             for (int i = 0; i < logs.size(); i++) {
@@ -339,6 +346,10 @@ public class AnimalDetailGraph extends Fragment implements
         reportGenerated[0] = true;
     }
 
+    /**
+     * Create the line graph based on the exercise time information
+     * @param logs      the list of ExerciseLog instances
+     */
     private void makeExerciseReport (List<TaskLog> logs)
     {
         Resources resources = getResources();
@@ -369,7 +380,10 @@ public class AnimalDetailGraph extends Fragment implements
         reportGenerated[1] = true;
     }
 
-
+    /**
+     * Create the enclosure calendar based on enclosure logs.
+     * @param logs      the list of EnclosureLog instances.
+     */
     private void makeEnclosureReport(final List<TaskLog> logs)
     {
         Resources resources = getResources();
@@ -429,6 +443,11 @@ public class AnimalDetailGraph extends Fragment implements
         reportGenerated[2] = true;
     }
 
+    /**
+     * Get a simple String version of the date.
+     * @param firstDayOfNewMonth        the Date instance representing the first date of this month
+     * @return
+     */
     public String getSimpleDate (Date firstDayOfNewMonth)
     {
         String dateStr = firstDayOfNewMonth.toString();
@@ -476,6 +495,10 @@ public class AnimalDetailGraph extends Fragment implements
         return month + " " + year;
     }
 
+    /**
+     * Create the journal of behavior reports.
+     * @param logs      the list of TextLog instances.
+     */
     private void makeBehaviorReport(List<TaskLog> logs)
     {
         Log.e(TAG, "makeBehaviorReport()");
@@ -507,23 +530,18 @@ public class AnimalDetailGraph extends Fragment implements
 
     }
 
+    /**
     @Override
     public void onClick(View v) {
 
     }
 
-    public void onSubmitClicked(View v) {
-
-    }
-
-    public void onCancelClicked(View view) {
-        //finish();
-    }
 
 
     @Override
     public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
 
     }
+    */
 }
 

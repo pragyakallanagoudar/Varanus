@@ -25,19 +25,25 @@ import com.pragyakallanagoudar.varanus.model.Resident;
 
 import java.util.Collections;
 
+/**
+ * The list of animals that appear after clicking Animals on the landing
+ */
 public class AnimalsActivity extends AppCompatActivity implements
         ResidentAdapter.OnResidentSelectedListener {
 
     private FirebaseFirestore mFirestore; // reference to Cloud Firestore database
     private Query mQueryResidents; // query to the database to load tasks
     private RecyclerView mAnimalsRecycler; // reference to RecyclerView
-    private ResidentAdapter mAdapter; // ???
+    private ResidentAdapter mAdapter; // the reference to ResidentAdapter
 
-    private Intent mainIntent;
+    private Intent mainIntent; // the Intent instance to the MainActivity
 
     private static final int RC_SIGN_IN = 9001;
 
     private static String TAG = MainActivity.class.getSimpleName();
+
+    // READ THIS: It seems like this class will have some major changes when the
+    // admin controls come into picture. Add more comments then.
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -55,6 +61,10 @@ public class AnimalsActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
     }
+
+    /**
+     * Initialize the Firestore variables.
+     */
     private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
 
@@ -65,6 +75,9 @@ public class AnimalsActivity extends AppCompatActivity implements
         // to try the experimental version, replace "Guadalupe Residents" with "Experimental" above
     }
 
+    /**
+     * Initialize the recycler view variables.
+     */
     private void initRecyclerView() {
         Log.e(TAG, "initRecyclerView()");
         mAdapter = new ResidentAdapter(mQueryResidents, this);
@@ -75,13 +88,6 @@ public class AnimalsActivity extends AppCompatActivity implements
     @Override
     public void onStart() {
         super.onStart();
-
-        /**
-        if (shouldStartSignIn()) {
-            startSignIn();
-            return;
-        }
-         */
 
         if (mAdapter != null) {
             mAdapter.startListening();

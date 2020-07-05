@@ -42,6 +42,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+/**
+ * TaskDetailActivity is the activity that comes up for data entry after completing a task.
+ */
+
 public class TaskDetailActivity extends AppCompatActivity implements
         View.OnClickListener,
         EventListener<DocumentSnapshot> {
@@ -54,18 +58,18 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public static final String KEY_RESIDENT_NAME = "key_resident_name";
 
     // The components on the screen.
-    private TextView title;
-    private TextView description;
-    private Spinner mFoodType;
-    private Spinner mFoodCount;
-    private EditText mExerciseTime;
-    private EditText mBehaviorText;
-    private Spinner mCleanLevel;
+    private TextView title; // the title of the form
+    private TextView description; // the description in the form to show the user
+    private Spinner mFoodType; // select the type of food being fed to the animal
+    private Spinner mFoodCount; // select the amount of food being given
+    private EditText mExerciseTime; // enter the amount of time spent outside
+    private EditText mBehaviorText; // provide a summary of the behavior of the animal
+    private Spinner mCleanLevel; // select the level of being cleaned
 
     // Database references and listeners
-    private FirebaseFirestore mFirestore;
-    private DocumentReference mTaskRef;
-    private ListenerRegistration mTaskRegistration;
+    private FirebaseFirestore mFirestore; // the Firebase database reference
+    private DocumentReference mTaskRef; // the reference to the task in the database
+    private ListenerRegistration mTaskRegistration; // ListenerRegistration instance
 
     private TaskLog taskLog;
     private TaskLogAdapter mTaskLogAdapter;

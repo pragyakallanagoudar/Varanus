@@ -1,7 +1,11 @@
-package com.pragyakallanagoudar.varanus.model;
+package com.pragyakallanagoudar.varanus.utilities;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+/**
+ * The utilities class has widely used methods for use in all other classes.
+ */
 
 public class Utils {
 
