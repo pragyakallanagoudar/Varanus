@@ -438,7 +438,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     }
 
     /**
-     *
+     * Add the TaskLog instance to the database.
      * @param taskRef
      * @param tasklog
      * @return

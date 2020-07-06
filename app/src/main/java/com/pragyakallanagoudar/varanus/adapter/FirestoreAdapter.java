@@ -14,6 +14,10 @@ import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+/**
+ * The Firestore Adapter
+ * @param <VH>
+ */
 public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<VH>
         implements EventListener<QuerySnapshot> {

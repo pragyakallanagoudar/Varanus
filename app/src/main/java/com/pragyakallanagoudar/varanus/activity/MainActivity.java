@@ -17,6 +17,7 @@ import com.pragyakallanagoudar.varanus.R;
 
 import java.util.Collections;
 import com.firebase.ui.auth.AuthUI;
+import com.pragyakallanagoudar.varanus.utilities.Utils;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -56,8 +57,8 @@ public class MainActivity extends AppCompatActivity implements
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        getSupportActionBar().setTitle("New Varanus");
-}   
+        getSupportActionBar().setTitle("Varanus");
+}
 
     @Override
     public void onStart() {
@@ -144,8 +145,10 @@ public class MainActivity extends AppCompatActivity implements
                         break;
             case R.id.unlock_controls:
                 if (item.getTitle().equals("Unlock Admin Controls")) {
+                    Utils.adminControls = true;
                     item.setTitle("Lock Admin Controls");
                 } else {
+                    Utils.adminControls = false;
                     item.setTitle("Unlock Admin Controls");
                 }
 

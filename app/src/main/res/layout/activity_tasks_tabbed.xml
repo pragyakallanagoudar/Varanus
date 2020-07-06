@@ -7,7 +7,18 @@
     android:layout_height="match_parent"
     tools:context=".activity.Tasks">
 
-    <TextView
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="2dp" />
+
+   <!-- <TextView
         android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,18 +29,17 @@
         android:textSize="25dp"
         android:layout_gravity="center"
         android:textAlignment="center" >
-    </TextView>
+    </TextView> -->
 
     <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tablayout_id"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabGravity="fill"
         android:textColor="#FFFFFF"
+        app:tabBackground="@color/colorPrimary"
+        app:tabGravity="fill"
         app:tabMode="fixed"
-        app:tabBackground="@color/colorPrimaryDark"
-        app:tabSelectedTextColor="@color/colorPrimary"
-        android:id="@+id/tablayout_id">
-    </com.google.android.material.tabs.TabLayout>
+        app:tabSelectedTextColor="@color/colorPrimaryDark"></com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager.widget.ViewPager
         android:layout_width="match_parent"

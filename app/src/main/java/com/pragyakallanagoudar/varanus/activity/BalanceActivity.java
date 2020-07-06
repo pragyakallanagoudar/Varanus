@@ -3,6 +3,7 @@ package com.pragyakallanagoudar.varanus.activity;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
@@ -73,6 +74,11 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
 
         findViewById(R.id.giftcard).setOnClickListener(this);
         findViewById(R.id.purchase).setOnClickListener(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Balance");
     }
 
     @Override

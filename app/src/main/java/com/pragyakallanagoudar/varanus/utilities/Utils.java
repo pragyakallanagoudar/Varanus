@@ -9,6 +9,8 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
+    public static boolean adminControls; // Whether or not the admin controls have been enabled.
+
     /** Retrieves only the first name of the user */
     public static String getFirstName (String user)
     {

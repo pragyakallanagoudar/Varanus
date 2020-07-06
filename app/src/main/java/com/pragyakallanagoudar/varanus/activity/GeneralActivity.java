@@ -2,6 +2,7 @@ package com.pragyakallanagoudar.varanus.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -56,6 +57,11 @@ public class GeneralActivity extends AppCompatActivity implements View.OnClickLi
 
         findViewById(R.id.submit_button).setOnClickListener(this);
         //findViewById(R.id.cancel_button).setOnClickListener(this);
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("General");
 
         refreshDisplay();
     }

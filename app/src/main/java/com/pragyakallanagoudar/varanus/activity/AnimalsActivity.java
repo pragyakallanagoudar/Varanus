@@ -60,6 +60,8 @@ public class AnimalsActivity extends AppCompatActivity implements
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Animals");
     }
 
     /**
@@ -107,8 +109,8 @@ public class AnimalsActivity extends AppCompatActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu_main, menu);
+        //MenuInflater inflater = getMenuInflater();
+        //inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
