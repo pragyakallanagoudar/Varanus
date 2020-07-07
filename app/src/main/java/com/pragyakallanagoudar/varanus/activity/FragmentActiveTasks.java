@@ -40,13 +40,20 @@ public class FragmentActiveTasks extends Fragment implements
         this.residentName = residentName;
     }
 
+    /**
+     * Set up the fragment with the active tasks.
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
-        v = inflater.inflate(R.layout.active_tasks_fragment, container,false);
+        v = inflater.inflate(R.layout.active_tasks_fragment_old, container,false);
         mActiveTasksRecycler = v.findViewById(R.id.active_tasks_recyclerview);
         mAdapter = new TasksAdapter(mQueryActiveTasks, this);
         mActiveTasksRecycler.setLayoutManager(new LinearLayoutManager(getActivity()));
@@ -57,16 +64,11 @@ public class FragmentActiveTasks extends Fragment implements
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initFirestore();
-        //initRecyclerView();
-    }
-
-    private void initFirestore() {
         mFirestore = FirebaseFirestore.getInstance();
         mQueryActiveTasks = mFirestore.collection("Guadalupe Residents")
                 .document(residentID).collection("Tasks").orderBy("activityType");
+        //initRecyclerView();
     }
-
 
     @Override
     public void onStart() {
@@ -76,7 +78,10 @@ public class FragmentActiveTasks extends Fragment implements
         }
     }
 
-    
+    /**
+     * When a task is selected, launch TaskDetailActivity to have the user enter the required info
+     * @param tasks
+     */
     @Override
     public void onTasksSelected(DocumentSnapshot tasks)
     {

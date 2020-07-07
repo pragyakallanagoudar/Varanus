@@ -59,12 +59,18 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
 
     public static String TAG = EmailSummaryActivity.class.getSimpleName();
 
+    /**
+     * Instantiate all of the field variables and begin retrieving the logs for the animal.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_send_email);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle("Send Email Summary");
 
         mEmailText = findViewById(R.id.description);
 
@@ -146,6 +152,10 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
                 });
     }
 
+    /**
+     * Depending on which button is clicked, either send the email or quit the Email Sending Activity.
+     * @param view
+     */
     @Override
     public void onClick(View view)
     {
@@ -162,22 +172,22 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
     }
 
     /**
-     * Send the email!
+     * Send the email by opening the email client.
      */
     private void sendMail ()
     {
+        // make sure that all of the data has been loaded first (generally won't need to go in here)
         while (!allDone)
             Snackbar.make(findViewById(android.R.id.content), "Please wait as we load the data.", Snackbar.LENGTH_SHORT).show();
 
         Log.e(TAG, "sendMail()");
-        // There is a strange bug here. Here's everything
+
+        // Retrieve this information from the EditText components on the screen.
         String recipientList = mRecipients.getText().toString();
         String[] recipients = recipientList.split(",");
         String subject = "Varanus: Health & Enrichment Report for " + residentName;
         String report = "";
 
-        // it's really the date conversion that needs to work
-        // and then getting all the logs, of course.
 
         Date startDate = new Date();
         Date endDate = new Date();
@@ -203,7 +213,6 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             String feedText = "", exerciseText = "", enclosureText = "", behaviorText = "";
             int dietPos, exercisePos, enclosurePos, behaviorPos;
 
-            // Make the report here after Lauren responds to the email.
             // We have four lists on different time tracks. We need to write a piece of code that
             // breaks them up by day and stitches them into one journal.
 
@@ -213,35 +222,42 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
             enclosurePos = getPosition(exerciseLogs, startDate.getTime());
             behaviorPos = getPosition(behaviorLogs, startDate.getTime());
 
-            for (long time = startDate.getTime(); time <= endDate.getTime(); time+=86400000)
+            // for every single day from the provided start dare to end date
+            for (long time = startDate.getTime(); time <= endDate.getTime(); time+=86400000 /** i.e. milliseconds in a day*/)
             {
+                // while dietPos keys to a log that falls inside of the day that "time" represents...
                 while (dateIsGood(feedLogs, dietPos, time))
                 {
+                    // ...retrive the feedlogs and add them to the current feedText...
                     FeedLog feedLog = (FeedLog)feedLogs.get(dietPos);
                     feedText += feedLog.toString() + "\n";
                     dietPos++;
                 }
+                // ...do the same for exercise...
                 while (dateIsGood(exerciseLogs, exercisePos, time))
                 {
                     ExerciseLog exerciseLog = (ExerciseLog)exerciseLogs.get(exercisePos);
                     exerciseText += exerciseLog.toString() + "\n";
                     exercisePos++;
                 }
+                // ...and enclosure...
                 while (dateIsGood(enclosureLogs, enclosurePos, time))
                 {
                     EnclosureLog enclosureLog = (EnclosureLog)enclosureLogs.get(enclosurePos);
                     enclosureText = enclosureLog.toString() + "\n";
                     enclosurePos++;
                 }
+                // ...and behavior.
                 while (dateIsGood(behaviorLogs, behaviorPos, time))
                 {
                     TextLog behaviorLog = (TextLog)behaviorLogs.get(behaviorPos);
                     behaviorText = behaviorLog.toString() + "\n";
                     behaviorPos++;
                 }
+                // if there are any logs at all...
                 if (!feedText.equals("") || !exerciseText.equals("")
                         || !enclosureText.equals("") || !behaviorText.equals("")) {
-                    // add to report
+                    // ...add to report
                     report += Utils.getDate(new Date(time).toString()) + ":\n";
                     if (!feedText.equals("")) report += feedText;
                     if (!exerciseText.equals("")) report += exerciseText;

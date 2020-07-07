@@ -61,6 +61,7 @@ import androidx.fragment.app.Fragment;
  * diet, outside time, behavior logs, enclosure cleaning history, and the action
  * to send logs via email.
  */
+
 public class AnimalDetailGraph extends Fragment /**implements
         /**View.OnClickListener,
         EventListener<DocumentSnapshot>*/ {
@@ -92,6 +93,10 @@ public class AnimalDetailGraph extends Fragment /**implements
         this.residentName = residentName;
     }
 
+    /**
+     * Instantiate all of the elements on the screen. Call the appropriate method when an item from the
+     * spinner is selected.
+     */
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -182,6 +187,10 @@ public class AnimalDetailGraph extends Fragment /**implements
         mMonthView.setVisibility(View.INVISIBLE);
     }
 
+
+    /**
+     * Instantiate the Firestore database instance.
+     */
     @Nullable
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -530,18 +539,5 @@ public class AnimalDetailGraph extends Fragment /**implements
 
     }
 
-    /**
-    @Override
-    public void onClick(View v) {
-
-    }
-
-
-
-    @Override
-    public void onEvent(DocumentSnapshot snapshot, FirebaseFirestoreException e) {
-
-    }
-    */
 }
 

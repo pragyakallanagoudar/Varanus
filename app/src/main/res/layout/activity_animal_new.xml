@@ -6,20 +6,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--<TextView
-        android:id="@+id/title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="@color/colorPrimaryDark"
-        android:text="Default Sample"
-        android:textAlignment="center"
-        android:textColor="#FFFFFF"
-        android:textSize="25dp"
-        android:textStyle="bold"
+    <Spinner
+        android:id="@+id/location_spinner"
+        android:layout_width="281dp"
+        android:layout_height="51dp"
+        android:entries="@array/enclosure_options"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:gravity="center_horizontal"></TextView>-->
+        app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -32,12 +28,27 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="2dp" />
 
+    <!--<TextView
+        android:id="@+id/title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryDark"
+        android:gravity="center_horizontal"
+        android:text="Default Sample"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="25dp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></TextView>-->
+
     <Button
         android:id="@+id/cancel_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="58dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:text="@string/cancel"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -48,7 +59,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="58dp"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:text="@string/submit"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -72,17 +83,52 @@
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="73dp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="32dp"
         android:layout_marginRight="20dp"
         android:gravity="center_horizontal"
-        android:text="@string/default_task_description"
+        android:text="@string/add_animal_description"
         android:textColor="#0C0C0C"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/upload_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:clickable="true"
+        app:backgroundTint="@color/colorPrimary"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/description"
+        app:srcCompat="@drawable/ic_file_upload_black_24dp" />
+
+    <EditText
+        android:id="@+id/name_edit_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="31dp"
+        android:ems="10"
+        android:hint="Name"
+        android:inputType="textPersonName"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="@+id/guideline3"
+        app:layout_constraintTop_toBottomOf="@+id/description" />
+
+    <Spinner
+        android:id="@+id/species_spinner"
+        android:layout_width="281dp"
+        android:layout_height="51dp"
+        android:entries="@array/species_options"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.515"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.367" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

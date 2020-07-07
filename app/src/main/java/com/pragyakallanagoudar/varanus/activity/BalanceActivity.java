@@ -32,6 +32,12 @@ import java.text.NumberFormat;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * The BalanceActivity class shows the current gift card balance and allows the user to either
+ * (1) add a purchase, and deduct from it
+ * (2) add a giftcard, and add to it
+ * with a notification being shown if the balance drops below $7.00
+ */
 public class BalanceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private double balance; // the current balance in the gift card
@@ -41,6 +47,9 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
 
     public static final String CHANNEL_1_ID = "balance";
 
+    /**
+     * Get the balance from the database and update the balance view to show it.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -81,6 +90,10 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setTitle("Balance");
     }
 
+    /**
+     * When either the "add purchase" or "add gift card" buttons are pressed, go through this method.
+     * Both processes are nearly identical, so we only use one method.
+     */
     @Override
     public void onClick(final View view)
     {
@@ -101,7 +114,7 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
                 builder.setTitle("Enter the new gift card balance.");
                 break;
         }
-        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+        // Specify the type of input expected. Here, we want a decimal number.
         input.setInputType(InputType.TYPE_CLASS_NUMBER | InputType.TYPE_NUMBER_FLAG_DECIMAL);
         builder.setView(input);
 
@@ -148,17 +161,6 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
     {
         NumberFormat formatter = new DecimalFormat("#0.00");
         balanceView.setText("$" + formatter.format(newBalance));
-
-        /**
-        if (newBalance < 5.0)
-        {
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
-                    .setContentTitle("Low Balance Alert")
-                    .setContentText("Your current gift card balance is " + newBalance)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-        }
-         */
         balance = newBalance;
     }
 
@@ -188,7 +190,7 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
 
         balance = newBalance;
 
-        if (balance < 5.0)
+        if (balance < 7.0)
             sendNotification();
     }
 

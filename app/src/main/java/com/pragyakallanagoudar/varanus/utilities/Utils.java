@@ -31,4 +31,15 @@ public class Utils {
         return verbose;
     }
 
+    /** Returns a random ID to use as a Firebase document key. */
+    public static String getRandomID()
+    {
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        String autoId = "";
+        for (int i = 0; i < 20; i++) {
+            autoId += chars.charAt((int)(Math.random() * chars.length()));
+        }
+        return autoId;
+    }
+
 }

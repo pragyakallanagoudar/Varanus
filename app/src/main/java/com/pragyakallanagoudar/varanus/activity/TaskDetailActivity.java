@@ -41,6 +41,7 @@ import java.util.Date;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * TaskDetailActivity is the activity that comes up for data entry after completing a task.
@@ -80,6 +81,10 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private String logName;
     private String oldTaskID; // empty String if task is black
 
+    /**
+     * Instantiate all of the field variables based on which type of task it is.
+     * @param savedInstanceState
+     */
     @Nullable
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -156,8 +161,15 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
+        /**
         title = findViewById(R.id.title);
         title.setText(type.toString() + " " + residentName);
+         */
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        getSupportActionBar().setTitle(type.toString() + " " + residentName);
 
         description = findViewById(R.id.description);
         description.setText(descriptionText);

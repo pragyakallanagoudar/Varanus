@@ -33,7 +33,10 @@ public class MainActivity extends AppCompatActivity implements
 
     public static final boolean SIGN_OUT = false;
 
-
+    /**
+     * Instantiate the variables.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -58,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Varanus");
-}
+    }
 
     @Override
     public void onStart() {
@@ -71,6 +74,10 @@ public class MainActivity extends AppCompatActivity implements
 
     }
 
+    /**
+     * When one of the buttons on the landing page is clicked...
+     * @param view
+     */
     @Override
     public void onClick(View view)
     {
@@ -122,6 +129,11 @@ public class MainActivity extends AppCompatActivity implements
         return true;
     }
 
+    /**
+     * When an option from the menu is selected, go through this method to perform the appropriate action.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {

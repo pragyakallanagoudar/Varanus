@@ -13,8 +13,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -22,6 +24,7 @@ import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.adapter.ResidentAdapter;
 import com.pragyakallanagoudar.varanus.model.Resident;
+import com.pragyakallanagoudar.varanus.utilities.Utils;
 
 import java.util.Collections;
 
@@ -29,7 +32,7 @@ import java.util.Collections;
  * The list of animals that appear after clicking Animals on the landing
  */
 public class AnimalsActivity extends AppCompatActivity implements
-        ResidentAdapter.OnResidentSelectedListener {
+        ResidentAdapter.OnResidentSelectedListener, View .OnClickListener{
 
     private FirebaseFirestore mFirestore; // reference to Cloud Firestore database
     private Query mQueryResidents; // query to the database to load tasks
@@ -38,6 +41,8 @@ public class AnimalsActivity extends AppCompatActivity implements
 
     private Intent mainIntent; // the Intent instance to the MainActivity
 
+    private FloatingActionButton addAnimalButton;
+
     private static final int RC_SIGN_IN = 9001;
 
     private static String TAG = MainActivity.class.getSimpleName();
@@ -45,11 +50,14 @@ public class AnimalsActivity extends AppCompatActivity implements
     // READ THIS: It seems like this class will have some major changes when the
     // admin controls come into picture. Add more comments then.
 
+    /**
+     * Instantiate all the variables here.
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main_new);
 
         mainIntent = new Intent(this, MainActivity.class);
 
@@ -62,6 +70,10 @@ public class AnimalsActivity extends AppCompatActivity implements
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Animals");
+
+        addAnimalButton = findViewById(R.id.add_animal);
+        if (!Utils.adminControls) addAnimalButton.setVisibility(View.INVISIBLE);
+        addAnimalButton.setOnClickListener(this);
     }
 
     /**
@@ -96,6 +108,10 @@ public class AnimalsActivity extends AppCompatActivity implements
         }
     }
 
+    /**
+     * When a resident is selected, get it as an instance of the Resident class and start the TabbedTasks intent.
+     * @param resident      the DataSnapshot that keys to the resident in question.
+     */
     @Override
     public void OnResidentSelected(DocumentSnapshot resident)
     {
@@ -107,45 +123,14 @@ public class AnimalsActivity extends AppCompatActivity implements
         startActivity(intent);
     }
 
+    /**
+     * This is called when the add animal button is clicked.
+     * @param view
+     */
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        //MenuInflater inflater = getMenuInflater();
-        //inflater.inflate(R.menu.menu_main, menu);
-        return true;
+    public void onClick(View view)
+    {
+        startActivity(new Intent(getApplicationContext(), AddAnimalActivity.class));
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out:
-                new AlertDialog.Builder(this)
-                        .setTitle("Sign Out")
-                        .setMessage("Are you sure you want to sign out?")
-
-                        // Specifying a listener allows you to take an action before dismissing the dialog.
-                        // The dialog is automatically dismissed when a dialog button is clicked.
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                FirebaseAuth.getInstance().signOut();
-                                // if (shouldStartSignIn()) startSignIn();
-                                mainIntent.putExtra(String.valueOf(MainActivity.SIGN_OUT), true);
-                                startActivity(mainIntent);
-                            }
-                        })
-
-                        // A null listener allows the button to dismiss the dialog and take no further action.
-                        .setNegativeButton(android.R.string.no, null)
-                        .show();
-                break;
-            case R.id.unlock_controls:
-                if (item.getTitle().equals("Unlock Admin Controls")) {
-                    item.setTitle("Lock Admin Controls");
-                } else {
-                    item.setTitle("Unlock Admin Controls");
-                }
-
-                break;
-        }
-        return super.onOptionsItemSelected(item);
-    }
 }

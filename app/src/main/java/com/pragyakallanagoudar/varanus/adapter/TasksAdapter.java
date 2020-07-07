@@ -56,19 +56,12 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
-        //TextView activityTypeView;
-        //TextView taskTypeView;
-        //TextView frequencyView;
-
         TextView activityView;
         TextView instructionView;
         LinearLayout layout;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            //activityTypeView = itemView.findViewById(R.id.text_activity_type);
-            //taskTypeView = itemView.findViewById(R.id.text_task_type);
-            //frequencyView = itemView.findViewById(R.id.text_task_frequency);
 
             activityView = itemView.findViewById(R.id.text_activity_type);
             instructionView = itemView.findViewById(R.id.text_task_instruction);

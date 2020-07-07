@@ -117,15 +117,21 @@ public class GeneralActivity extends AppCompatActivity implements View.OnClickLi
         generalTextView.setText(Html.fromHtml(source));
     }
 
+    /**
+     * When the button to submit the log is clicked, enter in the data in the form.
+     * @param v
+     */
     @Override
     public void onClick(View v)
     {
-        TextLog log = new TextLog(Calendar.getInstance().getTime().getTime(), generalEditText.getText().toString());
-        log.setUser(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
-        FirebaseFirestore.getInstance().collection("General").document().set(log);
-        hideKeyboard();
-        generalEditText.setText("");
-        refreshDisplay();
+        if (!generalEditText.getText().toString().trim().equals("")) {
+            TextLog log = new TextLog(Calendar.getInstance().getTime().getTime(), generalEditText.getText().toString());
+            log.setUser(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+            FirebaseFirestore.getInstance().collection("General").document().set(log);
+            hideKeyboard();
+            generalEditText.setText("");
+            refreshDisplay();
+        }
     }
 
     // Code to hide the keyboard.

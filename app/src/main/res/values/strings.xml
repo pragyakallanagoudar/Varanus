@@ -23,6 +23,7 @@
     <string name="default_task_description">Hello, %1$s! Thank you for %2$s. Please click Submit below to let us know you\'re done.</string>
     <string name="task_description">Hello, %1$s! Thank you for %2$s. Please %3$s below and click Submit.</string>
     <string name="email_summary_description">Hello, %1$s! Enter the recipient email address and the time frame below to receive a report on %2$s\'s health.</string>
+    <string name="add_animal_description">Hello, %1$s! Enter the animal\'s name, upload a picture of them, tell us their species and where they live!</string>
 
     <!-- Food Type activity -->
     <string-array name="foodType">
@@ -59,9 +60,24 @@
     </string-array>
 
     <string-array name="clean_levels">
+        <item>Select clean level</item>
         <item>Not Cleaned</item>
         <item>Cleaned</item>
         <item>Deep Cleaned</item>
+    </string-array>
+
+    <string-array name="enclosure_options">
+        <item>Select enclosure</item>
+        <item>Classroom</item>
+        <item>Visitor Center</item>
+        <item>Office</item>
+    </string-array>
+
+    <string-array name="species_options">
+        <item>Select species</item>
+        <item>Crayfish</item>
+        <item>Turtle</item>
+        <item>Fish</item>
     </string-array>
 
     <string name="title_activity_sign_up">SignUpActivity</string>

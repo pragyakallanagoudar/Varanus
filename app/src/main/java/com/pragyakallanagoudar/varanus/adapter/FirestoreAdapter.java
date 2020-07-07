@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * The Firestore Adapter
+ * The Firestore Adapter class to connect to the Firebase database.
  * @param <VH>
  */
 public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>

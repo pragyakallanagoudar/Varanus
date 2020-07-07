@@ -37,7 +37,6 @@ public class TabbedTasks extends AppCompatActivity {
     private TabLayout tabLayout; // Two tabs: currents Active and Completed
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
-    private TextView title;
 
     private String residentID;
     private String residentName;
@@ -50,6 +49,10 @@ public class TabbedTasks extends AppCompatActivity {
 
     public static final String TAG = TabbedTasks.class.getSimpleName();
 
+    /**
+     * Instantiate the field variables.
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -90,6 +93,11 @@ public class TabbedTasks extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * When an item is selected from the menu, go in here.
+     * @param item
+     * @return
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
