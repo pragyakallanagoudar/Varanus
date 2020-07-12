@@ -121,6 +121,7 @@ public class TabbedTasks extends AppCompatActivity {
                                 @Override
                                 public void onSuccess(Void aVoid) {
                                     Log.d(TAG, "DocumentSnapshot successfully deleted!");
+                                    finish();
                                 }
                             })
                             .addOnFailureListener(new OnFailureListener() {
