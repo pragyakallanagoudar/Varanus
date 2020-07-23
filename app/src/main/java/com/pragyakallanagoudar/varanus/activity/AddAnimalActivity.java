@@ -1,18 +1,26 @@
 package com.pragyakallanagoudar.varanus.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 //import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -21,12 +29,16 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.Resident;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.utilities.Utils;
 import com.pragyakallanagoudar.varanus.model.Task;
 
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -55,6 +67,12 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
 
     public String newResidentID;
 
+    public ImageView imageView;
+
+    public static final int PICK_IMAGE = 1;
+
+    public String url;
+
     /**
      * Instantiate the field variables.
      * @param savedInstanceState
@@ -77,11 +95,14 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
 
         findViewById(R.id.submit_button).setOnClickListener(this);
         findViewById(R.id.cancel_button).setOnClickListener(this);
+        findViewById(R.id.image_button).setOnClickListener(this);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         getSupportActionBar().setTitle("Add New Animal");
+
+        imageView = findViewById(R.id.image_view);
 
         Resources res = getResources();
         String user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName().toString();
@@ -105,6 +126,68 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 Log.e(TAG, "the cancel button is being clicked!!");
                 finish();
                 break;
+            case R.id.image_button:
+                getImage();
+                break;
+        }
+    }
+
+    public void getImage()
+    {
+        Intent getIntent = new Intent(Intent.ACTION_GET_CONTENT);
+        getIntent.setType("image/*");
+
+        Intent pickIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickIntent.setType("image/*");
+
+        Intent chooserIntent = Intent.createChooser(getIntent, "Select Image");
+        chooserIntent.putExtra(Intent.EXTRA_INITIAL_INTENTS, new Intent[] {pickIntent});
+
+        startActivityForResult(chooserIntent, PICK_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE) {
+            Log.e(TAG, "we're in here baby boo");
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                imageView.setImageBitmap(selectedImage);
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+
+                StorageReference storageRef = FirebaseStorage.getInstance().getReference();
+                StorageReference imageRef = storageRef.child("test.jpg");
+                UploadTask uploadTask = imageRef.putFile(imageUri);
+
+                // Register observers to listen for when the download is done or if it fails
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                        // ...
+                    }
+                });
+
+                // there are two concerns right now
+                    // (1) should we fix this glide stuff so it reads the image directly from the firebase storage (bc otherwise what's the point of it)
+                    // (2) how do I save the image as .jpg instead of .heic (and will this be fixed by not using the linky thing) */
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(this.getApplicationContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(this.getApplicationContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
     }
 
@@ -124,27 +207,9 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
         resident.setName(name);
         resident.setEnclosure(enclosure);
         resident.setSpecies(species);
+        resident.setPhoto(url);
         newResidentID = species.toLowerCase() + "-" + Utils.getRandomID();
 
-        FirebaseStorage storage = FirebaseStorage.getInstance();
-
-
-        // Create a storage reference from our app
-        StorageReference storageRef = storage.getReference();
-
-        // Create a reference to "mountains.jpg"
-        StorageReference imageRef = storageRef.child(name);
-
-        // Resources resources = getResources();
-
-        // Create a reference to 'images/mountains.jpg'
-        StorageReference mountainImagesRef = storageRef.child("/Users/pragyakallanagoudar/Desktop/Varanus/app/src/main/res/drawable-v24/ic_varanus_logo2.png");
-
-        // While the file names are the same, the references point to different files
-        imageRef.getName().equals(mountainImagesRef.getName());    // true
-        imageRef.getPath().equals(mountainImagesRef.getPath());    // false
-
-        resident.setPhoto("/Users/pragyakallanagoudar/Desktop/Varanus/app/src/main/res/drawable-v24/ic_varanus_logo2.png");
 
         if (emptyFields) {
             Snackbar empty = Snackbar.make(findViewById(android.R.id.content),

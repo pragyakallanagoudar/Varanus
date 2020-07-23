@@ -8,10 +8,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.Resident;
+import com.pragyakallanagoudar.varanus.utilities.GlideApp;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -75,9 +79,24 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             // taskCountView.setText(count[0] + " tasks remaining");
 
             // Third-party library to show the photo attached to a certain URL
+            /**
             Glide.with(animalImageView.getContext())
                     .load(resident.getPhoto())
+                    .into(animalImageView); */
+
+            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("test.jpg");
+
+            // Load the image using Glide
+
+            GlideApp.with(animalImageView.getContext() /* context */)
+                    .load(storageReference)
                     .into(animalImageView);
+
+            /**
+            Glide.with(animalImageView.getContext())
+                    .using(new FirebaseImageLoader())
+                    .load(storageReference)
+                    .into(animalImageView); */
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
