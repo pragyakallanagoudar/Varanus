@@ -62,6 +62,8 @@ import androidx.fragment.app.Fragment;
  * to send logs via email.
  */
 
+// Comment Status: (1) all methods headed with comments + some complex code
+
 public class AnimalDetailGraph extends Fragment /**implements
         /**View.OnClickListener,
         EventListener<DocumentSnapshot>*/ {
@@ -302,6 +304,9 @@ public class AnimalDetailGraph extends Fragment /**implements
             long weekBreakoff = logs.get(0).getCompletedTime() + 10;
             int cricketCount = 0;
             int ratCount = 0;
+
+            // for every log in the list of FeedLog instances, add to the cumulative totals of crickets and rats
+            // TODO: modify this so that it handles for unknown list of possible foods.
             for (int i = 0; i < logs.size(); i++) {
                 FeedLog feedLog = (FeedLog) logs.get(i);
                 if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
@@ -319,19 +324,22 @@ public class AnimalDetailGraph extends Fragment /**implements
                     Log.e(TAG, "New Week");
                 }
             }
-            // There is one odd case that hasn't been handled that will come up.
+            // There is one odd case that hasn't been handled that will come up. => wow, thanks for the context!
 
             feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
 
             BarDataSet foodSet;
+
             if (mDietChart.getData() != null &&
                     mDietChart.getData().getDataSetCount() > 0) {
+                // If the diet chart already has data loaded in, simply update the existing data.
                 Log.e(TAG, "First conditional space");
                 foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
                 foodSet.setValues(feedEntries);
                 mDietChart.getData().notifyDataChanged();
                 mDietChart.notifyDataSetChanged();
             } else {
+                // otherwise, build the chart from scratch.
                 Log.e(TAG, "Second conditional space");
                 foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
                 Log.e(TAG, foodSet.toString());
@@ -398,6 +406,8 @@ public class AnimalDetailGraph extends Fragment /**implements
         Resources resources = getResources();
         mEnclosureCalendar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark));
         Log.e(TAG, "makeEnclosureReport ()");
+
+        // TODO: potentially change this for the different tasks that need to be completed? Consult Lauren & Mel
         int[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         final String[] texts = {"Not Cleaned", "Cleaned", "Deep Cleaned"};
         mMonthView.setText(getSimpleDate(mEnclosureCalendar.getFirstDayOfCurrentMonth()));
@@ -418,6 +428,8 @@ public class AnimalDetailGraph extends Fragment /**implements
             mEnclosureCalendar.addEvent(event);
         }
         mEnclosureCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
+
+            // whenever a day is clicked, check if there is a log attached to this day and then show an appropriate message in the snackbar.
             @Override
             public void onDayClick(Date dateClicked) {
                 final Context context = v.getContext();

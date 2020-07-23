@@ -4,11 +4,11 @@ import java.lang.String;
 
 public class Task
 {
-    public String activityType;
-    public String taskType;
-    public long lastCompleted;
-    public String frequency;
-    public String lastLogID;
+    public String activityType; // the type of activity (CARE or ENRICH)
+    public String taskType; // the type of task (FEED, CLEAN, BEHAVIOR, etc.)
+    public long lastCompleted; // the time this task was last completed
+    public String frequency; // the frequency at which this task should be completed TODO: make this work for things other than daily
+    public String lastLogID; // the ID of the log for the last time this task was completed
 
     public Task() {}
 

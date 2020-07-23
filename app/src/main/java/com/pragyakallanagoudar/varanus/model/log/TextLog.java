@@ -2,7 +2,7 @@ package com.pragyakallanagoudar.varanus.model.log;
 
 public class TextLog extends TaskLog
 {
-    public String behaviorText;
+    public String behaviorText; // the description of the abnormal behavior being observed
 
     public TextLog(long completedTime, String behaviorText)
     {

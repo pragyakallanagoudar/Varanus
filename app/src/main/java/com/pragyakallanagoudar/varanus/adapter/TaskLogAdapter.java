@@ -43,7 +43,6 @@ public class TaskLogAdapter extends FirestoreAdapter<TaskLogAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        //holder.bind(getSnapshot(position).toObject(TaskLog.class));
 
         switch(type)
         {

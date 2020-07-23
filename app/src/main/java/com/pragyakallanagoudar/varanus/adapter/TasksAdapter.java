@@ -88,12 +88,9 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             else
             {
                 Log.e(LOG_TAG, task.getTaskType() + " WHITE");
-                //layout.setBackgroundColor(Color.WHITE);
                 activityView.setTextColor(Color.BLACK);
                 instructionView.setTextColor(Color.BLACK);
             }
-            //taskTypeView.setText(task.getTaskType());
-            //frequencyView.setText(task.getFrequency());
 
             activityView.setText(task.getActivityType());
 

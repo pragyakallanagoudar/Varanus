@@ -11,6 +11,9 @@ import com.google.firebase.storage.StorageReference;
 
 import java.io.InputStream;
 
+/**
+ * Registered AppGlideModule to display image of animals from Firebase storage.
+ */
 @GlideModule
 public class AnimalAppGlideModule extends AppGlideModule {
 

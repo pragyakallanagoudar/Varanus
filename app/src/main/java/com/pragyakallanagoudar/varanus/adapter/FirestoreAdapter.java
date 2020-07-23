@@ -24,7 +24,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
 
     private static final String TAG = "Firestore Adapter"; // Log Tag
     private Query mQuery; // query to database
-    private ListenerRegistration mRegistration; /// What is this?
+    private ListenerRegistration mRegistration;
     private ArrayList<DocumentSnapshot> mSnapshots = new ArrayList<>(); // list of data snapshots
 
     public FirestoreAdapter(Query query) {

@@ -31,6 +31,8 @@ import java.util.Collections;
 /**
  * The list of animals that appear after clicking Animals on the landing
  */
+
+// Comment Status: (2) all methods headed, don't really have much complex code
 public class AnimalsActivity extends AppCompatActivity implements
         ResidentAdapter.OnResidentSelectedListener, View .OnClickListener{
 

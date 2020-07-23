@@ -38,8 +38,8 @@ public class TabbedTasks extends AppCompatActivity {
     private ViewPager viewPager;
     private ViewPagerAdapter adapter;
 
-    private String residentID;
-    private String residentName;
+    private String residentID; // document ID of the resident
+    private String residentName; // name of the resident
 
     private FirebaseFirestore mFirestore;
 

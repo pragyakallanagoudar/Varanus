@@ -47,6 +47,8 @@ import androidx.appcompat.widget.Toolbar;
  * TaskDetailActivity is the activity that comes up for data entry after completing a task.
  */
 
+// (2) some method headers
+
 public class TaskDetailActivity extends AppCompatActivity implements
         View.OnClickListener,
         EventListener<DocumentSnapshot> {
@@ -72,13 +74,13 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private DocumentReference mTaskRef; // the reference to the task in the database
     private ListenerRegistration mTaskRegistration; // ListenerRegistration instance
 
-    private TaskLog taskLog;
-    private TaskLogAdapter mTaskLogAdapter;
+    private TaskLog taskLog; // the TaskLog instance to add data to
+    private TaskLogAdapter mTaskLogAdapter; // the instance of the TaskLogAdapter class
 
-    private String residentID;
-    private String residentName;
-    private TaskType type;
-    private String logName;
+    private String residentID; // the document ID of the animal
+    private String residentName; // the name of the animal
+    private TaskType type; // the type of task (FEED, EXERCISE, CLEAN, etc.)
+    private String logName; // the name of the log to append to (according to the type of task)
     private String oldTaskID; // empty String if task is black
 
     /**
@@ -161,10 +163,6 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
         findViewById(R.id.cancel_button).setOnClickListener(this);
         findViewById(R.id.submit_button).setOnClickListener(this);
-        /**
-        title = findViewById(R.id.title);
-        title.setText(type.toString() + " " + residentName);
-         */
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);

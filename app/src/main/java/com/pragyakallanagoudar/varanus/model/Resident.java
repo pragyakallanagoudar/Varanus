@@ -4,10 +4,10 @@ import java.lang.String;
 
 public class Resident
 {
-    public String photo;
-    public String name;
-    public String enclosure;
-    public String species;
+    public String photo; // the name of the photo (equal to the residentID)
+    public String name; // the name of the animal
+    public String enclosure; // the enclosure that the animal is in
+    public String species; // the species of the animal
 
     public Resident() {}
 

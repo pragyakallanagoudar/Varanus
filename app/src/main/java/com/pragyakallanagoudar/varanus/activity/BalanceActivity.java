@@ -38,6 +38,10 @@ import java.util.Map;
  * (2) add a giftcard, and add to it
  * with a notification being shown if the balance drops below $7.00
  */
+
+// Comment Status: (2) all method headers in place
+// TODO: automatically send an email when balance is low
+
 public class BalanceActivity extends AppCompatActivity implements View.OnClickListener {
 
     private double balance; // the current balance in the gift card

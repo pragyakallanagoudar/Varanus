@@ -53,7 +53,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
         TextView enclosureView; // displays enclosure
         TextView animalView; // name of the animal
         ImageView animalImageView; // picture of animal
-       // ImageView animalStatusView; // status of animal: tasks completed/not?
+        // TODO: figure out how to display how many more tasks are active (likely with a field in the document)
         String TAG = ViewHolder.class.getSimpleName();
 
         public ViewHolder(View itemView) {
@@ -72,31 +72,21 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             Resident resident = snapshot.toObject(Resident.class);
             Log.e(TAG, "inside the bind method");
             enclosureView.setText(resident.getSpecies() + ", " + resident.getEnclosure());
-            // enclosureView.setText("Tasks Remaining");
+
             animalView.setText(resident.getName());
-            // animalStatusView.setBackgroundResource(R.drawable.ic_warning);
 
-            // taskCountView.setText(count[0] + " tasks remaining");
+            StorageReference storageReference;
 
-            // Third-party library to show the photo attached to a certain URL
-            /**
-            Glide.with(animalImageView.getContext())
-                    .load(resident.getPhoto())
-                    .into(animalImageView); */
-
-            StorageReference storageReference = FirebaseStorage.getInstance().getReference().child("test.jpg");
+            // if the photo field is empty or null, just display the Varanus logo
+            if (resident.getPhoto() != null && !resident.getPhoto().equals(""))
+                storageReference = FirebaseStorage.getInstance().getReference().child(resident.getPhoto());
+            else
+                storageReference = FirebaseStorage.getInstance().getReference().child("ic_varanus_logo2.png");
 
             // Load the image using Glide
-
             GlideApp.with(animalImageView.getContext() /* context */)
                     .load(storageReference)
                     .into(animalImageView);
-
-            /**
-            Glide.with(animalImageView.getContext())
-                    .using(new FirebaseImageLoader())
-                    .load(storageReference)
-                    .into(animalImageView); */
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {
