@@ -249,25 +249,25 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
     public void addTasks(String species)
     {
         // make and add the feed task
-        Task feedTask = new Task("CARE", 0, "Feed", "daily", "");
+        Task feedTask = new Task("CARE", 0, "Feed", 1, "");
         String taskId = "feed-" + Utils.getRandomID();
         FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                 .collection("Tasks").document(taskId).set(feedTask);
 
         // make and add the behavior task
-        Task behaviorTask = new Task("ALERT", 0, "Behavior", "daily", "");
+        Task behaviorTask = new Task("ALERT", 0, "Behavior", 1, "");
         taskId = "behavior-" + Utils.getRandomID();
         FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                 .collection("Tasks").document(taskId).set(behaviorTask);
 
         // make and add the clean task
-        Task cleanTask = new Task("CARE", 0, "Clean", "daily", "");
+        Task cleanTask = new Task("CARE", 0, "Clean", 1, "");
         taskId = "clean-" + Utils.getRandomID();
         FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                 .collection("Tasks").document(taskId).set(cleanTask);
         // Complete this after consulting Lauren's guide.
-        Task enclosureTask = new Task("ENRICH", 0, "Enclosure Enrichment", "daily", "");
-        Task exercise = new Task("ENRICH", 0, "Exercise", "daily", "");
+        Task enclosureTask = new Task("ENRICH", 0, "Enclosure Enrichment", 1, "");
+        Task exercise = new Task("ENRICH", 0, "Exercise", 1, "");
 
     }
 

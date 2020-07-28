@@ -78,7 +78,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
             assert task != null;
             // There are 8.46e+7 milliseconds in a day.
-            if ((task.getLastCompleted() > (new Date()).getTime() - 84600000))
+            if ((task.getLastCompleted() > (new Date()).getTime() - task.getFrequency()*84600000))
             {
                 Log.e(LOG_TAG, task.getTaskType() + " GRAY");
                 // layout.setBackgroundColor(Color.LTGRAY);
@@ -102,29 +102,30 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             } catch (StringIndexOutOfBoundsException e) {
                 type = TaskType.OTHER;
             }
-            String instruction = "Here is an example task instruction.";
 
+            String instruction = task.getDescription();
 
-            switch (type)
-            {
-                case FEED:
-                    instruction = "Feed.";
-                    break;
-                case CLEAN:
-                    instruction = "Clean enclosure.";
-                    break;
-                case BEHAVIOR:
-                    instruction = "Report unusual behavior.";
-                    break;
-                case EXERCISE:
-                    instruction = "Outside for some exercise.";
-                    break;
-                case ENRICH:
-                    instruction = "Enclosure enrichment.";
-                    break;
-                default:
-                    instruction = type.toString();
-                    break;
+            if (instruction == null) {
+                switch (type) {
+                    case FEED:
+                        instruction = "Feed.";
+                        break;
+                    case CLEAN:
+                        instruction = "Clean enclosure.";
+                        break;
+                    case BEHAVIOR:
+                        instruction = "Report unusual behavior.";
+                        break;
+                    case EXERCISE:
+                        instruction = "Outside for some exercise.";
+                        break;
+                    case ENRICH:
+                        instruction = "Enclosure enrichment.";
+                        break;
+                    default:
+                        instruction = type.toString();
+                        break;
+                }
             }
 
 

@@ -40,12 +40,14 @@ public class TabbedTasks extends AppCompatActivity {
 
     private String residentID; // document ID of the resident
     private String residentName; // name of the resident
+    private String residentSpecies;
 
     private FirebaseFirestore mFirestore;
 
     // Resident ID retrieved from Intent
     public static final String RESIDENT_ID = "resident_id";
     public static final String RESIDENT_NAME = "resident_name";
+    public static final String RESIDENT_SPECIES = "resident_species";
 
     public static final String TAG = TabbedTasks.class.getSimpleName();
 
@@ -62,6 +64,7 @@ public class TabbedTasks extends AppCompatActivity {
         // local variable version of RESIDENT_ID
         residentID = getIntent().getExtras().getString(RESIDENT_ID);
         residentName = getIntent().getExtras().getString(RESIDENT_NAME);
+        residentSpecies = getIntent().getExtras().getString(RESIDENT_SPECIES);
 
         tabLayout =  findViewById(R.id.tablayout_id);
         viewPager =  findViewById(R.id.viewpager_id);
@@ -76,8 +79,8 @@ public class TabbedTasks extends AppCompatActivity {
 
         // set up View Pager adapter and add it
         adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFragment(new FragmentActiveTasks(residentID, residentName), "Tasks");
-        adapter.addFragment(new AnimalDetailGraph(residentID, residentName), "Profile");
+        adapter.addFragment(new FragmentActiveTasks(residentID, residentName, residentSpecies), "Tasks");
+        adapter.addFragment(new AnimalDetailGraph(residentID, residentName, residentSpecies), "Profile");
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 

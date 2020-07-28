@@ -122,6 +122,7 @@ public class AnimalsActivity extends AppCompatActivity implements
         Intent intent = new Intent(this, TabbedTasks.class);
         intent.putExtra(TabbedTasks.RESIDENT_ID, resident.getId());
         intent.putExtra(TabbedTasks.RESIDENT_NAME, resClass.getName());
+        intent.putExtra(TabbedTasks.RESIDENT_SPECIES, resClass.getSpecies());
         startActivity(intent);
     }
 

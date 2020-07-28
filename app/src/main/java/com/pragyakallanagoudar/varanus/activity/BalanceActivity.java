@@ -40,7 +40,7 @@ import java.util.Map;
  */
 
 // Comment Status: (2) all method headers in place
-// TODO: automatically send an email when balance is low
+// TODO: automatically send an email when balance is low -- this may require some privacy setting manipulations, waiting until we get back
 
 public class BalanceActivity extends AppCompatActivity implements View.OnClickListener {
 

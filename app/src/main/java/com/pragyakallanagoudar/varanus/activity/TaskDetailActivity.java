@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -59,6 +60,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     public static final String KEY_TASK_ID = "key_task_id";
     public static final String KEY_RESIDENT_ID = "key_resident_id";
     public static final String KEY_RESIDENT_NAME = "key_resident_name";
+    public static final String KEY_RESIDENT_SPECIES = "key_resident_species";
 
     // The components on the screen.
     private TextView title; // the title of the form
@@ -79,6 +81,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     private String residentID; // the document ID of the animal
     private String residentName; // the name of the animal
+    private String residentSpecies;
     private TaskType type; // the type of task (FEED, EXERCISE, CLEAN, etc.)
     private String logName; // the name of the log to append to (according to the type of task)
     private String oldTaskID; // empty String if task is black
@@ -98,6 +101,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         String taskID = getIntent().getExtras().getString(KEY_TASK_ID);
         residentID = getIntent().getExtras().getString(KEY_RESIDENT_ID);
         residentName = getIntent().getExtras().getString(KEY_RESIDENT_NAME);
+        residentSpecies = getIntent().getExtras().getString(KEY_RESIDENT_SPECIES);
         if (taskID == null) {
             throw new IllegalArgumentException("Must pass extra " + KEY_TASK_ID);
         }
@@ -117,6 +121,42 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 setContentView(R.layout.activity_task_feed);
                 mFoodType = findViewById(R.id.food_type_spinner);
                 mFoodCount = findViewById(R.id.food_count_spinner);
+
+                // code to get the correct list of food items depending on the species of the animal
+                String[] arraySpinner = {}; //getResources().getStringArray(R.array.crayfish_food_types);
+
+                switch (residentSpecies) {
+                    case "Crayfish":
+                        arraySpinner = getResources().getStringArray(R.array.crayfish_food_types);
+                        break;
+                    case "Goldfish":
+                        arraySpinner = getResources().getStringArray(R.array.goldfish_food_types);
+                        break;
+                    case "Rat":
+                        arraySpinner = getResources().getStringArray(R.array.rat_food_types);
+                        break;
+                    case "Roachfish":
+                        arraySpinner = getResources().getStringArray(R.array.roachfish_food_types);
+                        break;
+                    case "Toad":
+                        arraySpinner = getResources().getStringArray(R.array.toad_food_types);
+                        break;
+                    case "Turtle":
+                        arraySpinner = getResources().getStringArray(R.array.turtle_food_types);
+                        break;
+                    case "Snake":
+                        arraySpinner = getResources().getStringArray(R.array.snake_food_types);
+                        break;
+                    case "Lizard":
+                        arraySpinner = getResources().getStringArray(R.array.lizard_food_types);
+                        break;
+                }
+
+                ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_item, arraySpinner);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mFoodType.setAdapter(adapter);
+
                 task = "feeding " + residentName;
                 info = "select the food type and count";
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);

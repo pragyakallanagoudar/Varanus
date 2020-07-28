@@ -40,7 +40,7 @@ import java.util.regex.Pattern;
 /**
  * Activity to send an email with the logs about a particular animal.
  */
-public class EmailSummaryActivity extends AppCompatActivity implements View.OnClickListener {
+public class EmailSummaryActivityNew extends AppCompatActivity implements View.OnClickListener {
 
     public static final String RESIDENT_NAME = "resident_name";
     public static final String RESIDENT_ID = "resident_id";
@@ -57,7 +57,9 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
 
     public boolean allDone; // when the loading is all done
 
-    public static String TAG = EmailSummaryActivity.class.getSimpleName();
+    public static String TAG = EmailSummaryActivityNew.class.getSimpleName();
+
+    // TODO: Fix the bug here, my guy
 
     /**
      * Instantiate all of the field variables and begin retrieving the logs for the animal.
@@ -294,7 +296,7 @@ public class EmailSummaryActivity extends AppCompatActivity implements View.OnCl
      */
     private boolean dateIsGood (List<TaskLog> logs, int position, long time)
     {
-        if (position >= logs.size()) return false;
+        if (position >= logs.size() || position == -1) return false;
         long completedTime = logs.get(position).getCompletedTime();
         return completedTime >= time && completedTime <= time + 86400000;
     }

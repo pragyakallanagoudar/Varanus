@@ -13,7 +13,7 @@
         <activity android:name=".activity.BalanceActivity" />
         <activity android:name=".activity.AnimalsActivity" />
         <activity
-            android:name=".activity.EmailSummaryActivity"
+            android:name=".activity.EmailSummaryActivityNew"
             android:label="@string/title_activity_email_summary"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.TabbedTasks" />

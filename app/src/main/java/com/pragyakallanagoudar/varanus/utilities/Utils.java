@@ -1,5 +1,9 @@
 package com.pragyakallanagoudar.varanus.utilities;
 
+import android.content.res.Resources;
+
+import com.pragyakallanagoudar.varanus.R;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -41,5 +45,7 @@ public class Utils {
         }
         return autoId;
     }
+
+
 
 }

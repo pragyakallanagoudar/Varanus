@@ -30,10 +30,7 @@ import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -49,6 +46,7 @@ import com.pragyakallanagoudar.varanus.model.log.FeedLog;
 import com.pragyakallanagoudar.varanus.model.log.TaskLog;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Date;
 
@@ -81,6 +79,7 @@ public class AnimalDetailGraph extends Fragment /**implements
     private FirebaseFirestore mFirestore; // Firestore instance
     private String residentID; // the residentID of the selected animal
     private String residentName; // the name of this animal
+    private String residentSpecies;
     View v;
 
     private Intent emailIntent; // the intent to start EmailSummaryActivity
@@ -89,11 +88,14 @@ public class AnimalDetailGraph extends Fragment /**implements
 
     private boolean[] reportGenerated; // whether or not each report has been generated
 
-    public AnimalDetailGraph(String residentID, String residentName)
+    public AnimalDetailGraph(String residentID, String residentName, String residentSpecies)
     {
         this.residentID = residentID;
         this.residentName = residentName;
+        this.residentSpecies = residentSpecies;
     }
+
+    public AnimalDetailGraph () {}
 
     /**
      * Instantiate all of the elements on the screen. Call the appropriate method when an item from the
@@ -124,7 +126,7 @@ public class AnimalDetailGraph extends Fragment /**implements
         mBehaviorReport = v.findViewById(R.id.general_text_view);
         mBehaviorView = v.findViewById(R.id.general_view);
 
-        emailIntent = new Intent(getContext(), EmailSummaryActivity.class);
+        emailIntent = new Intent(getContext(), EmailSummaryActivityNew.class);
 
         setAllInvisible();
 
@@ -285,8 +287,8 @@ public class AnimalDetailGraph extends Fragment /**implements
     private void sendEmailSummary ()
     {
         Log.e(TAG, "sendEmailSummary ()");
-        emailIntent.putExtra(EmailSummaryActivity.RESIDENT_ID, residentID);
-        emailIntent.putExtra(EmailSummaryActivity.RESIDENT_NAME, residentName);
+        emailIntent.putExtra(EmailSummaryActivityNew.RESIDENT_ID, residentID);
+        emailIntent.putExtra(EmailSummaryActivityNew.RESIDENT_NAME, residentName);
         startActivity(emailIntent);
     }
 
@@ -302,13 +304,23 @@ public class AnimalDetailGraph extends Fragment /**implements
             Log.e(TAG, "We are here to make the FeedLog Report.");
             List<BarEntry> feedEntries = new ArrayList<BarEntry>();
             long weekBreakoff = logs.get(0).getCompletedTime() + 10;
-            int cricketCount = 0;
-            int ratCount = 0;
+
+            String[] foodLabels = getArray(residentSpecies);
+            float[] foodAmounts = new float[foodLabels.length];
+
+            /**int cricketCount = 0;
+            int ratCount = 0;*/
 
             // for every log in the list of FeedLog instances, add to the cumulative totals of crickets and rats
-            // TODO: modify this so that it handles for unknown list of possible foods.
+            // DONE: modify this so that it handles for unknown list of possible foods.
             for (int i = 0; i < logs.size(); i++) {
                 FeedLog feedLog = (FeedLog) logs.get(i);
+                for (int j = 0; j < foodLabels.length; j++)
+                {
+                    if (feedLog.getFoodName().equalsIgnoreCase(foodLabels[j]))
+                        foodAmounts[j] += feedLog.getFoodCount();
+                }
+                /**
                 if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
                     cricketCount += feedLog.getFoodCount();
                     Log.e(TAG, "We have a Cricket FeedLog!");
@@ -316,17 +328,21 @@ public class AnimalDetailGraph extends Fragment /**implements
                     ratCount += feedLog.getFoodCount();
                     Log.e(TAG, "We have a Rat FeedLog!");
                 }
+                 */
                 if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff) {
                     weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
-                    feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
-                    cricketCount = ratCount = 0;
+                    //feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
+                    feedEntries.add(new BarEntry(counter, foodAmounts));
+                    //cricketCount = ratCount = 0;
+                    foodAmounts = new float[foodLabels.length];
                     counter++;
                     Log.e(TAG, "New Week");
                 }
             }
             // There is one odd case that hasn't been handled that will come up. => wow, thanks for the context!
 
-            feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
+            //feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
+            feedEntries.add(new BarEntry(counter, foodAmounts));
 
             BarDataSet foodSet;
 
@@ -345,9 +361,10 @@ public class AnimalDetailGraph extends Fragment /**implements
                 Log.e(TAG, foodSet.toString());
                 foodSet.setDrawIcons(false);
                 Resources res = getResources();
-                int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark)};
+                int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark), res.getColor(R.color.colorAccent)};
                 foodSet.setColors(colors);
-                foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
+                //foodSet.setStackLabels(new String[]{"Crickets", "Rats"});
+                foodSet.setStackLabels(foodLabels);
                 ArrayList<IBarDataSet> dataSets = new ArrayList<IBarDataSet>();
                 dataSets.add(foodSet);
 
@@ -361,6 +378,37 @@ public class AnimalDetailGraph extends Fragment /**implements
             mDietChart.invalidate();
         }
         reportGenerated[0] = true;
+    }
+
+    private String[] getArray(String species)
+    {
+        String[] array = {};
+        switch (species) {
+            case "Crayfish":
+                array = getResources().getStringArray(R.array.crayfish_food_types);
+                break;
+            case "Goldfish":
+                array = getResources().getStringArray(R.array.goldfish_food_types);
+                break;
+            case "Rat":
+                array = getResources().getStringArray(R.array.rat_food_types);
+                break;
+            case "Roachfish":
+                array = getResources().getStringArray(R.array.roachfish_food_types);
+                break;
+            case "Toad":
+                array = getResources().getStringArray(R.array.toad_food_types);
+                break;
+            case "Turtle":
+                array = getResources().getStringArray(R.array.turtle_food_types);
+                break;
+            case "Snake":
+                array = getResources().getStringArray(R.array.snake_food_types);
+                break;
+            case "Lizard":
+                array = getResources().getStringArray(R.array.lizard_food_types);
+        }
+        return Arrays.copyOfRange(array, 1, array.length);
     }
 
     /**
@@ -407,7 +455,7 @@ public class AnimalDetailGraph extends Fragment /**implements
         mEnclosureCalendar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark));
         Log.e(TAG, "makeEnclosureReport ()");
 
-        // TODO: potentially change this for the different tasks that need to be completed? Consult Lauren & Mel
+        // TODO: potentially change this for the different tasks that need to be completed? Consult Lauren & Mel --- I think this is a bad idea, we'll see
         int[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
         final String[] texts = {"Not Cleaned", "Cleaned", "Deep Cleaned"};
         mMonthView.setText(getSimpleDate(mEnclosureCalendar.getFirstDayOfCurrentMonth()));

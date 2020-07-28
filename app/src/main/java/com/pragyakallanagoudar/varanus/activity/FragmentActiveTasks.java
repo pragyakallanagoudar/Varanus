@@ -31,13 +31,15 @@ public class FragmentActiveTasks extends Fragment implements
     private TasksAdapter mAdapter; // the TasksAdapter
     private String residentID; // name of resident?
     private String residentName; // the name of the resident
+    private String residentSpecies;
     View v;
 
     public FragmentActiveTasks () {}
 
-    public FragmentActiveTasks(String residentID, String residentName) {
+    public FragmentActiveTasks(String residentID, String residentName, String residentSpecies) {
         this.residentID = residentID;
         this.residentName = residentName;
+        this.residentSpecies = residentSpecies;
     }
 
     /**
@@ -89,6 +91,7 @@ public class FragmentActiveTasks extends Fragment implements
         intent.putExtra(TaskDetailActivity.KEY_TASK_ID, tasks.getId());
         intent.putExtra(TaskDetailActivity.KEY_RESIDENT_ID, residentID);
         intent.putExtra(TaskDetailActivity.KEY_RESIDENT_NAME, residentName);
+        intent.putExtra(TaskDetailActivity.KEY_RESIDENT_SPECIES, residentSpecies);
         startActivity(intent);
     }
 }
