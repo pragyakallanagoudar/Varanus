@@ -402,8 +402,7 @@ public class AnimalDetailGraph extends Fragment /**implements
             case "Turtle":
                 array = getResources().getStringArray(R.array.turtle_food_types);
                 break;
-            case "King Snake":
-            case "Gopher Snake":
+            case "Snake":
                 array = getResources().getStringArray(R.array.snake_food_types);
                 break;
             case "Lizard":
