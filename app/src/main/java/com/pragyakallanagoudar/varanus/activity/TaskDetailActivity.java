@@ -144,7 +144,8 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     case "Turtle":
                         arraySpinner = getResources().getStringArray(R.array.turtle_food_types);
                         break;
-                    case "Snake":
+                    case "King Snake":
+                    case "Gopher Snake":
                         arraySpinner = getResources().getStringArray(R.array.snake_food_types);
                         break;
                     case "Lizard":
