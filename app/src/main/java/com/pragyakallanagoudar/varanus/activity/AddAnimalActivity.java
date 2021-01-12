@@ -127,7 +127,7 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 addAnimal();
                 break;
             case R.id.cancel_button:
-                Log.e(TAG, "the cancel button is being clicked!!");
+                //Log.e(TAG, "the cancel button is being clicked!!");
                 finish();
                 break;
             case R.id.image_button:

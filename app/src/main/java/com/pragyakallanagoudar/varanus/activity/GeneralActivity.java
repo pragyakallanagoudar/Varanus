@@ -87,10 +87,10 @@ public class GeneralActivity extends AppCompatActivity implements View.OnClickLi
                             {
                                 logs.add(document.toObject(TextLog.class));
                             }
-                            Log.e(TAG, "Successfully retrieved all logs.");
+                            //Log.e(TAG, "Successfully retrieved all logs.");
                             fillInText(logs);
                         } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
+                            //Log.e(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });

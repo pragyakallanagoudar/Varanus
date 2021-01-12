@@ -95,7 +95,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        Log.e(TAG, "onCreate()"); // DELETE LATER: to study the flow
+        //Log.e(TAG, "onCreate()"); // DELETE LATER: to study the flow
 
         // Get task id from extras
         String taskID = getIntent().getExtras().getString(KEY_TASK_ID);
@@ -112,7 +112,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
         String user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
         // user = user.substring(user.indexOf(" "));
 
-        Log.e(TAG, type.toString());
+        //Log.e(TAG, type.toString());
 
         // Get logName and set content view according to task type (retrieved above)
         switch(type) {
@@ -187,7 +187,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
                 break;
             case ENRICH:
-                Log.e(TAG, "yo???");
+                //Log.e(TAG, "yo???");
                 logName = "EnclosureLog";
                 setContentView(R.layout.activity_task_default);
                 task = "enriching " + residentName + "'s enclosure";
@@ -227,7 +227,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
 
     @Override
     public void onStart() {
-        Log.e(TAG, "onStart()");
+        //Log.e(TAG, "onStart()");
         super.onStart();
         mTaskLogAdapter.startListening();
         mTaskRegistration = mTaskRef.addSnapshotListener(this);
@@ -236,7 +236,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     @Override
     public void onStop() {
         super.onStop();
-        Log.e(TAG, "OnStop()");
+        //Log.e(TAG, "OnStop()");
         mTaskLogAdapter.stopListening();
 
         if (mTaskRegistration != null) {
@@ -261,7 +261,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     @Override
     public void onEvent (DocumentSnapshot snapshot, FirebaseFirestoreException e)
     {
-        Log.e(TAG, "onEvent()");
+        //Log.e(TAG, "onEvent()");
         onTaskLoaded(snapshot.toObject(Task.class));
     }
 
@@ -271,7 +271,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
      */
     private void onTaskLoaded(Task task)
     {
-        Log.e(TAG, "onTaskLoaded()");
+        //Log.e(TAG, "onTaskLoaded()");
 
         // gray task: retrieve the last object
         if ((task.getLastCompleted() > (new Date()).getTime() - 84600000))
@@ -306,7 +306,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     taskLog = new FeedLog(0, "sample", 0);
                     break;
                 case EXERCISE:
-                    Log.e(TAG, "Making the Exercise flavor TaskLog object.");
+                    //Log.e(TAG, "Making the Exercise flavor TaskLog object.");
                     taskLog = new ExerciseLog(0, 0);
                     break;
                 case BEHAVIOR:
@@ -314,7 +314,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     break;
                 case ENRICH:
                 case CLEAN:
-                    Log.e(TAG, "Are we going in here?");
+                    //Log.e(TAG, "Are we going in here?");
                     taskLog = new EnclosureLog(0, type, 0);
                     break;
                 default:
@@ -343,7 +343,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     taskLog = document.toObject(ExerciseLog.class);
                     ExerciseLog exerciseLog = (ExerciseLog)taskLog;
                     mExerciseTime.setText(exerciseLog.getOutsideTime() + "");
-                    Log.e(TAG, exerciseLog.getOutsideTime() + "");
+                    //Log.e(TAG, exerciseLog.getOutsideTime() + "");
                     break;
                 case CLEAN:
                     taskLog = document.toObject(EnclosureLog.class);
@@ -389,7 +389,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
      */
     public void onSubmitClicked(View v)
     {
-        Log.e(TAG, "onSubmitClicked");
+        //Log.e(TAG, "onSubmitClicked");
 
         // set completed time of the taskLog to now.
         taskLog.setCompletedTime(new Date().getTime());
@@ -425,7 +425,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     emptyFields = mBehaviorText.getText().toString().trim().equals("");
                     if (!emptyFields)
                         taskLog.setBehaviorText(mBehaviorText.getText().toString());
-                    Log.e(TAG, "behavior text " + mBehaviorText.getText().toString());
+                    //Log.e(TAG, "behavior text " + mBehaviorText.getText().toString());
                     break;
                 case CLEAN:
                     // default value: "Not Cleaned"
@@ -495,7 +495,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
      */
     private com.google.android.gms.tasks.Task<Void> addTaskLog(final DocumentReference taskRef,
                                                                final TaskLog tasklog) {
-        Log.e(TAG, "addTaskLog");
+        //Log.e(TAG, "addTaskLog");
 
         // Create reference for new TaskLog, for use inside the transaction
         final DocumentReference taskLogRef;
@@ -517,7 +517,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
             public Void apply(Transaction transaction)
                     throws FirebaseFirestoreException {
 
-                Log.e(TAG, "inside apply function");
+                //Log.e(TAG, "inside apply function");
 
                 Task task = transaction.get(taskRef)
                         .toObject(Task.class);
@@ -531,7 +531,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     task.setLastCompleted(new Date().getTime());
                 }
 
-                Log.e("hAppY", tasklog.toString());
+                //Log.e("hAppY", tasklog.toString());
 
                 // assert task != null;
                 task.setLastLogID(taskLogRef.getId());

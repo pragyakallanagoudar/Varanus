@@ -133,12 +133,12 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
                 switch(view.getId())
                 {
                     case R.id.purchase:
-                        Log.e(TAG, "6/17/2020 purchase");
+                        //Log.e(TAG, "6/17/2020 purchase");
                         balance -= amount;
                         break;
                     case R.id.giftcard:
                         balance += amount;
-                        Log.e(TAG, "6/17/2020 giftcard " + balance);
+                        //Log.e(TAG, "6/17/2020 giftcard " + balance);
                         break;
                 }
                 updateBalanceView(balance);
@@ -152,7 +152,7 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        Log.e(TAG, "bonjour 6/17/2020 #2 " + amount[0]);
+        //Log.e(TAG, "bonjour 6/17/2020 #2 " + amount[0]);
 
         builder.show();
     }

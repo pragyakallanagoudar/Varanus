@@ -107,7 +107,7 @@ public class AnimalDetailGraph extends Fragment /**implements
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState)
     {
-        Log.e(TAG, "onCreateView()");
+        //Log.e(TAG, "onCreateView()");
 
         // Instantiate all of the variables.
 
@@ -199,7 +199,7 @@ public class AnimalDetailGraph extends Fragment /**implements
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
-        Log.e(TAG, "onCreate()");
+        //Log.e (TAG, "onCreate()");
         super.onCreate(savedInstanceState);
         mFirestore = FirebaseFirestore.getInstance();
 
@@ -213,7 +213,7 @@ public class AnimalDetailGraph extends Fragment /**implements
      */
     private void getLogs (final String logName)
     {
-        Log.e(TAG, "getLogs()");
+       // Log.e(TAG, "getLogs()");
         final ArrayList<TaskLog> logs = new ArrayList<TaskLog>();
 
         Query mQueryLogs = mFirestore.collection("Guadalupe Residents")
@@ -226,10 +226,10 @@ public class AnimalDetailGraph extends Fragment /**implements
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-                                Log.e(TAG, document.getId() + " => " + document.getData());
+                               // Log.e(TAG, document.getId() + " => " + document.getData());
                                 switch (logName) {
                                     case "ExerciseLog":
-                                        Log.e(TAG, " bonjour + " + document.toObject(ExerciseLog.class).toString());
+                                       // Log.e(TAG, " bonjour + " + document.toObject(ExerciseLog.class).toString());
                                         logs.add(document.toObject(ExerciseLog.class));
                                         break;
                                     case "FeedLog":
@@ -247,7 +247,7 @@ public class AnimalDetailGraph extends Fragment /**implements
                                 }
                             }
                         } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
+                           // Log.e(TAG, "Error getting documents: ", task.getException());
                         }
                         makeGraph(logName, logs);
                     }
@@ -261,7 +261,7 @@ public class AnimalDetailGraph extends Fragment /**implements
      */
     private void makeGraph (String logName, List<TaskLog> logs)
     {
-        Log.e(TAG, "makeGraph()");
+       // Log.e(TAG, "makeGraph()");
         switch (logName) {
             case "ExerciseLog":
                 makeExerciseReport(logs);
@@ -286,7 +286,7 @@ public class AnimalDetailGraph extends Fragment /**implements
      */
     private void sendEmailSummary ()
     {
-        Log.e(TAG, "sendEmailSummary ()");
+        //Log.e(TAG, "sendEmailSummary ()");
         emailIntent.putExtra(EmailSummaryActivityNew.RESIDENT_ID, residentID);
         emailIntent.putExtra(EmailSummaryActivityNew.RESIDENT_NAME, residentName);
         startActivity(emailIntent);
@@ -298,10 +298,10 @@ public class AnimalDetailGraph extends Fragment /**implements
      */
     private void makeDietReport (List<TaskLog> logs)
     {
-        Log.e(TAG, "makeDietReport ()");
+        //Log.e(TAG, "makeDietReport ()");
         int counter = 1;
         if (logs.size() > 0) {
-            Log.e(TAG, "We are here to make the FeedLog Report.");
+            //Log.e(TAG, "We are here to make the FeedLog Report.");
             List<BarEntry> feedEntries = new ArrayList<BarEntry>();
             long weekBreakoff = logs.get(0).getCompletedTime() + 10;
 
@@ -336,7 +336,7 @@ public class AnimalDetailGraph extends Fragment /**implements
                     //cricketCount = ratCount = 0;
                     foodAmounts = new float[foodLabels.length];
                     counter++;
-                    Log.e(TAG, "New Week");
+                    //Log.e(TAG, "New Week");
                 }
             }
             // There is one odd case that hasn't been handled that will come up. => wow, thanks for the context!
@@ -349,16 +349,16 @@ public class AnimalDetailGraph extends Fragment /**implements
             if (mDietChart.getData() != null &&
                     mDietChart.getData().getDataSetCount() > 0) {
                 // If the diet chart already has data loaded in, simply update the existing data.
-                Log.e(TAG, "First conditional space");
+                //Log.e(TAG, "First conditional space");
                 foodSet = (BarDataSet) mDietChart.getData().getDataSetByIndex(0);
                 foodSet.setValues(feedEntries);
                 mDietChart.getData().notifyDataChanged();
                 mDietChart.notifyDataSetChanged();
             } else {
                 // otherwise, build the chart from scratch.
-                Log.e(TAG, "Second conditional space");
+                //Log.e(TAG, "Second conditional space");
                 foodSet = new BarDataSet(feedEntries, "Diet History in Past Month");
-                Log.e(TAG, foodSet.toString());
+                //Log.e(TAG, foodSet.toString());
                 foodSet.setDrawIcons(false);
                 Resources res = getResources();
                 int colors[] = {res.getColor(R.color.colorPrimary), res.getColor(R.color.colorPrimaryDark), res.getColor(R.color.colorAccent)};
@@ -418,7 +418,7 @@ public class AnimalDetailGraph extends Fragment /**implements
     private void makeExerciseReport (List<TaskLog> logs)
     {
         Resources resources = getResources();
-        Log.e(TAG, "makeExerciseReport ()");
+        //Log.e(TAG, "makeExerciseReport ()");
         int counter = 1;
         // Create the Exercise Report
         List<Entry> exerciseEntries = new ArrayList<Entry>();
@@ -426,7 +426,7 @@ public class AnimalDetailGraph extends Fragment /**implements
         {
             ExerciseLog exerciseLog = (ExerciseLog)log;
             exerciseEntries.add(new Entry(counter, exerciseLog.getOutsideTime()));
-            Log.e(TAG, "DATA HERE " + exerciseLog.getOutsideTime());
+            //Log.e(TAG, "DATA HERE " + exerciseLog.getOutsideTime());
             counter++;
         }
         LineDataSet dataSet = new LineDataSet(exerciseEntries, "Time Spent Outside");
@@ -453,7 +453,7 @@ public class AnimalDetailGraph extends Fragment /**implements
     {
         Resources resources = getResources();
         mEnclosureCalendar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark));
-        Log.e(TAG, "makeEnclosureReport ()");
+        //Log.e(TAG, "makeEnclosureReport ()");
 
         // TODO: potentially change this for the different tasks that need to be completed? Consult Lauren & Mel --- I think this is a bad idea, we'll see
         int[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
@@ -488,8 +488,8 @@ public class AnimalDetailGraph extends Fragment /**implements
                     Date logDate = new Date(enclosureLog.getCompletedTime());
                     if (logDate.getTime() - dateClicked.getTime() < 86400000 && logDate.getTime() - dateClicked.getTime() > 0)
                     {
-                        Log.e(TAG, "There is a log corresponding to this date.");
-                        Log.e(TAG, logDate.getTime() - dateClicked.getTime() + "");
+                        //Log.e(TAG, "There is a log corresponding to this date.");
+                        //Log.e(TAG, logDate.getTime() - dateClicked.getTime() + "");
                         String date = Utils.getDate(dateClicked.toString());
                         if (enclosureLog.getTask() == TaskType.CLEAN)
                         {
@@ -570,8 +570,8 @@ public class AnimalDetailGraph extends Fragment /**implements
      */
     private void makeBehaviorReport(List<TaskLog> logs)
     {
-        Log.e(TAG, "makeBehaviorReport()");
-        Log.e("hello", this.getClass().getSimpleName());
+        //Log.e(TAG, "makeBehaviorReport()");
+        //Log.e("hello", this.getClass().getSimpleName());
         String source = new String();
         for (TaskLog log : logs)
         {
@@ -581,7 +581,7 @@ public class AnimalDetailGraph extends Fragment /**implements
             // make the source string in HTML to be cool
             source += "<b>" + dateString + " by " + log.getUser() + "</b><br>" + behaviorLog.getBehaviorText() + "<br><br>";
         }
-        Log.e(this.getClass().getSimpleName(), source);
+        //Log.e(this.getClass().getSimpleName(), source);
         mBehaviorReport.setText(Html.fromHtml(source));
         reportGenerated[3] = true;
     }

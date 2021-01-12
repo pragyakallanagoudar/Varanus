@@ -37,7 +37,7 @@ public abstract class FirestoreAdapter<VH extends RecyclerView.ViewHolder>
 
         // Handle errors
         if (e != null) {
-            Log.w(TAG, "onEvent:error", e);
+            //Log.w(TAG, "onEvent:error", e);
             return;
         }
 

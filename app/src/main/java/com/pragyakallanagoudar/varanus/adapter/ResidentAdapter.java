@@ -62,7 +62,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
             animalView = itemView.findViewById(R.id.animal_name);
             animalImageView = itemView.findViewById(R.id.animal_image);
            // animalStatusView = itemView.findViewById(R.id.animal_status);
-            Log.e(TAG, "making the viewholder");
+            //Log.e(TAG, "making the viewholder");
         }
 
         public void bind(final DocumentSnapshot snapshot,
@@ -70,7 +70,7 @@ public class ResidentAdapter extends FirestoreAdapter<ResidentAdapter.ViewHolder
 
             // Saving the data to local variables
             Resident resident = snapshot.toObject(Resident.class);
-            Log.e(TAG, "inside the bind method");
+            //Log.e(TAG, "inside the bind method");
             enclosureView.setText(resident.getSpecies() + ", " + resident.getEnclosure());
 
             animalView.setText(resident.getName());

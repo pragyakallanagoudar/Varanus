@@ -102,7 +102,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         getLogs("ExerciseLog");
         getLogs("EnclosureLog");
         getLogs("TextLog");
-        Log.e(TAG, "We're all done! Yay!");
+        //Log.e(TAG, "We're all done! Yay!");
         allDone = true;
     }
 
@@ -114,7 +114,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
      */
     private void getLogs (final String logName)
     {
-        Log.e(TAG, "getLogs()");
+        //Log.e(TAG, "getLogs()");
         final ArrayList<TaskLog> logs = new ArrayList<TaskLog>();
 
         Query mQueryLogs = mFirestore.collection("Guadalupe Residents")
@@ -127,10 +127,10 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult())
                             {
-                                Log.e(TAG, document.getId() + " => " + document.getData());
+                                //Log.e(TAG, document.getId() + " => " + document.getData());
                                 switch (logName) {
                                     case "ExerciseLog":
-                                        Log.e(TAG, " bonjour + " + document.toObject(ExerciseLog.class).toString());
+                                        //Log.e(TAG, " bonjour + " + document.toObject(ExerciseLog.class).toString());
                                         exerciseLogs.add(document.toObject(ExerciseLog.class));
                                         break;
                                     case "FeedLog":
@@ -148,7 +148,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
                                 }
                             }
                         } else {
-                            Log.e(TAG, "Error getting documents: ", task.getException());
+                           // Log.e(TAG, "Error getting documents: ", task.getException());
                         }
                     }
                 });
@@ -164,7 +164,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         switch (view.getId())
         {
             case R.id.send_button:
-                Log.e(TAG, "send button");
+               // Log.e(TAG, "send button");
                 sendMail();
                 break;
             case R.id.cancel_button:
@@ -182,7 +182,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         while (!allDone)
             Snackbar.make(findViewById(android.R.id.content), "Please wait as we load the data.", Snackbar.LENGTH_SHORT).show();
 
-        Log.e(TAG, "sendMail()");
+       // Log.e(TAG, "sendMail()");
 
         // Retrieve this information from the EditText components on the screen.
         String recipientList = mRecipients.getText().toString();
@@ -209,8 +209,8 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         // Best way: iterate through all dates from start to end. Print out all logs from each day.
 
         if (allIsWell) {
-            Log.e(TAG, "start: " + startDate.toString());
-            Log.e(TAG, "end " + endDate.toString());
+            //Log.e(TAG, "start: " + startDate.toString());
+            //Log.e(TAG, "end " + endDate.toString());
 
             String feedText = "", exerciseText = "", enclosureText = "", behaviorText = "";
             int dietPos, exercisePos, enclosurePos, behaviorPos;
@@ -270,7 +270,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
                 }
 
             }
-            Log.e(TAG, report);
+            //Log.e(TAG, report);
 
             Intent intent = new Intent(Intent.ACTION_SEND);
             intent.putExtra(Intent.EXTRA_EMAIL, recipients);
@@ -330,7 +330,7 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         try {
             int month, day, year;
             Date date;
-            Log.e(TAG, dateStr);
+            //Log.e(TAG, dateStr);
 
             Pattern pattern = Pattern.compile("\\d\\d/\\d\\d/\\d\\d\\d\\d");
             Matcher matcher = pattern.matcher(dateStr);

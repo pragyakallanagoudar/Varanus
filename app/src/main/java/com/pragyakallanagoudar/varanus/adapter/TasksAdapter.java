@@ -80,14 +80,14 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
             // There are 8.46e+7 milliseconds in a day.
             if ((task.getLastCompleted() > (new Date()).getTime() - task.getFrequency()*84600000))
             {
-                Log.e(LOG_TAG, task.getTaskType() + " GRAY");
+                //Log.e(LOG_TAG, task.getTaskType() + " GRAY");
                 // layout.setBackgroundColor(Color.LTGRAY);
                 activityView.setTextColor(Color.LTGRAY);
                 instructionView.setTextColor(Color.LTGRAY);
             }
             else
             {
-                Log.e(LOG_TAG, task.getTaskType() + " WHITE");
+                //Log.e(LOG_TAG, task.getTaskType() + " WHITE");
                 activityView.setTextColor(Color.BLACK);
                 instructionView.setTextColor(Color.BLACK);
             }
