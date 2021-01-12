@@ -103,7 +103,6 @@ public class MainActivity extends AppCompatActivity implements
      * @return      whether the current user is null, which means the signin activity should start
      */
     private boolean shouldStartSignIn() {
-        //Log.e(String.valueOf(FirebaseAuth.getInstance().getCurrentUser()), MainActivity.class.getSimpleName());
         return (FirebaseAuth.getInstance().getCurrentUser() == null);
     }
 
@@ -112,7 +111,6 @@ public class MainActivity extends AppCompatActivity implements
      */
     private void startSignIn() {
         // Sign in with FirebaseUI
-        //Log.e("hi", MainActivity.class.getSimpleName());
         Intent intent = AuthUI.getInstance().createSignInIntentBuilder()
                 .setAvailableProviders(Collections.singletonList(
                         new AuthUI.IdpConfig.EmailBuilder().build()))

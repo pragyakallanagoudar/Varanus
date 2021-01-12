@@ -116,9 +116,7 @@ public class TabbedTasks extends AppCompatActivity {
         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //Log.e(TAG, "onClick()");
                 if(input.getText().toString().equals(residentName)) {
-                    //Log.e(TAG, "YO 7/5/2020");
                     mFirestore.collection("Guadalupe Residents").document(residentID).delete()
                             .addOnSuccessListener(new OnSuccessListener<Void>() {
                                 @Override
@@ -135,7 +133,6 @@ public class TabbedTasks extends AppCompatActivity {
                             });
 
                 } else {
-                    //Log.e(TAG, "NO 7/5/2020");
                 }
             }
         });

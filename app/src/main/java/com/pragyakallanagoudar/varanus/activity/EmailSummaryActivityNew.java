@@ -330,7 +330,6 @@ public class EmailSummaryActivityNew extends AppCompatActivity implements View.O
         try {
             int month, day, year;
             Date date;
-            //Log.e(TAG, dateStr);
 
             Pattern pattern = Pattern.compile("\\d\\d/\\d\\d/\\d\\d\\d\\d");
             Matcher matcher = pattern.matcher(dateStr);

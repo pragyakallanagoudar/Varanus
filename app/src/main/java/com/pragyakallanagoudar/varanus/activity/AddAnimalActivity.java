@@ -127,7 +127,6 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 addAnimal();
                 break;
             case R.id.cancel_button:
-                //Log.e(TAG, "the cancel button is being clicked!!");
                 finish();
                 break;
             case R.id.image_button:
@@ -160,7 +159,6 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == PICK_IMAGE) {
-            Log.e(TAG, "we're in here baby boo");
             try {
                 /**final Uri */ imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);

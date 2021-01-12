@@ -95,7 +95,6 @@ public class AnimalsActivity extends AppCompatActivity implements
      * Initialize the recycler view variables.
      */
     private void initRecyclerView() {
-        //Log.e(TAG, "initRecyclerView()");
         mAdapter = new ResidentAdapter(mQueryResidents, this);
         mAnimalsRecycler.setLayoutManager(new LinearLayoutManager(this));
         mAnimalsRecycler.setAdapter(mAdapter);
