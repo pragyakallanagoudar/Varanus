@@ -479,7 +479,7 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(deepTaskCrayfish);
                 break;
-            case "Gold fish":
+            case "Goldfish":
                 /**
                  * Gold fish:
                  * CARE
@@ -496,7 +496,7 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(cleanTaskFish);
                 break;
-            case "Roach fish":
+            case "Roach Fish":
                 /**
                  * California Roach fish:
                  * CARE
