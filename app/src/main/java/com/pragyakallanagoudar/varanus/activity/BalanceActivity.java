@@ -58,7 +58,7 @@ public class BalanceActivity extends AppCompatActivity implements View.OnClickLi
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.balance);
+        setContentView(R.layout.balance_1);
 
         balanceView = findViewById(R.id.balance_view);
 
