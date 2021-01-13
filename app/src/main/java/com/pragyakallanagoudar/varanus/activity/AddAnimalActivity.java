@@ -246,6 +246,7 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
      */
     public void addTasks(String species)
     {
+        /**
         // make and add the feed task
         Task feedTask = new Task("CARE", 0, "Feed", 1, "");
         String taskId = "feed-" + Utils.getRandomID();
@@ -257,15 +258,261 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
         taskId = "behavior-" + Utils.getRandomID();
         FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                 .collection("Tasks").document(taskId).set(behaviorTask);
+                **/
 
-        // make and add the clean task
-        Task cleanTask = new Task("CARE", 0, "Clean", 1, "");
-        taskId = "clean-" + Utils.getRandomID();
-        FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
-                .collection("Tasks").document(taskId).set(cleanTask);
+        String taskId = "";
+
         // Complete this after consulting Lauren's guide.
-        Task enclosureTask = new Task("ENRICH", 0, "Enclosure Enrichment", 1, "");
-        Task exercise = new Task("ENRICH", 0, "Exercise", 1, "");
+
+        switch (species) {
+            case "Rat":
+                /**
+                 * ​Rats, Jake and Marcus:
+                 * CARE
+                 * Daily: feed pellets, feed fruit/veggies (see “safe list”), tidy house, wipe shelves, check water (and refill with filtered water if needed)
+                 * Every 4-5 days: replace bedding
+                 * Every 9-10 days: wash out house, wash out water bottle (and it's obviously good to replace the bedding at this time)
+                 * ENRICHMENT
+                 * Daily: play, exercise, hold
+                 */
+                Task feedPelletsRat = new Task("CARE", 0, "Feed", 1, "", "Feed pellets.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedPelletsRat);
+
+                Task feedFruitRat = new Task("CARE", 0, "Feed", 1, "", "Feed fruit/veggies.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedFruitRat);
+
+                Task cleanTaskRat1 = new Task("CARE", 0, "Clean", 4, "", "Tidy house, wipe shelves, check water.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskRat1);
+
+                Task cleanTaskRat2 = new Task("CARE", 0, "Clean", 4, "", "Replace beddding.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskRat2);
+
+                Task cleanTaskRat3 = new Task("CARE", 0, "Clean", 9, "", "Wash out house & water bottle.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskRat3);
+
+                Task exerciseTaskRat = new Task("ENRICH", 0, "Exercise", 1, "", "Play, exercise, hold.");
+                taskId = "exercise-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(exerciseTaskRat);
+                break;
+            case "Lizard":
+                /**
+                 * Alligator Lizard, Diego:
+                 * CARE
+                 * Daily: wash water dish and refill with filtered water, mist with water, feed crickets (dusted with calcium​ containing d3​)
+                 * Every 2-3 months: full clean
+                 * ENRICHMENT
+                 * every 2-3 days: rearrange enclosure
+                 */
+                Task feedCricketsLizard = new Task("CARE", 0, "Feed", 1, "", "Feed crickets.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedCricketsLizard);
+
+                Task cleanTaskLizard = new Task("CARE", 0, "Clean", 1, "", "Clean (water dish, mist).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskLizard);
+
+                Task deepTaskLizard = new Task("CARE", 0, "Clean", 60, "", "Deep clean.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(deepTaskLizard);
+
+                Task enclosureTaskLizard = new Task("ENRICH", 0, "Enclosure Enrichment", 2, "", "Rearrange enclosure.");
+                taskId = "enrich-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(enclosureTaskLizard);
+                break;
+
+            case "Toad":
+                /**
+                 * Western Toad, Rocky:
+                 * CARE
+                 * Daily:  wash water dish and refill with filtered water, mist with water, feed crickets (dusted with calcium containing d3)
+                 * Every 2-3 months: full clean
+                 * ENRICHMENT
+                 * Daily: outside time (limit to 15-20 minutes max. Make sure to have a water source available such as a squirt bottle to ensure toad does not dry out)
+                 * Note: Always check for predators while outside
+                 * every 2-3 days: rearrange enclosure
+                 */
+                Task feedCricketsToad = new Task("CARE", 0, "Feed", 1, "", "Feed crickets.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedCricketsToad);
+
+                Task cleanTaskToad = new Task("CARE", 0, "Clean", 1, "", "Clean (water dish, mist).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskToad);
+
+                Task deepTaskToad = new Task("CARE", 0, "Clean", 60, "", "Deep clean.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(deepTaskToad);
+
+                Task exerciseTaskToad = new Task("ENRICH", 0, "Exercise", 1, "", "Outside for exercise (15-20 min max).");
+                taskId = "exercise-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(exerciseTaskToad);
+
+                Task enclosureTaskToad = new Task("ENRICH", 0, "Enclosure Enrichment", 2, "", "Rearrange enclosure.");
+                taskId = "enrich-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(enclosureTaskToad);
+                break;
+
+            case "Turtle":
+                /**
+                 * Mississippi Map Turtle, Jackson & Mississippi Mud Turtle, Madison:
+                 * CARE
+                 * Daily: feed veggies and note which, feed pellets, remove any detritus/uneaten food from water
+                 * Every 2-3 days: feed treat (meal worm (gutloaded), cricket, etc.)
+                 * Every 2-3 months: full clean
+                 * ENRICHMENT
+                 * Daily: outside time Note: Always check for predators while outside
+                 */
+                Task feedPelletsTurtle = new Task("CARE", 0, "Feed", 1, "", "Feed pellets.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedPelletsTurtle);
+
+                Task feedFruitTurtle = new Task("CARE", 0, "Feed", 1, "", "Feed fruit/veggies.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedFruitTurtle);
+
+                Task feedTreatTurtle = new Task("CARE", 0, "Feed", 2, "", "Feed treat (mealworm, cricket, etc.)");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedTreatTurtle);
+
+                Task cleanTaskTurtle = new Task("CARE", 0, "Clean", 1, "", "Clean (remove detritus, food from water).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskTurtle);
+
+                Task deepTaskTurtle = new Task("CARE", 0, "Clean", 60, "", "Deep clean.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(deepTaskTurtle);
+                break;
+
+            case "Snake":
+                /**
+                 * King Snake, Capitan:
+                 * CARE
+                 * Daily: remove feces/urates/shed, wash water dish and refill with filtered water, mist with water
+                 * Weekly on Fridays: feed mouse
+                 * Every 2-3 months: full clean
+                 * ENRICHMENT:
+                 * Daily: outside time Note: Always check for predators while outside
+                 * IMPORTANT: Friday must be BEFORE eating, DO NOT take out on Sat/Sun
+                 * every 2-3 days: rearrange enclosure
+                 * Note: If in preshed, put damp humidity box into enclosure and velcro ‘snake in preshed’ sign on outside
+                 */
+                Task cleanTaskSnake = new Task("CARE", 0, "Clean", 1, "", "Clean (remove feces, water dish, mist).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskSnake);
+
+                Task feedMouseSnake = new Task("CARE", 0, "Feed", 7, "", "Feed mouse.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedMouseSnake);
+
+                Task deepTaskSnake = new Task("CARE", 0, "Clean", 60, "", "Deep clean.");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(deepTaskSnake);
+
+                Task exerciseTaskSnake = new Task("ENRICH", 0, "Exercise", 1, "", "Outside for exercise (check for predators).");
+                taskId = "exercise-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(exerciseTaskSnake);
+
+                Task enclosureTaskSnake = new Task("ENRICH", 0, "Enclosure Enrichment", 2, "", "Rearrange enclosure.");
+                taskId = "enrich-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(enclosureTaskSnake);
+                break;
+            case "Crayfish":
+                /**
+                 * Crayfish
+                 * Front, Cordelia:
+                 * CARE
+                 * Daily: feed 2-3 pellets (can occasionally give worms, lettuce, etc. as a treat; remove uneaten food)
+                 * every 2 weeks: gravel vac, 25% water change
+                 * Back, no names (11):
+                 * CARE
+                 * Daily: feed ~20 pellets  (can occasionally give worms, lettuce, etc. as a treat; remove uneaten food)
+                 * Every other day: check filter & replace when needed
+                 * weekly: gravel vac, 25%  water change
+                 */
+                Task feedPelletsCrayfish = new Task("CARE", 0, "Feed", 1, "", "Feed 20 pellets.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedPelletsCrayfish);
+
+                Task feedTreatCrayfish = new Task("CARE", 0, "Feed", 7, "", "Feed treat (mealworm, cricket, etc.)");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedTreatCrayfish);
+
+                Task cleanTaskCrayfish = new Task("CARE", 0, "Clean", 2, "", "Clean (check filter & replace).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskCrayfish);
+
+                Task deepTaskCrayfish = new Task("CARE", 0, "Clean", 60, "", "Deep clean (gravel vac, 25% water change).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(deepTaskCrayfish);
+                break;
+            case "Gold fish":
+                /**
+                 * Gold fish:
+                 * CARE
+                 * Daily: feed pinch of flakes (NOTE no worms)
+                 * When needed: scrape algae
+                 */
+                Task feedFlakesFish = new Task("CARE", 0, "Feed", 1, "", "Feed pinch of flakes.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedFlakesFish);
+
+                Task cleanTaskFish = new Task("CARE", 0, "Clean", 1, "", "Clean (scrape algae).");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskFish);
+                break;
+            case "Roach fish":
+                /**
+                 * California Roach fish:
+                 * CARE
+                 * Daily: feed large pinch of flakes  (can occasionally give worms as a treat)
+                 */
+                Task feedFatFlakesFish = new Task("CARE", 0, "Feed", 1, "", "Feed large pinch of flakes.");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedFatFlakesFish);
+
+                Task feedTreatFish = new Task("CARE", 0, "Feed", 7, "", "Feed treat (worms)");
+                taskId = "feed-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(feedTreatFish);
+                break;
+        }
 
     }
 
