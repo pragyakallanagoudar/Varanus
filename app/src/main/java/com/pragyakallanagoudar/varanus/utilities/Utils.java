@@ -46,6 +46,15 @@ public class Utils {
         return autoId;
     }
 
+    public static String capitalizeFirstLetter(String word)
+    {
+        String newWord = word;
+        if (word.length() > 0)
+        {
+            newWord = word.substring(0, 1).toUpperCase() + word.substring(1);
+        }
+        return newWord;
+    }
 
 
 }

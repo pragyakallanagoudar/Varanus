@@ -11,7 +11,8 @@ import android.widget.TextView;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.Query;
 import com.pragyakallanagoudar.varanus.R;
-import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.task.CleanTask;
+import com.pragyakallanagoudar.varanus.model.task.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;
 
 import java.util.Date;
@@ -73,7 +74,18 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
         public void bind(final DocumentSnapshot snapshot,
                          final OnTasksSelectedListener listener) {
 
-            Task task = snapshot.toObject(Task.class);
+            String idType = snapshot.getId().substring(0, snapshot.getId().indexOf("-"));
+            Task task;
+            Log.e(LOG_TAG, "PEANUTS " + idType);
+            switch (idType) {
+                case "clean":
+                    task = snapshot.toObject(CleanTask.class);
+                    break;
+                default:
+                    task = snapshot.toObject(Task.class);
+                    break;
+            }
+
             //.whereLessThan("lastCompleted", new Date().getTime() - 1000*12*60);
 
             assert task != null;

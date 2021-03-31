@@ -7,8 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Html;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -17,7 +15,6 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
 //import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -25,23 +22,20 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.model.Resident;
+import com.pragyakallanagoudar.varanus.model.TaskType;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
+import com.pragyakallanagoudar.varanus.model.task.CleanTask;
 import com.pragyakallanagoudar.varanus.utilities.Utils;
-import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.task.Task;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -262,7 +256,12 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
 
         String taskId = "";
 
-        // Complete this after consulting Lauren's guide.
+        // Add the report abnormal behavior tab for everyone.
+
+        Task behaviorTask = new Task("CARE", 0, "Behavior", 1, "", "Report abnormal behavior.");
+        taskId = "behavior-" + Utils.getRandomID();
+        FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                .collection("Tasks").document(taskId).set(behaviorTask);
 
         switch (species) {
             case "Rat":
@@ -285,20 +284,28 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(feedFruitRat);
 
-                Task cleanTaskRat1 = new Task("CARE", 0, "Clean", 4, "", "Tidy house, wipe shelves, check water.");
+                /**
+                 * Changes to use the CleanTask class.
+                 */
+
+                Task cleanTaskRat1 = new CleanTask("CARE", 0, "Clean", 4, "", "Tidy house, wipe shelves, check water.", "enclosure");
                 taskId = "clean-" + Utils.getRandomID();
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(cleanTaskRat1);
 
-                Task cleanTaskRat2 = new Task("CARE", 0, "Clean", 4, "", "Replace beddding.");
+                Task cleanTaskRat2 = new CleanTask("CARE", 0, "Clean", 4, "", "Replace bedding.", "enclosure");
                 taskId = "clean-" + Utils.getRandomID();
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(cleanTaskRat2);
 
-                Task cleanTaskRat3 = new Task("CARE", 0, "Clean", 9, "", "Wash out house & water bottle.");
+                Task cleanTaskRat3 = new CleanTask("CARE", 0, "Clean", 9, "", "Wash out house & water bottle.", "enclosure");
                 taskId = "clean-" + Utils.getRandomID();
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(cleanTaskRat3);
+
+                /**
+                 *
+                 */
 
                 Task exerciseTaskRat = new Task("ENRICH", 0, "Exercise", 1, "", "Play, exercise, hold.");
                 taskId = "exercise-" + Utils.getRandomID();
@@ -319,10 +326,21 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(feedCricketsLizard);
 
-                Task cleanTaskLizard = new Task("CARE", 0, "Clean", 1, "", "Clean (water dish, mist).");
+                /** Change this to use CleanTask class. */
+
+                Task cleanTaskLizard = new CleanTask("CARE", 0, "Clean", 1, "", "Clean (water dish).", "enclosure");
                 taskId = "clean-" + Utils.getRandomID();
                 FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
                         .collection("Tasks").document(taskId).set(cleanTaskLizard);
+
+                Task cleanTaskLizard2 = new CleanTask("CARE", 0, "Clean", 1, "", "Humid hide.", "hide");
+                taskId = "clean-" + Utils.getRandomID();
+                FirebaseFirestore.getInstance().collection("Guadalupe Residents").document(newResidentID)
+                        .collection("Tasks").document(taskId).set(cleanTaskLizard2);
+
+                /**
+                 *
+                 */
 
                 Task deepTaskLizard = new Task("CARE", 0, "Clean", 60, "", "Deep clean.");
                 taskId = "clean-" + Utils.getRandomID();

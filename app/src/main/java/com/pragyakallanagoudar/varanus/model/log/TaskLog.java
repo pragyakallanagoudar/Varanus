@@ -65,6 +65,11 @@ public class TaskLog
         throw new Exception();
     }
 
+    public void setWhatCleaned (String whatCleaned) throws Exception
+    {
+        throw new Exception();
+    }
+
     @Override
     public String toString()
     {

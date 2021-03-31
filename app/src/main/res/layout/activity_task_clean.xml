@@ -91,7 +91,7 @@
         android:layout_height="34dp"
         android:layout_marginTop="224dp"
         android:layout_marginBottom="473dp"
-        android:entries="@array/clean_levels"
+        android:entries="@array/general_clean_levels"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

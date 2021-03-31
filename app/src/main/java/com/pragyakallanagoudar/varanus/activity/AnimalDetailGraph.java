@@ -309,15 +309,6 @@ public class AnimalDetailGraph extends Fragment /**implements
                     if (feedLog.getFoodName().equalsIgnoreCase(foodLabels[j]))
                         foodAmounts[j] += feedLog.getFoodCount();
                 }
-                /**
-                if (feedLog.getFoodName().equalsIgnoreCase("Crickets")) {
-                    cricketCount += feedLog.getFoodCount();
-                    Log.e(TAG, "We have a Cricket FeedLog!");
-                } else {
-                    ratCount += feedLog.getFoodCount();
-                    Log.e(TAG, "We have a Rat FeedLog!");
-                }
-                 */
                 if (i < logs.size() - 1 && logs.get(i + 1).getCompletedTime() > weekBreakoff) {
                     weekBreakoff = logs.get(i + 1).getCompletedTime() + 10 /**604800000*/;
                     //feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
@@ -328,8 +319,6 @@ public class AnimalDetailGraph extends Fragment /**implements
                     //Log.e(TAG, "New Week");
                 }
             }
-            // There is one odd case that hasn't been handled that will come up. => wow, thanks for the context!
-
             //feedEntries.add(new BarEntry(counter, new float[]{cricketCount, ratCount}));
             feedEntries.add(new BarEntry(counter, foodAmounts));
 
@@ -381,7 +370,7 @@ public class AnimalDetailGraph extends Fragment /**implements
             case "Rat":
                 array = getResources().getStringArray(R.array.rat_food_types);
                 break;
-            case "Roachfish":
+            case "Roach Fish":
                 array = getResources().getStringArray(R.array.roachfish_food_types);
                 break;
             case "Toad":
@@ -440,17 +429,26 @@ public class AnimalDetailGraph extends Fragment /**implements
         Resources resources = getResources();
         mEnclosureCalendar.setBackgroundColor(resources.getColor(R.color.colorPrimaryDark));
 
-        // TODO: potentially change this for the different tasks that need to be completed? Consult Lauren & Mel --- I think this is a bad idea, we'll see
-        int[] colors = {Color.RED, Color.YELLOW, Color.GREEN};
-        final String[] texts = {"Not Cleaned", "Cleaned", "Deep Cleaned"};
+        int[] colorsEnclosure = {Color.RED, Color.YELLOW, Color.GREEN};
+        final String[] textsEnclosure = {"Not Cleaned", "Cleaned", "Deep Cleaned"};
+
+        int[] colorsHide = {Color.CYAN, Color.rgb(255,105,180)};
+        final String[] textsHide = {"Refreshed", "Not Refreshed"};
+
+        int[] colorsFeces = {Color.WHITE, Color.BLACK};
+        final String[] textsFeces = {"Removed", "Not Removed"};
+
         mMonthView.setText(getSimpleDate(mEnclosureCalendar.getFirstDayOfCurrentMonth()));
         for (TaskLog log : logs)
         {
             EnclosureLog enclosureLog = (EnclosureLog)log;
             Event event = new Event(Color.LTGRAY, enclosureLog.getCompletedTime(), "Unidentified Event");
+
+            final String[] texts = getCleanLevels(enclosureLog.getWhatCleaned());
+            int[] colors = getColors(enclosureLog.getWhatCleaned());
             if (enclosureLog.getTask() == TaskType.CLEAN)
             {
-                int cleanLevel = enclosureLog.getCleanLevel();
+                int cleanLevel = enclosureLog.getCleanLevel() - 1;
                 event = new Event(colors[cleanLevel], enclosureLog.getCompletedTime(), texts[cleanLevel]);
                 mEnclosureCalendar.addEvent(event);
             }
@@ -471,12 +469,13 @@ public class AnimalDetailGraph extends Fragment /**implements
                 {
                     EnclosureLog enclosureLog = (EnclosureLog)log;
                     Date logDate = new Date(enclosureLog.getCompletedTime());
+                    final String[] texts = getCleanLevels(enclosureLog.getWhatCleaned());
                     if (logDate.getTime() - dateClicked.getTime() < 86400000 && logDate.getTime() - dateClicked.getTime() > 0)
                     {
                         String date = Utils.getDate(dateClicked.toString());
                         if (enclosureLog.getTask() == TaskType.CLEAN)
                         {
-                            String text = texts[enclosureLog.getCleanLevel()] + " on " + date + " by " + enclosureLog.getUser();
+                            String text = Utils.capitalizeFirstLetter(enclosureLog.getWhatCleaned()) + " " + texts[enclosureLog.getCleanLevel() - 1] + " on " + date + " by " + enclosureLog.getUser();
                             Toast.makeText(context, text, Toast.LENGTH_SHORT).show();
                         }
                         else
@@ -493,6 +492,30 @@ public class AnimalDetailGraph extends Fragment /**implements
             }
         });
         reportGenerated[2] = true;
+    }
+
+    private String[] getCleanLevels(String location)
+    {
+        switch (location) {
+            case "hide":
+                return new String[]{"Refreshed", "Not Refreshed"};
+            case "feces":
+                return new String[]{"Removed", "Not Removed"};
+            default:
+                return new String[]{"Not Cleaned", "Cleaned", "Deep Cleaned"};
+        }
+    }
+
+    private int[] getColors(String location)
+    {
+        switch (location) {
+            case "hide":
+                return new int[]{Color.CYAN, Color.rgb(255,105,180)};
+            case "feces":
+                return new int[]{Color.WHITE, Color.BLACK};
+            default:
+                return new int[]{Color.RED, Color.YELLOW, Color.GREEN};
+        }
     }
 
     /**

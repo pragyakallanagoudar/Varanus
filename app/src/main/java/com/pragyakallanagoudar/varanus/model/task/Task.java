@@ -1,4 +1,4 @@
-package com.pragyakallanagoudar.varanus.model;
+package com.pragyakallanagoudar.varanus.model.task;
 
 import java.lang.String;
 
@@ -11,6 +11,8 @@ public class Task
     public int frequency;
     public String lastLogID; // the ID of the log for the last time this task was completed
     public String description;
+
+    // Perhaps we need to make subclasses here for this to really work :0
 
     public Task() {}
 
@@ -67,4 +69,11 @@ public class Task
     public String getDescription() { return description; }
 
     public void setDescription(String description) { this.description = description; }
+
+    public String getLocation() /**throws Exception */ { /**throw new Exception();*/ return "error"; } // only for CleanTask (subclass)
+    // 2/25: for some reason, having it throw an Exception leads it to fail in runtime.
+
+    public void setLocation(String newLocation) /**throws Exception */ { /**throw new Exception();*/ } // only for CleanTask (subclass)
+
+
 }

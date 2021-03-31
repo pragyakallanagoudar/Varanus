@@ -28,7 +28,8 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.Transaction;
 import com.pragyakallanagoudar.varanus.R;
 import com.pragyakallanagoudar.varanus.adapter.TaskLogAdapter;
-import com.pragyakallanagoudar.varanus.model.Task;
+import com.pragyakallanagoudar.varanus.model.task.CleanTask;
+import com.pragyakallanagoudar.varanus.model.task.Task;
 import com.pragyakallanagoudar.varanus.model.TaskType;
 import com.pragyakallanagoudar.varanus.model.log.TextLog;
 import com.pragyakallanagoudar.varanus.model.log.EnclosureLog;
@@ -70,6 +71,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private EditText mExerciseTime; // enter the amount of time spent outside
     private EditText mBehaviorText; // provide a summary of the behavior of the animal
     private Spinner mCleanLevel; // select the level of being cleaned
+    private String[] cleanSpinner; // clean level options
 
     // Database references and listeners
     private FirebaseFirestore mFirestore; // the Firebase database reference
@@ -85,6 +87,15 @@ public class TaskDetailActivity extends AppCompatActivity implements
     private TaskType type; // the type of task (FEED, EXERCISE, CLEAN, etc.)
     private String logName; // the name of the log to append to (according to the type of task)
     private String oldTaskID; // empty String if task is black
+
+    private Task taskObject;
+
+    private String descriptionText;
+    private String task;
+    private String info;
+    private Resources res;
+    private String user;
+
 
     /**
      * Instantiate all of the field variables based on which type of task it is.
@@ -107,10 +118,12 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
         type = TaskType.valueOf(taskID.substring(0, taskID.indexOf('-')).toUpperCase());
 
-        Resources res = getResources();
-        String descriptionText, task, info = "";
-        String user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
-        // user = user.substring(user.indexOf(" "));
+        res = getResources();
+        // String descriptionText, task = null, info = "";
+        user = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+
+        if (user.contains(" "))
+            user = user.substring(0, user.indexOf(" "));
 
         //Log.e(TAG, type.toString());
 
@@ -135,7 +148,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     case "Rat":
                         arraySpinner = getResources().getStringArray(R.array.rat_food_types);
                         break;
-                    case "Roachfish":
+                    case "Roach Fish":
                         arraySpinner = getResources().getStringArray(R.array.roachfish_food_types);
                         break;
                     case "Toad":
@@ -156,6 +169,15 @@ public class TaskDetailActivity extends AppCompatActivity implements
                         android.R.layout.simple_spinner_item, arraySpinner);
                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                 mFoodType.setAdapter(adapter);
+
+                // This is to eliminate stuff w/extra selections etc etc
+                for (String food : arraySpinner)
+                {
+                    if (taskObject != null && taskObject.getDescription().contains(food))
+                    {
+                        mFoodType.setSelection(getIndex(mFoodType, food));
+                    }
+                }
 
                 task = "feeding " + residentName;
                 info = "select the food type and count";
@@ -182,9 +204,52 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 logName = "EnclosureLog";
                 setContentView(R.layout.activity_task_clean);
                 mCleanLevel = findViewById(R.id.select_clean_level);
-                task = "cleaning " + residentName + "'s enclosure";
+
+                // String[] cleanSpinner = {}; //getResources().getStringArray(R.array.crayfish_food_types);
+
+                String location = "enclosure";
+
+                Log.e(TAG, "BULLFROGS ARE YOU THERE");
+
+                // Set value of location
+                try
+                {
+                    Log.e(TAG, "YES I AM HERE");
+                    location = taskObject.getLocation();
+                    Log.e(TAG, "BULLFROGS " + location);
+                }
+                catch (Exception e)
+                {
+                    Log.e(TAG, "MAYDAY MAYDAY");
+                    // show toast
+                }
+
+                Log.e(TAG, "BULLFROGS " + location);
+
+                switch (location) {
+                    case "hide":
+                        cleanSpinner = getResources().getStringArray(R.array.hide_clean_levels);
+                        break;
+                    case "feces":
+                        cleanSpinner = getResources().getStringArray(R.array.feces_clean_levels);
+                        break;
+                    default:
+                        cleanSpinner = getResources().getStringArray(R.array.general_clean_levels);
+                        break;
+                }
+
+                ArrayAdapter<String> cleanAdapter = new ArrayAdapter<String>(this,
+                        android.R.layout.simple_spinner_item, cleanSpinner);
+                cleanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                mCleanLevel.setAdapter(cleanAdapter);
+
+                task = "cleaning " + residentName + "'s " + location;
                 info = "select the level of cleaning done";
                 descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
+
+                /**
+                 *
+                 */
                 break;
             case ENRICH:
                 logName = "EnclosureLog";
@@ -258,7 +323,13 @@ public class TaskDetailActivity extends AppCompatActivity implements
     @Override
     public void onEvent (DocumentSnapshot snapshot, FirebaseFirestoreException e)
     {
-        onTaskLoaded(snapshot.toObject(Task.class));
+        switch(type) {
+            case CLEAN:
+                onTaskLoaded(snapshot.toObject(CleanTask.class));
+                break;
+            default:
+                onTaskLoaded(snapshot.toObject(Task.class));
+        }
     }
 
     /**
@@ -267,6 +338,16 @@ public class TaskDetailActivity extends AppCompatActivity implements
      */
     private void onTaskLoaded(Task task)
     {
+
+        taskObject = task;
+
+        Log.e(TAG, "we made the task bois");
+
+
+
+        if (type == TaskType.CLEAN) {
+            specializeClean(task.getLocation());
+        }
         // gray task: retrieve the last object
         if ((task.getLastCompleted() > (new Date()).getTime() - 84600000))
         {
@@ -293,7 +374,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 }
             });
 
-        // black task: create a default object
+        // blank task: create a default object
         } else {
             switch (type) {
                 case FEED:
@@ -307,7 +388,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     break;
                 case ENRICH:
                 case CLEAN:
-                    taskLog = new EnclosureLog(0, type, 0);
+                    taskLog = new EnclosureLog(0, type, 0, "enclosure");
                     break;
                 default:
                     taskLog = new TaskLog(0);
@@ -316,6 +397,30 @@ public class TaskDetailActivity extends AppCompatActivity implements
         }
     }
 
+    private void specializeClean(String location) {
+        switch (location) {
+            case "hide":
+                cleanSpinner = getResources().getStringArray(R.array.hide_clean_levels);
+                break;
+            case "feces":
+                cleanSpinner = getResources().getStringArray(R.array.feces_clean_levels);
+                break;
+            default:
+                cleanSpinner = getResources().getStringArray(R.array.general_clean_levels);
+                break;
+        }
+
+        ArrayAdapter<String> cleanAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item, cleanSpinner);
+        cleanAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        mCleanLevel.setAdapter(cleanAdapter);
+
+        task = "cleaning " + residentName + "'s " + location;
+        info = "select the level of cleaning done";
+        descriptionText = String.format(res.getString(R.string.task_description), user, task, info);
+
+        description.setText(descriptionText);
+    }
 
     /**
      * If the task is gray and the last log document has been successfully retrieved.
@@ -340,6 +445,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                     taskLog = document.toObject(EnclosureLog.class);
                     EnclosureLog enclosureLog = (EnclosureLog)taskLog;
                     mCleanLevel.setSelection(enclosureLog.getCleanLevel());
+                    specializeClean(enclosureLog.getWhatCleaned());
                     break;
                 case ENRICH:
                     taskLog = document.toObject(EnclosureLog.class);
@@ -419,6 +525,7 @@ public class TaskDetailActivity extends AppCompatActivity implements
                 case CLEAN:
                     // default value: "Not Cleaned"
                     taskLog.setCleanLevel(mCleanLevel.getSelectedItemPosition());
+                    taskLog.setWhatCleaned(taskObject.getLocation());
                     break;
                 default:
                     // do nothing: we will come back and resolve this
@@ -504,9 +611,17 @@ public class TaskDetailActivity extends AppCompatActivity implements
             public Void apply(Transaction transaction)
                     throws FirebaseFirestoreException {
 
+                Task task;
 
-                Task task = transaction.get(taskRef)
-                        .toObject(Task.class);
+                switch(type) {
+                    case CLEAN:
+                        task = transaction.get(taskRef)
+                                .toObject(CleanTask.class);
+                        break;
+                    default:
+                        task = transaction.get(taskRef)
+                                .toObject(Task.class);
+                }
 
                 task.setLastCompleted(new Date().getTime());
 

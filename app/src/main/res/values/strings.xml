@@ -36,7 +36,7 @@
     <string-array name="rat_food_types">
         <item>@string/choose_a_food_type</item>
 
-        <item>Pellets</item>
+        <item>tbsp. Pellets</item>
         <item>Fruits</item>
         <item>Veggies</item>
     </string-array>
@@ -57,7 +57,7 @@
         <item>@string/choose_a_food_type</item>
 
         <item>Veggies</item>
-        <item>Pellets</item>
+        <item>tbsp. Pellets</item>
         <item>Veggies</item>
     </string-array>
 
@@ -114,7 +114,7 @@
         <item>Email Summary</item>
     </string-array>
 
-    <string-array name="clean_levels">
+    <string-array name="general_clean_levels">
         <item>Select clean level</item>
         <item>Not Cleaned</item>
         <item>Cleaned</item>
@@ -138,6 +138,31 @@
         <item>Snake</item>
         <item>Lizard</item>
         <item>Toad</item>
+    </string-array>
+
+    <string-array name="hide_clean_levels">
+        <item>Select clean level</item>
+        <item>Refreshed</item>
+        <item>Not Refreshed</item>
+    </string-array>
+
+    <string-array name="feces_clean_levels">
+        <item>Select clean level</item>
+        <item>Removed</item>
+        <item>Not Removed</item>
+    </string-array>
+
+    <!-- common lists -->
+    <string-array name="common_veggies_list">
+        <item>Select clean level</item>
+        <item>Removed</item>
+        <item>Not Removed</item>
+    </string-array>
+
+    <string-array name="common_treats_list">
+        <item>Select clean level</item>
+        <item>Removed</item>
+        <item>Not Removed</item>
     </string-array>
 
     <string name="title_activity_sign_up">SignUpActivity</string>
