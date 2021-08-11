@@ -90,7 +90,7 @@ public class TasksAdapter extends FirestoreAdapter<TasksAdapter.ViewHolder> {
 
             assert task != null;
             // There are 8.46e+7 milliseconds in a day.
-            if ((task.getLastCompleted() > (new Date()).getTime() - task.getFrequency()*84600000))
+            if ((task.getLastCompleted() > (new Date()).getTime() - task.getFrequency()*43200000))
             {
                 //Log.e(LOG_TAG, task.getTaskType() + " GRAY");
                 // layout.setBackgroundColor(Color.LTGRAY);

@@ -496,6 +496,10 @@ public class AnimalDetailGraph extends Fragment /**implements
 
     private String[] getCleanLevels(String location)
     {
+        if (location == null)
+        {
+            location = "enclosure";
+        }
         switch (location) {
             case "hide":
                 return new String[]{"Refreshed", "Not Refreshed"};
@@ -508,6 +512,10 @@ public class AnimalDetailGraph extends Fragment /**implements
 
     private int[] getColors(String location)
     {
+        if (location == null)
+        {
+            location = "enclosure";
+        }
         switch (location) {
             case "hide":
                 return new int[]{Color.CYAN, Color.rgb(255,105,180)};

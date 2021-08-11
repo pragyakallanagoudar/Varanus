@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -179,21 +180,29 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
     {
         StorageReference storageRef = FirebaseStorage.getInstance().getReference();
         StorageReference imageRef = storageRef.child(imageName);
-        UploadTask uploadTask = imageRef.putFile(imageUri);
 
-        // Register observers to listen for when the download is done or if it fails
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
-                // ...
-            }
-        });
+        if (imageUri != null) {
+            UploadTask uploadTask = imageRef.putFile(imageUri);
+            // Register observers to listen for when the download is done or if it fails
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception exception) {
+                    // Handle unsuccessful uploads
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    // taskSnapshot.getMetadata() contains file metadata such as size, content-type, etc.
+                    // ...
+                }
+            });
+        }
+        else
+        {
+            
+        }
+
+
     }
 
     /**
@@ -538,8 +547,10 @@ public class AddAnimalActivity extends AppCompatActivity implements View.OnClick
     private void hideKeyboard() {
         View view = getCurrentFocus();
         if (view != null) {
-            ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
-                    .hideSoftInputFromWindow(view.getWindowToken(), 0);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.CUPCAKE) {
+                ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                        .hideSoftInputFromWindow(view.getWindowToken(), 0);
+            }
         }
     }
 }
